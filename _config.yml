@@ -6,7 +6,7 @@
 name: Jeremy Cerise
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: Software Engineer, Web Developer, Professional Jack of all trades
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: http://www.gravatar.com/avatar/e8816382aba1f932061a6bceedb9344c.png
@@ -23,9 +23,9 @@ footer-links:
   flickr: 
   github: jcerise
   instagram: 
-  linkedin: 
+  linkedin: www.linkedin.com/in/jeremycerise/
   pinterest: 
-  rss: # just type anything here for a working RSS icon, make sure you set the "url" above!
+  rss: true
   twitter: jcerise
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
 
