@@ -10,10 +10,8 @@ The basic workflow is that a user clicks into a "spacetime" on the board, and a 
 Most of the interaction of the app is accomplished through Javascript (CoffeeScript) using jQuery. For example, one of the first things that happens on page load is that we attach a click handler, bindSpaceTimeClick,  to all spacetimes, such that when they are clicked, they broadcast the event to lock themselves, so no other user can add a topic there while it is locked. The code to accomplish this is as follows:
 
 {% highlight javascript %}
-    ###
-    Binds a click event to a spacetime. Upon clicking a spacetime, a
-    bootstrap modal is opened, pointing to the topic creation form.
-    ###
+    // Binds a click event to a spacetime. Upon clicking a spacetime, a
+    // bootstrap modal is opened, pointing to the topic creation form.
     bindSpaceTimeClick = (e) ->
       $this = $(this)
       spaceTimeId = $this.attr('id')
@@ -38,11 +36,9 @@ Most of the interaction of the app is accomplished through Javascript (CoffeeScr
 The bit we are interested in above is the shown.bs.modal event. When the modal is shown, updateModal locks the spacetime as described above. The code for update modal looks like this:
 
 {% highlight javascript %}
-    ###
-    Once a modal is fully loaded, add some additional data into it, 
-    such as the spacetime ID, time and room. This is also when the lock
-    is triggered.
-    ###
+    // Once a modal is fully loaded, add some additional data into it, 
+    // such as the spacetime ID, time and room. This is also when the lock
+    // is triggered.
     updateModal = (spaceTimeId, room, time) ->
       dispatcher.trigger 'lock_spacetime', {space_time_id: spaceTimeId}
       $('#new_topic input#topic_space_time_id').val spaceTimeId
@@ -58,10 +54,8 @@ This stumped us for a while. We went down several routes to try and figure out j
 Since we had put the modal.on bindings inside the click handler, every time someone clicked into a cell, the modal.on binding was getting re-applied, meaning that we were adding a new event handler with each click. This perfectly explained the behavior we were seeing. Basically, we were trying to do too much in our click handler. We desperately needed a re-factor. So, what we did was move the modal.on event bindings out of the click handler, and shuffled a few things around to make the click handler simpler. Basically:
 
 {% highlight javascript %}
-    ###
-    Binds a click event to a spacetime. Upon clicking a spacetime, a
-    bootstrap modal is opened, pointing to the topic creation form.
-    ###
+    // Binds a click event to a spacetime. Upon clicking a spacetime, a
+    // bootstrap modal is opened, pointing to the topic creation form.
     bindSpaceTimeClick = (e) ->
       $this = $(this)
       curSpaceTime = $this.attr('id')
@@ -72,11 +66,9 @@ Since we had put the modal.on bindings inside the click handler, every time some
 Much simpler, and now we're just setting a module variable called curSpaceTime to maintain some idea of where the user is, and that's about it. Conversely, the updateModal method now looks like this:
 
 {% highlight javascript %}
-     ###
-    Once a modal is fully loaded, add some additional data into it, 
-    such as the spacetime ID, time and room. This is also when the lock
-    is triggered.
-    ###
+    // Once a modal is fully loaded, add some additional data into it, 
+    // such as the spacetime ID, time and room. This is also when the lock
+    // is triggered.
     updateModal = (spaceTimeId) ->
       $this = $("td#" + spaceTimeId)
       room = $this.data('room')

@@ -28,19 +28,39 @@ You can also have more complex outputs if you desire, such as conditional statem
 Which would output the new list:
 
 {% highlight haskell %}
-["1","2","Fizz","4","5","Fizz","7","8","Fizz","10","11","Fizz","13","14","Fizz","16","17","Fizz","19","20"]
+["1","2","Fizz","4","5","Fizz","7",
+"8","Fizz","10","11","Fizz","13",
+"14","Fizz","16","17","Fizz","19","20"]
 {% endhighlight %} 
 
 This got me to thinking that I should try to implement the classic [FizzBuzz](http://blog.codinghorror.com/why-cant-programmers-program/) problem using a list comprehension. My attempt is below (Warning, this is probably terrible code...):
 
 {% highlight haskell %}
-[ if x 'mod' 3 == 0 && x 'mod' 5== 0 then "FizzBuzz" else if x 'mod' 3 == 0 then "Fizz" else if x 'mod' 5 == 0 then "Buzz" else show x | x <- [1..100]]
+[ if x 'mod' 3 == 0 && x 'mod' 5== 0 then
+ "FizzBuzz" else if x 'mod' 3 == 0 then
+ "Fizz" else if x 'mod' 5 == 0 then
+ "Buzz" else show x | x <- [1..100]]
 {% endhighlight %} 
 
 And the results are:
 
 {% highlight haskell %}
-["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz","16","17","Fizz","19","Buzz","Fizz","22","23","Fizz","Buzz","26","Fizz","28","29","FizzBuzz","31","32","Fizz","34","Buzz","Fizz","37","38","Fizz","Buzz","41","Fizz","43","44","FizzBuzz","46","47","Fizz","49","Buzz","Fizz","52","53","Fizz","Buzz","56","Fizz","58","59","FizzBuzz","61","62","Fizz","64","Buzz","Fizz","67","68","Fizz","Buzz","71","Fizz","73","74","FizzBuzz","76","77","Fizz","79","Buzz","Fizz","82","83","Fizz","Buzz","86","Fizz","88","89","FizzBuzz","91","92","Fizz","94","Buzz","Fizz","97","98","Fizz","Buzz"]
+["1","2","Fizz","4","Buzz","Fizz","7","8",
+"Fizz","Buzz","11","Fizz","13","14",
+"FizzBuzz","16","17","Fizz","19",
+"Buzz","Fizz","22","23","Fizz",
+"Buzz","26","Fizz","28","29","FizzBuzz",
+"31","32","Fizz","34","Buzz","Fizz","37",
+"38","Fizz","Buzz","41","Fizz","43","44",
+"FizzBuzz","46","47","Fizz","49","Buzz",
+"Fizz","52","53","Fizz","Buzz","56","Fizz",
+"58","59","FizzBuzz","61","62","Fizz","64",
+"Buzz","Fizz","67","68","Fizz","Buzz",
+"71","Fizz","73","74","FizzBuzz","76","77",
+"Fizz","79","Buzz","Fizz","82","83","Fizz",
+"Buzz","86","Fizz","88","89","FizzBuzz","91",
+"92","Fizz","94","Buzz","Fizz","97","98",
+"Fizz","Buzz"]
 {% endhighlight %} 
 
 So, there you go. My attempt at FizzBuzz using a Haskell list comprehension.
