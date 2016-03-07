@@ -51,4 +51,4 @@ no more than $300,000.
 The mines around Pittsburg eventually failed (due in no small part to the costs
 of transportation, the rugged terrain, and the silver crash of 1893), and
 eventually the town was abandoned. Nothing of the original town remains today,
-except the odd foundation and old road. 
+except the odd foundation and old road.
