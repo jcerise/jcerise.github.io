@@ -4,7 +4,7 @@ title: Play Framework Setup Gotchas
 ---
 
 I've been recently fiddling around with the [Play Web Framework](http://www.playframework.com/), and while doing some intial setup stuff, I ran across some little gotchas I thought would be worth sharing, to save some poor soul some grief in the future (maybe).
-
+<!--break-->
 First up, I'm running Ubuntu 13.04, so everything here assumes the same.
 So, I installed Play by downloading everything, un-tarred it into a
 directory, added the play script into my path so I could call it from
@@ -16,7 +16,7 @@ following error:
 
 {% highlight bash %}
 /home/jeremy/play-2.1.0/play: 60: /home/jeremy/play-2.1.0/play: /home/jeremy/play-2.1.0/framework/build: Permission denied
-{% endhighlight %} 
+{% endhighlight %}
 
 Okay, so it turns out, for some reason, I needed to set the file
 specified, path-to-play/framework/build, to executable. Weird. Running
@@ -24,7 +24,7 @@ this fixed the issue:
 
 {% highlight bash %}
 chmod +x /home/jeremy/play-2.1.0/framework/build
-{% endhighlight %} 
+{% endhighlight %}
 
 Alright, so that was fixed, now back to actually writing code!
 

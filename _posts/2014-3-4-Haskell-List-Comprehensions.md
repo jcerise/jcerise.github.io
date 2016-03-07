@@ -4,24 +4,24 @@ title: FizzBuzz using Haskell list comprehensions
 ---
 
 So, I've recently been playing around with Haskell (for the second time, I started in on it a while back, but drifted away for one reason or another), and I've been having a great time of it. I'm just to the point where I'm playing around with list comprehensions.
-
+<!--break-->
 List Comprehensions, for those not familiar, are basically the same as set comprehensions in mathematics. That is to say, they can be used to build lists out of other lists. A list comprehension is composed of an output, a list (or set of lists) to draw from, and optionally a set of predicates (conditions). A simple list comprehension to triple all numbers in a list might look like this:
 
 {% highlight haskell %}
 [ x * 3 | x <- [1..20]]
-{% endhighlight %} 
+{% endhighlight %}
 
 Which would output the new list:
 
 {% highlight haskell %}
 [3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57,60]
-{% endhighlight %} 
+{% endhighlight %}
 
 You can also have more complex outputs if you desire, such as conditional statements:
 
 {% highlight haskell %}
 [ if x 'mod' 3 == 0 then "Fizz" else show x | x <- [1..20]]
-{% endhighlight %} 
+{% endhighlight %}
 
 (Please note, for some reason Kramdown won't escape the backticks around my infix functions, so I've replaced them with single quotes, in case you're copying and pasting for some reason)
 
@@ -31,7 +31,7 @@ Which would output the new list:
 ["1","2","Fizz","4","5","Fizz","7",
 "8","Fizz","10","11","Fizz","13",
 "14","Fizz","16","17","Fizz","19","20"]
-{% endhighlight %} 
+{% endhighlight %}
 
 This got me to thinking that I should try to implement the classic [FizzBuzz](http://blog.codinghorror.com/why-cant-programmers-program/) problem using a list comprehension. My attempt is below (Warning, this is probably terrible code...):
 
@@ -40,7 +40,7 @@ This got me to thinking that I should try to implement the classic [FizzBuzz](ht
  "FizzBuzz" else if x 'mod' 3 == 0 then
  "Fizz" else if x 'mod' 5 == 0 then
  "Buzz" else show x | x <- [1..100]]
-{% endhighlight %} 
+{% endhighlight %}
 
 And the results are:
 
@@ -61,6 +61,6 @@ And the results are:
 "Buzz","86","Fizz","88","89","FizzBuzz","91",
 "92","Fizz","94","Buzz","Fizz","97","98",
 "Fizz","Buzz"]
-{% endhighlight %} 
+{% endhighlight %}
 
 So, there you go. My attempt at FizzBuzz using a Haskell list comprehension.
