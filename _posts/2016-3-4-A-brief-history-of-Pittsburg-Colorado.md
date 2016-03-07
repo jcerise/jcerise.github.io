@@ -6,7 +6,7 @@ title: A brief history of Pittsburg, Colorado
 Today, I took a short ski trip up to the ghost town of Pittsburg, and decided
 the town had an interesting enough history to warrant a quick post about its
 past.
-
+<!--break-->
 So, without further ado:
 
 <img src="http://i.imgur.com/zmNkahl.jpg">

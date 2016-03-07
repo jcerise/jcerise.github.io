@@ -5,14 +5,14 @@ title: Generating realistic (two dimensional) caverns with cellular automata
 
 I have been building a roguelike game in python for a while now. For
 those not familiar with this particular type of game, I will point you
-[here](http://en.wikipedia.org/wiki/Roguelike). 
+[here](http://en.wikipedia.org/wiki/Roguelike).
 
 Basically, its, as my
 girlfriend put it, "About the nerdiest thing you can possibly do with a
 computer". Opinions aside, roguelikes are very enjoyable to write, as
 I've found, as you can focus solely on gameplay, and not worry about
 fancy rendering engines and lots of 3D math.
-
+<!--break-->
 One of the staples of a roguelike is the dungeon generation algorithm.
 Since 99% of a traditional roguelike is spent crawling through a dungeon
 in search of monsters to slay and epic loot to pocket, its rather
@@ -20,7 +20,7 @@ important that the player is presented with an interesting series of
 paths and environments to traipse through. Many roguelikes challenge the
 player with navigating exclusively dungeon environments (straight
 corridors, connecting rooms, which in turn are usually rectangular in
-shape), and not much else. To be sure, my roguelike ([DungeonCrawler](https://github.com/jcerise/DungeonCrawler)), 
+shape), and not much else. To be sure, my roguelike ([DungeonCrawler](https://github.com/jcerise/DungeonCrawler)),
 employs this formula, but I felt it lacked some variety. It gets tedious
 constantly exploring the same environment over and over again. So, after
 a little thought about what other types of subterranean labyrinth I
@@ -42,7 +42,7 @@ for x in range(0, len(self.map)):
         if randrange(0, 100) < 42:
             self.map[x][y].blocked = True
             self.map[x][y].block_sight = True
-{% endhighlight %} 
+{% endhighlight %}
 
 <img src="http://i.imgur.com/0IxpKNu.png">
 
@@ -70,7 +70,7 @@ for _ in range(5):
             else:
                 tile.blocked = False
                 tile.block_sight = False
-{% endhighlight %} 
+{% endhighlight %}
 
 We make several passes like this, in my case 5. Each pass will smooth
 out the cavern a little bit more, as the code decides, based on the
@@ -111,7 +111,7 @@ for _ in range(4):
             else:
                 tile.blocked = False
                 tile.block_sight = False
-{% endhighlight %} 
+{% endhighlight %}
 
 After these last few iterations, our cave now looks like this:
 
@@ -147,7 +147,7 @@ for x in range(self.width):
         if x == 0 or y == 0 or x == self.width - 1 or y == self.height - 1:
             self.map[x][y].block_sight = True
             self.map[x][y].blocked = True
-{% endhighlight %} 
+{% endhighlight %}
 
 Okay, now that we've done that, lets get on to the floodfill algorithm.
 The basic logic behind it is this: We loop through every tile on the map
@@ -212,7 +212,7 @@ for x in range(self.width):
         else:
             #This was not a valid cavern candidate, so mark it as visited so we dont bother with it again
             tile.visit(True)
-{% endhighlight %} 
+{% endhighlight %}
 
 The caverns variable is a list off all detected individual caverns. So,
 the end result is that we now know about every individual cavern on the
@@ -236,10 +236,10 @@ for cave in sorted_caverns:
     for tile in cave:
         tile.blocked = True
         tile.block_sight = True
-{% endhighlight %} 
+{% endhighlight %}
 
 And finally, we are left with one main cavern that player can reach
-every part of: 
+every part of:
 
 <img src="https://i.imgur.com/UWq6SQi.png">
 
