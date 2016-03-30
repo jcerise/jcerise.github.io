@@ -2,86 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jeremy Cerise </title>
-    <link>http://jeremyceri.se/</link>
+    <link>http://jeremyceri.se/categories/tutorials/</link>
     <language>en-us</language>
     <author>Jeremy Cerise</author>
     <rights>(C) 2016</rights>
-    <updated>2016-03-29 19:41:33 -0600 MDT</updated>
+    <updated>2016-03-29 17:12:50 -0600 MDT</updated>
 
-    
-      
-    
-      
-        <item>
-          <title>haskell list comprehensions</title>
-          <link>http://jeremyceri.se/post/haskell-list-comprehensions/</link>
-          <pubDate>Tue, 29 Mar 2016 19:13:34 MDT</pubDate>
-          <author>Jeremy Cerise</author>
-          <guid>http://jeremyceri.se/post/haskell-list-comprehensions/</guid>
-          <description>&lt;p&gt;So, I&amp;rsquo;ve recently been playing around with Haskell (for the second time, I started in on it a while back, but drifted away for one reason or another), and I&amp;rsquo;ve been having a great time of it. I&amp;rsquo;m just to the point where I&amp;rsquo;m playing around with list comprehensions.
-&lt;!--break--&gt;
-List Comprehensions, for those not familiar, are basically the same as set comprehensions in mathematics. That is to say, they can be used to build lists out of other lists. A list comprehension is composed of an output, a list (or set of lists) to draw from, and optionally a set of predicates (conditions). A simple list comprehension to triple all numbers in a list might look like this:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Which would output the new list:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;18&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;21&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;27&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;30&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;33&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;36&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;39&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;42&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;45&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;48&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;51&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;54&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;57&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;60&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;You can also have more complex outputs if you desire, such as conditional statements:&lt;/p&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;mod&amp;#39;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;show&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
-
-&lt;p&gt;(Please note, for some reason Kramdown won&amp;rsquo;t escape the backticks around my infix functions, so I&amp;rsquo;ve replaced them with single quotes, in case you&amp;rsquo;re copying and pasting for some reason)&lt;/p&gt;
-
-&lt;p&gt;Which would output the new list:&lt;/p&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;4&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;5&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;7&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;8&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;10&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;11&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;13&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;14&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;16&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;17&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;19&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;20&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
-
-&lt;p&gt;This got me to thinking that I should try to implement the classic &lt;a href=&#34;http://blog.codinghorror.com/why-cant-programmers-program/&#34;&gt;FizzBuzz&lt;/a&gt; problem using a list comprehension. My attempt is below (Warning, this is probably terrible code&amp;hellip;):&lt;/p&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;mod&amp;#39;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;mod&amp;#39;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt;
- &lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;mod&amp;#39;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt;
- &lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;mod&amp;#39;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;5&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;then&lt;/span&gt;
- &lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;show&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
-
-&lt;p&gt;And the results are:&lt;/p&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;1&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;4&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;7&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;8&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;11&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;13&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;14&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;16&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;17&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;19&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;22&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;23&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;26&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;28&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;29&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;31&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;32&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;34&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;37&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;38&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;41&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;43&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;44&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;46&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;47&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;49&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;52&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;53&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;56&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;58&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;59&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;61&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;62&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;64&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;67&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;68&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;71&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;73&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;74&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;76&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;77&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;79&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;82&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;83&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;86&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;88&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;89&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;FizzBuzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;91&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;92&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;94&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;97&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;98&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
-&lt;span class=&#34;s2&#34;&gt;&amp;quot;Fizz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;Buzz&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
-
-&lt;p&gt;So, there you go. My attempt at FizzBuzz using a Haskell list comprehension.&lt;/p&gt;
-</description>
-        </item>
-      
     
       
         <item>
@@ -263,66 +189,6 @@ increase each time someone scores. Neat!&lt;/p&gt;
 
 &lt;p&gt;This is a good stopping point, but stay tuned! Next time, we&amp;rsquo;ll implement a simple
 splash screen and menu for our game. Thanks for reading!&lt;/p&gt;
-</description>
-        </item>
-      
-    
-      
-        <item>
-          <title>A brief history of Pittsburg, Colorado</title>
-          <link>http://jeremyceri.se/post/brief-history-pittsburg-colorado/</link>
-          <pubDate>Fri, 04 Mar 2016 17:52:46 -0600</pubDate>
-          <author>Jeremy Cerise</author>
-          <guid>http://jeremyceri.se/post/brief-history-pittsburg-colorado/</guid>
-          <description>&lt;p&gt;Today, I took a short ski trip up to the ghost town of Pittsburg, and decided
-the town had an interesting enough history to warrant a quick post about its
-past.
-&lt;!--break--&gt;
-So, without further ado:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/zmNkahl.jpg&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;The above is what Pittsburg looks today (with quite a bit of snow on the ground).
-No buildings left, and certainly nothing resembling a town. Nothing much at all,
-really, aside from some vacation homes (which are out of sight in this shot).&lt;/p&gt;
-
-&lt;p&gt;But, lets set the clock back about 120 years:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/CZYeTc8.png&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;Okay, so there&amp;rsquo;s still not much of a town, but certainly more than in my current
-picture&amp;hellip; There&amp;rsquo;s a few house, and the most obvious building is the large mill
-in the center of the picture, which would have been used for processing ore from
-the various mines that supported the town (and its neighbor, Hidalgo).&lt;/p&gt;
-
-&lt;p&gt;And really, the story of those mines is what makes it interesting. The major
-player in the area was the Augusta mine, located a little ways away in
-Poverty gulch. The Augusta mine was a decent producer, and stories mention that
-it had a pay streak (vein of mineralization) of anywhere from 10 to 30 feet wide.
-The primary production was silver.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/ka3GwPn.jpg&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;The Augusta mine was well known for having an almost inaccessible route to the
-mine itself. It was often said that burros were the only creatures who could
-make the trip with ease. The area around it was also prone to avalanches, such
-that the outbuildings were destroyed several times. One winter, in 1904, several
-of the miners became fed up with the constant threat of avalanches, and decided
-to make for Pittsburg, despite the warnings of the superintendent, and the newly
-fallen snow. About a mile from the mine, an avalanche struck, killing six of the
-party.&lt;/p&gt;
-
-&lt;p&gt;At one point, the Augusta was purchased by a Colonel Stanford, brother to the
-founder of Stanford university, for $300,000. The colonel attempted to sell the
-mine to a group of unsuspecting Englishmen for $3,000,000. Unfortunately, the
-potential buyers were smarter, and had a mining engineer in the area. The
-engineer travelled to the mine, in the dead of winter, and assessed the mine at
-no more than $300,000.&lt;/p&gt;
-
-&lt;p&gt;The mines around Pittsburg eventually failed (due in no small part to the costs
-of transportation, the rugged terrain, and the silver crash of 1893), and
-eventually the town was abandoned. Nothing of the original town remains today,
-except the odd foundation and old road.&lt;/p&gt;
 </description>
         </item>
       

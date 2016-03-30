@@ -1,0 +1,291 @@
+<div class="single">
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.15" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans|Marcellus+SC'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <link rel="stylesheet" href="http://jeremyceri.secss/styles.css">
+    <link rel="stylesheet" href="http://jeremyceri.secss/custom.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://jeremyceri.se/index.xml">
+
+    
+    <title>haskell list comprehensions - Jeremy Cerise</title>
+    <meta property='og:title' content="haskell list comprehensions - Jeremy Cerise">
+    <meta property="og:type" content="article">
+    
+
+    <meta property="og:url" content="http://jeremyceri.se/post/haskell-list-comprehensions/">
+    
+    
+
+  </head>
+
+  <body>
+
+    <header class="site">
+      <div class="title"><a href="http://jeremyceri.se">Jeremy Cerise</a></div>
+      <div class="sub-title">Software Engineer, Web Developer, Professional Jack of All Trades</div>
+    </header>
+
+    <div class="container site">
+
+
+  <div class="row">
+    <div class="col-sm-9">
+
+      <article class="single" itemscope="itemscope" itemtype="http://schema.org/Article">
+
+        <meta itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" content="http://jeremyceri.se"/>
+        <meta itemprop="dateModified" content="2016-03-29T19:13:34-06:00">
+        <meta itemprop="headline" content="haskell list comprehensions">
+        <meta itemprop="description" content="So, I&rsquo;ve recently been playing around with Haskell (for the second time, I started in on it a while back, but drifted away for one reason or another), and I&rsquo;ve been having a great time of it. I&rsquo;m just to the point where I&rsquo;m playing around with list comprehensions. List Comprehensions, for those not familiar, are basically the same as set comprehensions in mathematics. That is to say, they can be used to build lists out of other lists.">
+        <meta itemprop="url" content="http://jeremyceri.se/post/haskell-list-comprehensions/">
+        <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="url" content="http://jeremyceri.seimages/default.jpg" />
+          <meta itemprop="width" content="800">
+          <meta itemprop="height" content="800">
+        </div>
+        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+          <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="http://jeremyceri.seimages/logo.jpg">
+            <meta itemprop="width" content="100">
+            <meta itemprop="height" content="100">
+          </div>
+          <meta itemprop="name" content="Jeremy Cerise">
+        </div>
+        <div itemprop="author" itemscope itemtype="https://schema.org/Person">
+          <meta itemprop="name" content="Jeremy Cerise">
+        </div>
+
+        <div class="image" style="background-image: url(http://jeremyceri.seimages/default.jpg);"></div>
+
+        <header class="article-header">
+          <time itemprop="datePublished" pubdate="pubdate" datetime="2016-03-29T19:13:34-06:00">Tue, Mar 29, 2016</time>
+          <h1 class="article-title">haskell list comprehensions</h1>
+        </header>
+
+        <div class="article-body" itemprop="articleBody">
+          <p>So, I&rsquo;ve recently been playing around with Haskell (for the second time, I started in on it a while back, but drifted away for one reason or another), and I&rsquo;ve been having a great time of it. I&rsquo;m just to the point where I&rsquo;m playing around with list comprehensions.
+<!--break-->
+List Comprehensions, for those not familiar, are basically the same as set comprehensions in mathematics. That is to say, they can be used to build lists out of other lists. A list comprehension is composed of an output, a list (or set of lists) to draw from, and optionally a set of predicates (conditions). A simple list comprehension to triple all numbers in a list might look like this:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mf">1.</span><span class="o">.</span><span class="mi">20</span><span class="p">]]</span>
+</code></pre></div>
+
+
+<p>Which would output the new list:</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">33</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">39</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">54</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">60</span><span class="p">]</span>
+</code></pre></div>
+
+
+<p>You can also have more complex outputs if you desire, such as conditional statements:</p>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span> <span class="k">if</span> <span class="n">x</span> <span class="s1">&#39;mod&#39;</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span> <span class="s2">&quot;Fizz&quot;</span> <span class="k">else</span> <span class="n">show</span> <span class="n">x</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mf">1.</span><span class="o">.</span><span class="mi">20</span><span class="p">]]</span>
+</code></pre></div>
+</p>
+
+<p>(Please note, for some reason Kramdown won&rsquo;t escape the backticks around my infix functions, so I&rsquo;ve replaced them with single quotes, in case you&rsquo;re copying and pasting for some reason)</p>
+
+<p>Which would output the new list:</p>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;5&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;7&quot;</span><span class="p">,</span>
+<span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;13&quot;</span><span class="p">,</span>
+<span class="s2">&quot;14&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;16&quot;</span><span class="p">,</span><span class="s2">&quot;17&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;19&quot;</span><span class="p">,</span><span class="s2">&quot;20&quot;</span><span class="p">]</span>
+</code></pre></div>
+</p>
+
+<p>This got me to thinking that I should try to implement the classic <a href="http://blog.codinghorror.com/why-cant-programmers-program/">FizzBuzz</a> problem using a list comprehension. My attempt is below (Warning, this is probably terrible code&hellip;):</p>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span> <span class="k">if</span> <span class="n">x</span> <span class="s1">&#39;mod&#39;</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="s1">&#39;mod&#39;</span> <span class="mi">5</span><span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
+ <span class="s2">&quot;FizzBuzz&quot;</span> <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="s1">&#39;mod&#39;</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
+ <span class="s2">&quot;Fizz&quot;</span> <span class="k">else</span> <span class="k">if</span> <span class="n">x</span> <span class="s1">&#39;mod&#39;</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span> <span class="n">then</span>
+ <span class="s2">&quot;Buzz&quot;</span> <span class="k">else</span> <span class="n">show</span> <span class="n">x</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mf">1.</span><span class="o">.</span><span class="mi">100</span><span class="p">]]</span>
+</code></pre></div>
+</p>
+
+<p>And the results are:</p>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="s2">&quot;8&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;11&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;13&quot;</span><span class="p">,</span><span class="s2">&quot;14&quot;</span><span class="p">,</span>
+<span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span><span class="s2">&quot;16&quot;</span><span class="p">,</span><span class="s2">&quot;17&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;19&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;22&quot;</span><span class="p">,</span><span class="s2">&quot;23&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;26&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;28&quot;</span><span class="p">,</span><span class="s2">&quot;29&quot;</span><span class="p">,</span><span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;31&quot;</span><span class="p">,</span><span class="s2">&quot;32&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;34&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;37&quot;</span><span class="p">,</span>
+<span class="s2">&quot;38&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;41&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;43&quot;</span><span class="p">,</span><span class="s2">&quot;44&quot;</span><span class="p">,</span>
+<span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span><span class="s2">&quot;46&quot;</span><span class="p">,</span><span class="s2">&quot;47&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;49&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;52&quot;</span><span class="p">,</span><span class="s2">&quot;53&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;56&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;58&quot;</span><span class="p">,</span><span class="s2">&quot;59&quot;</span><span class="p">,</span><span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span><span class="s2">&quot;61&quot;</span><span class="p">,</span><span class="s2">&quot;62&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;64&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;67&quot;</span><span class="p">,</span><span class="s2">&quot;68&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;71&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;73&quot;</span><span class="p">,</span><span class="s2">&quot;74&quot;</span><span class="p">,</span><span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span><span class="s2">&quot;76&quot;</span><span class="p">,</span><span class="s2">&quot;77&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;79&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;82&quot;</span><span class="p">,</span><span class="s2">&quot;83&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;86&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;88&quot;</span><span class="p">,</span><span class="s2">&quot;89&quot;</span><span class="p">,</span><span class="s2">&quot;FizzBuzz&quot;</span><span class="p">,</span><span class="s2">&quot;91&quot;</span><span class="p">,</span>
+<span class="s2">&quot;92&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;94&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">,</span><span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;97&quot;</span><span class="p">,</span><span class="s2">&quot;98&quot;</span><span class="p">,</span>
+<span class="s2">&quot;Fizz&quot;</span><span class="p">,</span><span class="s2">&quot;Buzz&quot;</span><span class="p">]</span>
+</code></pre></div>
+</p>
+
+<p>So, there you go. My attempt at FizzBuzz using a Haskell list comprehension.</p>
+
+        </div>
+
+
+        <aside>
+          <div class="section"><a href="http://jeremyceri.setags/Haskell" class="tag">Haskell</a> </div>
+
+          <div class="section share">
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=http%3a%2f%2fjeremyceri.se%2fpost%2fhaskell-list-comprehensions%2f&t=haskell%20list%20comprehensions" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="http://twitter.com/intent/tweet?url=http%3a%2f%2fjeremyceri.se%2fpost%2fhaskell-list-comprehensions%2f&text=haskell%20list%20comprehensions&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a href="https://plus.google.com/share?url=http%3a%2f%2fjeremyceri.se%2fpost%2fhaskell-list-comprehensions%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a href="http://getpocket.com/edit?url=http%3a%2f%2fjeremyceri.se%2fpost%2fhaskell-list-comprehensions%2f&title=haskell%20list%20comprehensions" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-get-pocket"></i></a>
+          </div>
+
+          
+          
+          
+        </aside>
+
+      </article>
+    </div>
+
+    <div class="col-sm-3">
+      <aside class="site">
+
+  
+  <div class="section">
+    <header><div class="title">TableOfContents</div></header>
+    <div class="list-default"></div>
+  </div>
+  
+
+  
+  <div class="section menu">
+    <header><div class="title">Menu</div></header>
+
+    
+    <ul>
+      
+      <li>
+        
+      <li><a href="/about/"> About Me</a></li>
+      
+      
+    </ul>
+    
+
+  </div>
+  
+
+  <div class="section">
+    <header><div class="title">LatestPosts</div></header>
+    <div class="content">
+      
+      <div class="sm"><article class="li">
+  <a href="http://jeremyceri.se/about/" class="clearfix">
+    <div class="image" style="background-image: url(http://jeremyceri.seimages/me.jpg);"></div>
+    <div class="detail">
+      <time>Tue, Mar 29, 2016</time>
+      <h2 class="title">About Me</h2>
+      <div class="summary">I am a software engineer. I program primarily in Python, Javascript, and whatever other languages strike my fancy (Kotlin, Scala, Rust, Erlang, etc). I also do other things, like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here. Contact me mail@jeremyceri.se Github: jcerise Twitter: jcerise</div>
+    </div>
+  </a>
+</article>
+</div>
+      
+      <div class="sm"><article class="li">
+  <a href="http://jeremyceri.se/post/haskell-list-comprehensions/" class="clearfix">
+    <div class="image" style="background-image: url(http://jeremyceri.seimages/default.jpg);"></div>
+    <div class="detail">
+      <time>Tue, Mar 29, 2016</time>
+      <h2 class="title">haskell list comprehensions</h2>
+      <div class="summary">So, I&rsquo;ve recently been playing around with Haskell (for the second time, I started in on it a while back, but drifted away for one reason or another), and I&rsquo;ve been having a great time of it. I&rsquo;m just to the point where I&rsquo;m playing around with list comprehensions. List Comprehensions, for those not familiar, are basically the same as set comprehensions in mathematics. That is to say, they can be used to build lists out of other lists.</div>
+    </div>
+  </a>
+</article>
+</div>
+      
+      <div class="sm"><article class="li">
+  <a href="http://jeremyceri.se/post/learning-godot-part-one/" class="clearfix">
+    <div class="image" style="background-image: url(http://jeremyceri.seimages/pong_score.png);"></div>
+    <div class="detail">
+      <time>Tue, Mar 29, 2016</time>
+      <h2 class="title">Learning Godot: Extending the Pong Example</h2>
+      <div class="summary">In my never-ending quest to build a game, I have recently started fiddling around with the Godot engine. Godot is, to draw a parallel (and possibly an unfair one at that), kind of an interesting mash up between GameMaker: Studio, and Unity. It can handle both 2D and 3D games, although it currently really shines for building 2D games. Its supports a relatively robust, and very Python-like scripting language. And, best of all, its open source.</div>
+    </div>
+  </a>
+</article>
+</div>
+      
+      <div class="sm"><article class="li">
+  <a href="http://jeremyceri.se/post/brief-history-pittsburg-colorado/" class="clearfix">
+    <div class="image" style="background-image: url(http://jeremyceri.seimages/pittsburg.jpg);"></div>
+    <div class="detail">
+      <time>Fri, Mar 4, 2016</time>
+      <h2 class="title">A brief history of Pittsburg, Colorado</h2>
+      <div class="summary">Today, I took a short ski trip up to the ghost town of Pittsburg, and decided the town had an interesting enough history to warrant a quick post about its past. So, without further ado: The above is what Pittsburg looks today (with quite a bit of snow on the ground). No buildings left, and certainly nothing resembling a town. Nothing much at all, really, aside from some vacation homes (which are out of sight in this shot).</div>
+    </div>
+  </a>
+</article>
+</div>
+      
+      <div class="sm"><article class="li">
+  <a href="http://jeremyceri.se/post/cellular-automata-python/" class="clearfix">
+    <div class="image" style="background-image: url(http://jeremyceri.seimages/cavern.jpg);"></div>
+    <div class="detail">
+      <time>Wed, Feb 20, 2013</time>
+      <h2 class="title">Generating realistic (two dimensional) caverns with cellular automata</h2>
+      <div class="summary">I have been building a roguelike game in python for a while now. For those not familiar with this particular type of game, I will point you here. Basically, its, as my girlfriend put it, &ldquo;About the nerdiest thing you can possibly do with a computer&rdquo;. Opinions aside, roguelikes are very enjoyable to write, as I&rsquo;ve found, as you can focus solely on gameplay, and not worry about fancy rendering engines and lots of 3D math.</div>
+    </div>
+  </a>
+</article>
+</div>
+      
+    </div>
+  </div>
+
+  
+  <div class="section taxonomies">
+    <header><div class="title">category</div></header>
+    <div class="content">
+      <a href="http://jeremyceri.secategories/programming">programming</a><a href="http://jeremyceri.secategories/tutorials">tutorials</a><a href="http://jeremyceri.secategories/godot-game-development">godot-game-development</a><a href="http://jeremyceri.secategories/history">history</a><a href="http://jeremyceri.secategories/colorado">colorado</a>
+    </div>
+  </div>
+  
+  <div class="section taxonomies">
+    <header><div class="title">tag</div></header>
+    <div class="content">
+      <a href="http://jeremyceri.setags/game-development">game-development</a><a href="http://jeremyceri.setags/haskell">haskell</a><a href="http://jeremyceri.setags/godot">godot</a><a href="http://jeremyceri.setags/history">history</a><a href="http://jeremyceri.setags/pittsburg">pittsburg</a><a href="http://jeremyceri.setags/mining">mining</a><a href="http://jeremyceri.setags/ghost-town">ghost-town</a><a href="http://jeremyceri.setags/python">python</a><a href="http://jeremyceri.setags/game-design">game-design</a><a href="http://jeremyceri.setags/pong">pong</a>
+    </div>
+  </div>
+  
+
+</aside>
+
+    </div>
+
+  </div>
+
+      </div>
+
+    <footer class="site">
+      <p>&copy; 2016 Jeremy Cerise</p>
+      <p>Powered by <a href="http://gohugo.io" target="_blank" rel="nofollow">Hugo</a>, Theme <a href="https://github.com/dim0627/hugo_theme_robust" target="_blank" rel="nofollow">robust</a> designed by <a href="http://yet.unresolved.xyz" target="_blank" rel="nofollow">Daisuke Tsuji</a></p>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+
+  </body>
+</html>
+
+</div>
