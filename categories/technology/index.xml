@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Roguelike on Jeremy&#39;s Ramblings</title>
-    <link>https://jeremyceri.se/tags/roguelike/</link>
-    <description>Recent content in Roguelike on Jeremy&#39;s Ramblings</description>
+    <title>Technology on Jeremy&#39;s Ramblings</title>
+    <link>https://jeremyceri.se/categories/technology/</link>
+    <description>Recent content in Technology on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Wed, 21 Jun 2017 23:54:35 -0600</lastBuildDate>
     
-	<atom:link href="https://jeremyceri.se/tags/roguelike/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jeremyceri.se/categories/technology/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

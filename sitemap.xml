@@ -1,40 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://jeremyceri.se/</loc>
-    <lastmod>2016-04-02T09:42:50-06:00</lastmod>
+    <loc>https://jeremyceri.se/post/roguelike-dev-week-0/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/about-me/</loc>
+    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/roguelikes/</loc>
+    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/post/learning-godot-part-two/</loc>
-    <lastmod>2016-04-02T09:42:50-06:00</lastmod>
+    <loc>https://jeremyceri.se/tags/go/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/about/</loc>
-    <lastmod>2016-03-29T19:41:33-06:00</lastmod>
+    <loc>https://jeremyceri.se/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/post/haskell-list-comprehensions/</loc>
-    <lastmod>2016-03-29T19:13:34-06:00</lastmod>
+    <loc>https://jeremyceri.se/post/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/post/learning-godot-part-one/</loc>
-    <lastmod>2016-03-29T17:12:50-06:00</lastmod>
+    <loc>https://jeremyceri.se/tags/programming/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/post/brief-history-pittsburg-colorado/</loc>
-    <lastmod>2016-03-04T17:52:46-06:00</lastmod>
+    <loc>https://jeremyceri.se/tags/rldbar/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/post/cellular-automata-python/</loc>
-    <lastmod>2013-02-20T18:01:29-06:00</lastmod>
+    <loc>https://jeremyceri.se/tags/roguelike/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/tags/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/categories/technology/</loc>
+    <lastmod>2017-06-21T23:54:35-06:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

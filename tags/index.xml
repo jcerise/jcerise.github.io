@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Jeremy&#39;s Ramblings</title>
+    <link>https://jeremyceri.se/tags/</link>
+    <description>Recent content in Tags on Jeremy&#39;s Ramblings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Wed, 21 Jun 2017 23:54:35 -0600</lastBuildDate>
+    
+	<atom:link href="https://jeremyceri.se/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go</title>
+      <link>https://jeremyceri.se/tags/go/</link>
+      <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Programming</title>
+      <link>https://jeremyceri.se/tags/programming/</link>
+      <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/tags/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rldbar</title>
+      <link>https://jeremyceri.se/tags/rldbar/</link>
+      <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/tags/rldbar/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Roguelike</title>
+      <link>https://jeremyceri.se/tags/roguelike/</link>
+      <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/tags/roguelike/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
