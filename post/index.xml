@@ -6,10 +6,22 @@
     <description>Recent content in Posts on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 21 Jun 2017 23:54:35 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 27 Jun 2017 22:33:11 -0600</lastBuildDate>
     
 	<atom:link href="https://jeremyceri.se/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RoguelikeDev Builds a Roguelike, Week 1, Part 1</title>
+      <link>https://jeremyceri.se/post/roguelike-dev-week-1-part-1/</link>
+      <pubDate>Tue, 27 Jun 2017 22:33:11 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/post/roguelike-dev-week-1-part-1/</guid>
+      <description>&lt;p&gt;Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is Week 1, and this week, we&amp;rsquo;ve got things split into two parts. The first part, which this post will be concerned with, involves displaying the player and the screen, and implementing basic four direction movement. Part two will consist of creating a generic &amp;lsquo;Object&amp;rsquo; type that will represent things in the game, as well as creating an initial dungeon map.&lt;/p&gt;
+
+&lt;p&gt;Lets dive right in creating our player, and getting it moving!
+&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 0</title>

@@ -4,9 +4,9 @@
     <meta name="generator" content="Hugo 0.23" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoguelikeDev Builds a Roguelike, Week 0 | Jeremy&#39;s Ramblings</title>
-    <meta name="description" content="Week 0: Setup">
-    <meta name="keywords" content="go, roguelike, programming, RLDBAR">
+    <title>RoguelikeDev Builds a Roguelike, Week 1, Part 1 | Jeremy&#39;s Ramblings</title>
+    <meta name="description" content="Week 1, Part 1: The Player and Movement">
+    <meta name="keywords" content="RLDBAR, go, programming, roguelike">
     
     
     
@@ -16,15 +16,15 @@
   <meta name="author" content="Jeremy Cerise">
 
 
-    <meta property="og:title" content="RoguelikeDev Builds a Roguelike, Week 0" />
-<meta property="og:description" content="Week 0: Setup" />
+    <meta property="og:title" content="RoguelikeDev Builds a Roguelike, Week 1, Part 1" />
+<meta property="og:description" content="Week 1, Part 1: The Player and Movement" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://jeremyceri.se/post/roguelike-dev-week-0/" />
+<meta property="og:url" content="https://jeremyceri.se/post/roguelike-dev-week-1-part-1/" />
 
 
 
-<meta property="article:published_time" content="2017-06-21T23:54:35-06:00"/>
-<meta property="article:modified_time" content="2017-06-21T23:54:35-06:00"/>
+<meta property="article:published_time" content="2017-06-27T22:33:11-06:00"/>
+<meta property="article:modified_time" content="2017-06-27T22:33:11-06:00"/>
 
 
 
@@ -48,7 +48,7 @@
     
     
     
-    <link rel="canonical" href="https://jeremyceri.se/post/roguelike-dev-week-0/">
+    <link rel="canonical" href="https://jeremyceri.se/post/roguelike-dev-week-1-part-1/">
     
     
     <link rel="icon" sizes="any" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2046%2045'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EAfter%20Dark%3C/title%3E%3Cpath%20d='M.708%2045L23%20.416%2045.292%2045H.708zM35%2038L23%2019%2011%2038h24z'%20fill='%23000'/%3E%3C/svg%3E">
@@ -143,195 +143,148 @@ article [itemprop="description"] {
     <main>
   <article itemscope itemtype="http://schema.org/BlogPosting">
     
-<meta itemprop="name" content="RoguelikeDev Builds a Roguelike, Week 0">
-<meta itemprop="description" content="Week 0: Setup">
+<meta itemprop="name" content="RoguelikeDev Builds a Roguelike, Week 1, Part 1">
+<meta itemprop="description" content="Week 1, Part 1: The Player and Movement">
 
 
-<meta itemprop="dateModified" content="2017-06-21T23:54:35-06:00" />
-<meta itemprop="wordCount" content="1419">
+<meta itemprop="dateModified" content="2017-06-27T22:33:11-06:00" />
+<meta itemprop="wordCount" content="1614">
 
 
 
 <meta itemprop="keywords" content="technology,go,programming,rldbar,roguelike," />
 
     <header>
-      <h1 itemprop="headline">RoguelikeDev Builds a Roguelike, Week 0</h1>
+      <h1 itemprop="headline">RoguelikeDev Builds a Roguelike, Week 1, Part 1</h1>
       <p class="muted">
         <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
   <circle cx="16" cy="16" r="14" />
   <path d="M16 8 L16 16 20 20" />
 </svg>
-<span>7 minute read</span>
+<span>8 minute read</span>
 <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
   <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
 </svg>
 
-  Published: <time datetime="2017-06-21T23:54:35-06:00">21 Jun, 2017</time>
+  Published: <time datetime="2017-06-27T22:33:11-06:00">27 Jun, 2017</time>
 
 
       </p>
     </header>
     
-      <blockquote itemprop="description">Week 0: Setup</blockquote>
+      <blockquote itemprop="description">Week 1, Part 1: The Player and Movement</blockquote>
     
     
 
     <div itemprop="articleBody">
-      <p>So it begins! This is the first in a series of posts following my attempts at making a Roguelike, in Go, using BearLibTerminal. I&rsquo;ll be following along with the <code>RoguelikeDev builds a Roguelike</code> posts as I progress.</p>
+      <p>Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is Week 1, and this week, we&rsquo;ve got things split into two parts. The first part, which this post will be concerned with, involves displaying the player and the screen, and implementing basic four direction movement. Part two will consist of creating a generic &lsquo;Object&rsquo; type that will represent things in the game, as well as creating an initial dungeon map.</p>
 
-<p>So, without further ado, lets begin week 0: Setup!`</p>
+<p>Lets dive right in creating our player, and getting it moving!
+</p>
 
-<p>
-Week 0 is dedicated to setting up your dev environment, and making sure everything is running correctly. There won&rsquo;t be a lot of code this week, although the end result will be a working terminal with the traditional &lsquo;Hello,  World!&rsquo; text. As a bonus, we&rsquo;ll display that text in a color other than boring old white.</p>
+<p>We left off last week with a terminal window, displaying some basic &ldquo;Hello, World!&rdquo; text. Certainly not the most exciting thing in the world, and in fact quite a ways from a playable game, but progress none-the-less. This time around, lets actually make it so that the player can interact with the game itself, in the form of moving a representation of the player around the screen.</p>
 
-<p>Since I chose to use Go to write my roguelike in, rather than Python, the very first thing we should do is install Go. Depending on what OS you&rsquo;re using, the process will be a little different, but generally not difficult. I&rsquo;m using Arch Linux, so for me, installing Go simply consisted of:</p>
+<p>The first thing we&rsquo;re going to need to do is come up with a way to reliably print a character representing the player to the screen. In this case, we will use the classic roguelike standby, the &lsquo;@&rsquo;. We&rsquo;ve already gone over how to print things to the screen last week, using BearLibTerminals Print() method. We could certainly do something like:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>sudo pacman -S go
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;@&#39;</span><span style="color: #f8f8f2">)</span>
 </pre></div>
 
 
-<p>You can check <a href="https://golang.org/doc/install#install">the docs</a> for specifics on how to get Go installed for your operating system.</p>
+<p>This would print out player character to the screen at coordinates (1, 1), or the top left corner of the screen. Its easy enough to replace the code that prints &ldquo;Hello, World!&rdquo; with this code, and call it good, but what if we want to move the player around (which we do)? Well, just printing it over and over into the same place certainly won&rsquo;t help us there, so we&rsquo;ll need to store some information about the players location within our game world. Lets add a couple of new variables to our program:</p>
 
-<p>Once Go is installed, and you have verified that it works, we&rsquo;ll need to make sure our GOPATH is configured correctly. GOPATH is where Go will look for packages included outside of the main project structure (bear with my explantions, I&rsquo;m still learning Go). Typically, this is set to $HOME/go, and thats where I left it on my system. You can read more about GOPATH <a href="https://golang.org/cmd/go/#hdr-GOPATH_environment_variable">here</a>.</p>
-
-<p>The next step is to install BearLibTerminal. BearLibTerminal has a Go package we can use out of the box, and thats what we will be including in our project. Download BearLibTerminal <a href="http://foo.wyrd.name/en:bearlibterminal#download">here</a>. Once downloaded and unpacked, we need a few files. We&rsquo;ll need <code>include/BearLibTerminal.Go</code>, and <code>Linux64/LibBearLibTerminal.so</code>, and <code>include/C/BearLibTerminal.h</code>. The C header file is important, as thats what powers the whole library, so don&rsquo;t forget that. We&rsquo;re now going take those files, and place them in <code>GOPATH/src/bearlibterminal</code>. This will allow us to use BearLibTerminal in our project, by simply including it.</p>
-
-<p>Great! Now, we&rsquo;re more or less setup to start developing! A quick note, I&rsquo;m using <a href="https://www.jetbrains.com/go/">Gogland</a>, Jetbrains Go IDE (still under active development). Its currently free, but won&rsquo;t remain that way for much longer, I&rsquo;d wager. Any IDE or text editor will do, though.</p>
-
-<p>Lets set up our project. I&rsquo;ve called my project BearRogue (super creative, I know), and my file structure is pretty basic right now.</p>
-
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>bearrogue
---src/
-    bearrogue.go
---font/
-    UbuntuMono.ttf
---README.md
-</pre></div>
-
-
-<p>Right, lets get right into it. We need to declare our package, and include BearLibTerminal, first and foremost:</p>
-
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">package</span> <span style="color: #a6e22e">main</span>
-
-<span style="color: #f92672">import</span> <span style="color: #f8f8f2">(</span>
-    <span style="color: #a6e22e">blt</span> <span style="color: #e6db74">&quot;bearlibterminal&quot;</span>
-    <span style="color: #e6db74">&quot;strconv&quot;</span>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">(</span>
+    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
+    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
 <span style="color: #f8f8f2">)</span>
 </pre></div>
 
 
-<p>If your GOPATH is configured correctly, and you&rsquo;ve put the BearLibTerminal files there as instructed, Go should be able to find BearLibTerminal without any trouble. The <code>strconv</code> package will be used to do some type conversions later.</p>
+<p>We&rsquo;ll use these two variables to keep track of where the player is in the game world. A quick note, these are globally defined, which in my opinion is generally a no-no, so we&rsquo;ll be cleaning them up later, but for now, this is fine.</p>
 
-<p>With our packages included, lets set up some basic constants to make our lives easier:</p>
+<p>So, we&rsquo;ve got our players location stored, and we can now use that to print the player character wherever the coordinates say. What we want now, is to use those new variables to update the players position whenever arrow keys are pressed. For example, if the player presses the UP arrow key, we would expect that the players &lsquo;@&rsquo; will move towards the top of the screen. This may sound a little tough, but in reality its quite simple. Since BearLibTerminal gives us a nice grid to work with (and we can assume that each square in the grid is 1x1), all we need to do is move the player by 1 unit in the desired direction, when an arrow key is pressed.</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">const</span> <span style="color: #f8f8f2">(</span>
-    <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">100</span>
-    <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">35</span>
-    <span style="color: #a6e22e">Title</span> <span style="color: #f8f8f2">=</span> <span style="color: #e6db74">&quot;BearRogue&quot;</span>
-    <span style="color: #a6e22e">Font</span> <span style="color: #f8f8f2">=</span> <span style="color: #e6db74">&quot;fonts/UbuntuMono.ttf&quot;</span>
-    <span style="color: #a6e22e">FontSize</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">24</span>
-<span style="color: #f8f8f2">)</span>
-</pre></div>
+<p>To elaborate a bit more, when the player presses UP, we want to adjust playerY - 1, and when they press DOWN, we want to adjust playerY + 1. Likewise, when they press LEFT, we would adjust playerX - 1, and when RIGHT is pressed, playerX + 1. Hopefully this is obvious, but if not, we are simply moving the player around on an inverted two dimensional (x, y) plane ( (0, 0) is at the top left corner, rather than the bottom left, as you might expect). If we move towards the top of the screen, the y value of the point (our player) is decreasing, and approaching 0. If we move towards the bottom of the screen, our y value is increasing, and approaching WindowSizeY. Same for the x values: left is decreasing, and approaching 0, right is increasing and approaching WindowSizeX.</p>
 
+<p>To tie this all together, we simply need to handle the key presses from the arrow keys, which, as we&rsquo;ve already seen, can be done in BearLibTerminal using the Read() method. Lets create a new method to handle this, that takes in the value returned by the Read() method:</p>
 
-<p>These constants should be pretty straight forward. The two WindowSize constants will set the size of our terminal window, Title sets the text to display in the title bar, Font tells BearLibTerminal what font we want to use, and FontSize what size to render that font. A note, I&rsquo;m using a HDPI display, so adjust these to fit your screen accordingly.</p>
-
-<p>Now that we&rsquo;ve got some constants defined, lets use them to initialize BearLibTerm. I&rsquo;m going to use an <code>init</code> method, as that will be called before our <code>main</code> method. I&rsquo;ll explain whats going after the code snippet:</p>
-
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">init</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Open</span><span style="color: #f8f8f2">()</span>
-
-    <span style="color: #75715e">// BearLibTerminal uses configuration strings to set itself up, so we need to build these strings here</span>
-    <span style="color: #75715e">// First, lets set up the string for window properties (size and title)</span>
-    <span style="color: #a6e22e">size</span> <span style="color: #f92672">:=</span> <span style="color: #e6db74">&quot;size=&quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">strconv</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Itoa</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;x&quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">strconv</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Itoa</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">title</span> <span style="color: #f92672">:=</span> <span style="color: #e6db74">&quot;title=&#39;&quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">Title</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;&#39;&quot;</span>
-    <span style="color: #a6e22e">window</span> <span style="color: #f92672">:=</span> <span style="color: #e6db74">&quot;window: &quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">size</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;,&quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">title</span>
-
-    <span style="color: #75715e">// Next, set up the font config string</span>
-    <span style="color: #a6e22e">fontSize</span> <span style="color: #f92672">:=</span> <span style="color: #e6db74">&quot;size=&quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">strconv</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Itoa</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">FontSize</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">font</span> <span style="color: #f92672">:=</span> <span style="color: #e6db74">&quot;font: &quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">Font</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;, &quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">fontSize</span>
-
-    <span style="color: #75715e">// Now, put it all together</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Set</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">window</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;; &quot;</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">font</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Clear</span><span style="color: #f8f8f2">()</span>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">switch</span> <span style="color: #a6e22e">key</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_RIGHT</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #a6e22e">playerX</span> <span style="color: #f92672">++</span>
+    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_LEFT</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #a6e22e">playerX</span> <span style="color: #f92672">--</span> 
+    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_UP</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #a6e22e">playerY</span> <span style="color: #f92672">--</span>
+    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_DOWN</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #a6e22e">playerY</span> <span style="color: #f92672">++</span>
+    <span style="color: #f8f8f2">}</span>
 <span style="color: #f8f8f2">}</span>
 </pre></div>
 
 
-<p>The first thing we do is Open a new BearLibTerminal:</p>
+<p>The Read() method simply returns an integer, which we can then map back to one of BearLibTerminals key event types. The switch statement simply checks which key was pressed, and following our logic from earlier, adjusts the playerX and playerY values accordingly. Pretty simple!</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Open</span><span style="color: #f8f8f2">()</span>
+<p>Now, we&rsquo;ve got a way to update the position of our player, lets add a new function that will draw the player the screen, using the playerX and playerY variables. This is going to be a convenience method, so we can clean up our code a bit. BearLibTerminal has a concept of layers when it draws, which is something that I will go into in more detail in a later post, but suffice it to say, much like setting the color we are printing to the terminal, we can also specify which layer we are working with. There is also a method that will clear everything from a specified area (which in our case, currently, is the entire screen). We will use this to clear the entire screen, and then re-draw our player at the specified position. Don&rsquo;t worry if you don&rsquo;t understand the concepts of layers and drawing, as we&rsquo;ll get more in depth into that at a later time. Lets add a function called drawPlayer:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">symbol</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ClearArea</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">symbol</span><span style="color: #f8f8f2">)</span>
+<span style="color: #f8f8f2">}</span>
 </pre></div>
 
 
-<p>This initializes a new window for us to use. The next thing we do is set up the window configuration. BearLibTerminal uses config strings to set itself up, so we build two of those, one for window properties, and one for font properties, and then apply to the terminial window using the Set method. Our config strings, respectivley, look like this after we&rsquo;ve created them:</p>
+<p>We select the layer (0, in this case, is our only layer), we clear the screen from position (0, 0) to (WindowSizeX, WindowSizeY), which is our entire gameplay area for now, and then we Print() the players character, setting it at the current values of playerX and playerY.</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>window: <span style="color: #f8f8f2">size</span><span style="color: #f92672">=</span>100x35,title<span style="color: #f92672">=</span>BearRogue
-font: fonts/UbuntuMono.ttf, <span style="color: #f8f8f2">size</span><span style="color: #f92672">=</span><span style="color: #ae81ff">24</span>
-</pre></div>
-
-
-<p>You can read more about BearLibTerminals configuration strings <a href="http://foo.wyrd.name/en:bearlibterminal:reference:configuration">here</a></p>
-
-<p>Finally, we use the Set method to apply our config strings, and then we clear the terminal, making sure there is nothing displayed.</p>
-
-<p>Now that we have initialized and configured our terminal window, its time to actually display it, along with some text! We&rsquo;re going to do this in our <code>main</code> method, which is where our game loop will live for the time being. Our game loop for now is going to be very simple, its just going to check if the user has closed the window. If not, it will keep itself open.</p>
+<p>Okay, we&rsquo;ve now got a way to get player input, and adjust the position of the players character, and a way to easily clear the screen, and re-draw the player at the updated position. The final step here is to put it all together in our main game loop:</p>
 
 <div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;Hello, world!&quot;</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Refresh</span><span style="color: #f8f8f2">()</span>
+    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;white&quot;</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;@&quot;</span><span style="color: #f8f8f2">)</span>
 
-    <span style="color: #66d9ef">for</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Read</span><span style="color: #f8f8f2">()</span> <span style="color: #f92672">!=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_CLOSE</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #75715e">// Do nothing here for now</span>
+    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Refresh</span><span style="color: #f8f8f2">()</span>
+        
+        <span style="color: #a6e22e">key</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Read</span><span style="color: #f8f8f2">()</span>
+
+        <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">key</span> <span style="color: #f92672">!=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_CLOSE</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span><span style="color: #f8f8f2">)</span>
+            <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;@&quot;</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+            <span style="color: #66d9ef">break</span>
+        <span style="color: #f8f8f2">}</span>
     <span style="color: #f8f8f2">}</span>
 
-    <span style="color: #75715e">// If the user hit the close button, close the window and exit</span>
     <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Close</span><span style="color: #f8f8f2">()</span>
 <span style="color: #f8f8f2">}</span>
 </pre></div>
 
 
-<p>I&rsquo;ve introduced a few new BearLibTerminal functions here. First is Print(), which will print the text we specify to the terminal, at the (x, y) coordinates provided. In this case, it prints &ldquo;Hello, World!&rdquo; to the coordinates (1, 1), which is the top left corner of the window. Next is Refresh() which effectively redraws the content of the terminal. No changes will be displayed until we call Refresh() again. Read() returns the next event from the event queue (which keeps track of user input). Hitting the close button on the window adds a TK_CLOSE event to the event queue, which, when we call Read(), will be returned. Finally, Close() will close the current window.</p>
+<p>Our main game loop has changed a bit, so lets walk through it. First up, we&rsquo;re setting the color to print as white, same as we did previously. Then, we&rsquo;re drawing the player to the screen, using the playerX and playerY variables (set to (0, 0)). Then we get into our main loop. Each iteration of the loop, we Refresh() the screen, and then call Read() to see if the player pressed a key. If they did, we check to see if it was TK_CLOSE. If it was, we break out of the loop, and exit the game. If it wasn&rsquo;t, we pass it to handleInput(). handleInput only knows how to handle four different keys (the arrow keys), so it will safely ignore any key press that is not an arrow key. If an arrow key was pressed, we adjust the playerX and playerY variables accordingly. Finally, we print the player to the screen (clearing the contents first in the drawPlayer() method) at the new coordinates provided by playerX and playerY. Whew, quite a few changes there!</p>
 
-<p>So, we are printing some text to the console with Print(), drawing that text to the console with Refresh(), endlessly looping until a TK_CLOSE event is pushed onto the event queue, and then using Close() to end the program. Easy!</p>
+<p>At this point, you should be able to fire up your game, see the players &lsquo;@&rsquo; sitting in the top left corner, and press an arrow key to move it around. Awesome!</p>
 
-<p>At this point, if you run your program with:</p>
+<p>You may notice that as you move your character around, it is possible for it to leave the screen. This is obviously not something we want. Lets go about fixing that. Essentially what we need to do, is if the player would move out of the range of the screen, set it back to the last valid position before it left. To elaborate, if the player is attempting to move to, say, (-1, 0), or just to the left of the edge of the screen, we should set his position back to (0, 0). Likewise, if the player is trying to move to (WindowSizeX + 1, 0), we should probably place the character back at (WindowSizeX, 0). Basically, set the players position to the last valid position they were at before they tried to move. Lets add this code the bottom of our handleInput() function, just below the end of the switch statement:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>go build bearrogue.go
-</pre></div>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
+<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
+<span style="color: #f8f8f2">}</span>
 
-
-<p>And run the resulting executable, you should see a window, with the title BearRogue, and the text &ldquo;Hello, World!&rdquo; displayed in the top left corner. Nice, we&rsquo;re well on our way to having a functioning roguelike!</p>
-
-<p>For a bonus, lets change the color of the text. Before we print the text &ldquo;Hello, World!&rdquo;, add this line, in your <code>main</code> function:</p>
-
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;darker green&quot;</span><span style="color: #f8f8f2">))</span>
-</pre></div>
-
-
-<p>The Color() function will change the color of all output to the terminal, until it is changed again. So, this will make our &ldquo;Hello, World!&rdquo; print out in a dark shade of green. BearLibTerminal is quite flexible in color names, but I&rsquo;ll let you experiment with that, and read the specifics <a href="http://foo.wyrd.name/en:bearlibterminal:reference#color">here</a>.</p>
-
-<p>So, now we&rsquo;ve got a colorful message, but wouldn&rsquo;t it be nice if it was perfectly centered on the screen? Lets add a function to print out centered text:</p>
-
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">printCenteredText</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">text</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f92672">/</span> <span style="color: #ae81ff">2</span> <span style="color: #f92672">-</span> <span style="color: #f8f8f2">(len(</span><span style="color: #a6e22e">text</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">/</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f92672">/</span> <span style="color: #ae81ff">2</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">text</span><span style="color: #f8f8f2">)</span>
+<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span>
+<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
 <span style="color: #f8f8f2">}</span>
 </pre></div>
 
 
-<p>Basically, we get the center point of the window (WindowSizeX / 2, WindowSizeY / 2), and then half the width of the text to print (len(text)). If we didn&rsquo;t get half the width of the text, our text would print off center to the right, as it would start printing from the center point, not the center of the text. To use our new function, simply replace the Print() call in <code>main</code> with:</p>
+<p>This will stop the player from ever moving beyond the bounds of the screen. Go ahead and try it out, you&rsquo;ll find the player bumps into an invisble wall right at each edge of the screen!</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">printCenteredText</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;Hello, World&quot;</span><span style="color: #f8f8f2">)</span>
-</pre></div>
+<p>To recap so far: We&rsquo;ve successfully drawn the player to the screen, and can move the character around. We made a function to handle player input, as well as one to draw the player to the screen, at a provided set of coordinates. This is starting to look more like a game already! Next time we&rsquo;ll set up a map for the player to explore, as well as handle some architectural concerns that will make our lives easier once our game starts to grow.</p>
 
-
-<p>Now, running our program again should yield a cliched, dark green message, perfectly centered in our terminal window!</p>
-
-<p>To recap, this week we installed Go, installed BearLibTerminal, and set up a small Go program that creates a BearLibTerminal window, and prints a colored, centered, &ldquo;Hello, World&rdquo; message. Not too shabby. If you want to view the entire code for this week, you can find it under the Week 0 release on my <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial/releases/tag/v0.0.1">repo</a>. I&rsquo;ll see you next week where we&rsquo;ll be setting up the basics of our game! Happy developing!</p>
-
-<p><a href="/post/roguelike-dev-week-1-part-1/">This way to Week 1, Part 1</a></p>
+<p>As usual, you can find the full code for this post under the Week 1, Part 1 release on my <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial/releases/tag/v0.0.2">repo</a>. See you next time, and happy developing!</p>
     </div>
     
     <footer>
@@ -343,8 +296,8 @@ font: fonts/UbuntuMono.ttf, <span style="color: #f8f8f2">size</span><span style=
       by <span itemprop="author">Jeremy Cerise</span>
     
   
-  <time datetime="2017-06-21T23:54:35-06:00">
-    21 Jun, 2017
+  <time datetime="2017-06-27T22:33:11-06:00">
+    27 Jun, 2017
   </time>
   
     in <span itemprop="articleSection"><a href="/categories/technology/">technology</a></span>
@@ -352,7 +305,7 @@ font: fonts/UbuntuMono.ttf, <span style="color: #f8f8f2">size</span><span style=
   
     and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a> and <a href="/tags/roguelike/">roguelike</a>
   
-  using <span itemprop="wordCount">1419</span> words.
+  using <span itemprop="wordCount">1614</span> words.
 </p>
 
       
@@ -365,7 +318,7 @@ font: fonts/UbuntuMono.ttf, <span style="color: #f8f8f2">size</span><span style=
     <ul>
       
       
-        <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Week 1, Part 1</a> &ndash; 8 minutes
+        <li><a href="/post/roguelike-dev-week-0/">RoguelikeDev Builds a Roguelike, Week 0</a> &ndash; 7 minutes
       
     </ul>
   </aside>
