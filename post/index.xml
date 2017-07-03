@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 27 Jun 2017 22:33:11 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jul 2017 20:25:13 -0600</lastBuildDate>
     
 	<atom:link href="https://jeremyceri.se/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RoguelikeDev Builds A Roguelike, Week 1, Part 2</title>
+      <link>https://jeremyceri.se/post/roguelike-dev-week-1-part-2/</link>
+      <pubDate>Sun, 02 Jul 2017 20:25:13 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/post/roguelike-dev-week-1-part-2/</guid>
+      <description>Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is the second part of Week 1, the first being concerned with creating a player representation and moving it around using player input. In the second part of this week, we&amp;rsquo;re going to start thinking about the overall structure of our game, as well as get an intial version of the gameplay map, which is the world the player will be interacting with.</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 1, Part 1</title>
