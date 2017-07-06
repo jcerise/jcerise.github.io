@@ -6,10 +6,19 @@
     <description>Recent content in Programming on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 02 Jul 2017 20:25:13 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 05 Jul 2017 22:14:21 -0600</lastBuildDate>
     
 	<atom:link href="https://jeremyceri.se/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RLDBAR Sidenote #1: Cameras</title>
+      <link>https://jeremyceri.se/post/sidenote-1-cameras/</link>
+      <pubDate>Wed, 05 Jul 2017 22:14:21 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/post/sidenote-1-cameras/</guid>
+      <description>This is the first of what I anticipate to be several sidenotes to the main RoguelikeDev Builds a Roguelike shenanigans. These sidenotes will deal with things that are not covered in the main tutorial, but I still feel add value, either to gameplay, programming knowledge, or both. For the inaugural Sidenote, we&amp;rsquo;ll be discussing adding a camera to our in progress roguelike. A camera will give us a couple of benefits, but the most immediate is that we can support maps larger than the terminal window.</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds A Roguelike, Week 1, Part 2</title>
