@@ -6,10 +6,19 @@
     <description>Recent content in Rldbar on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 05 Jul 2017 22:14:21 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 11 Jul 2017 13:41:06 -0600</lastBuildDate>
     
 	<atom:link href="https://jeremyceri.se/tags/rldbar/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RoguelikeDev Builds a Roguelike, Week 2</title>
+      <link>https://jeremyceri.se/post/roguelike-dev-week-2/</link>
+      <pubDate>Tue, 11 Jul 2017 13:41:06 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/post/roguelike-dev-week-2/</guid>
+      <description>Welcome to Week 2 of RoguelikeDev builds a Roguelike! This week, we&amp;rsquo;re going to be fleshing out the map that the player will be playing the game on. If you recall, last time, we created an &amp;lsquo;arena&amp;rsquo; sort of map, with a large open space in the middle, surrounded by walls along the outside edges. Not very exciting, but it was something for the player to mover around in. This week, we&amp;rsquo;re going to procedurally generate some (hopefully) realistic looking caverns that the player can explore.</description>
+    </item>
     
     <item>
       <title>RLDBAR Sidenote #1: Cameras</title>

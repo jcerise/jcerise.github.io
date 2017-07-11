@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="generator" content="Hugo 0.23" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoguelikeDev Builds a Roguelike, Week 2 | Jeremy&#39;s Ramblings</title>
+    <meta name="description" content="Week 2: A more interesting map">
+    <meta name="keywords" content="RLDBAR, go, programming, roguelike">
+    
+    
+    
+    
+    
+
+  <meta name="author" content="Jeremy Cerise">
+
+
+    <meta property="og:title" content="RoguelikeDev Builds a Roguelike, Week 2" />
+<meta property="og:description" content="Week 2: A more interesting map" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jeremyceri.se/post/roguelike-dev-week-2/" />
+
+
+
+<meta property="article:published_time" content="2017-07-11T13:41:06-06:00"/>
+<meta property="article:modified_time" content="2017-07-11T13:41:06-06:00"/>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+  <meta property="og:image" content="https://source.unsplash.com/category/technology/1600x900">
+
+
+    <meta name="theme-color" content="#000">
+
+    
+    
+    
+    <link rel="canonical" href="https://jeremyceri.se/post/roguelike-dev-week-2/">
+    
+    
+    <link rel="icon" sizes="any" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2046%2045'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EAfter%20Dark%3C/title%3E%3Cpath%20d='M.708%2045L23%20.416%2045.292%2045H.708zM35%2038L23%2019%2011%2038h24z'%20fill='%23000'/%3E%3C/svg%3E">
+
+    <style>
+      html{font-size:12px}*{box-sizing:border-box;text-rendering:geometricPrecision}body{font-size:1rem;line-height:1.5rem;margin:0;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;word-wrap:break-word}h1,h2,h3,h4,h5,h6{line-height:1.3em}fieldset{border:none;padding:0;margin:0}pre{padding:2rem;margin:1.75rem 0;background-color:#fff;border:1px solid #ccc;overflow:auto}code[class*=language-],pre[class*=language-],pre code{font-weight:100;text-shadow:none;margin:1.75rem 0}a{cursor:pointer;color:#ff2e88;text-decoration:none;border-bottom:1px solid #ff2e88}a:hover{background-color:#ff2e88;color:#fff}.grid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.grid.\-top{-ms-flex-align:start;-ms-grid-row-align:flex-start;align-items:flex-start}.grid.\-middle{-ms-flex-align:center;-ms-grid-row-align:center;align-items:center}.grid.\-bottom{-ms-flex-align:end;-ms-grid-row-align:flex-end;align-items:flex-end}.grid.\-stretch{-ms-flex-align:stretch;-ms-grid-row-align:stretch;align-items:stretch}.grid.\-baseline{-ms-flex-align:baseline;-ms-grid-row-align:baseline;align-items:baseline}.grid.\-left{-ms-flex-pack:start;justify-content:flex-start}.grid.\-center{-ms-flex-pack:center;justify-content:center}.grid.\-right{-ms-flex-pack:end;justify-content:flex-end}.grid.\-between{-ms-flex-pack:justify;justify-content:space-between}.grid.\-around{-ms-flex-pack:distribute;justify-content:space-around}.cell{-ms-flex:1;flex:1;box-sizing:border-box}@media screen and (min-width:768px){.cell.\-1of12{-ms-flex:0 0 8.33333%;flex:0 0 8.33333%}.cell.\-2of12{-ms-flex:0 0 16.66667%;flex:0 0 16.66667%}.cell.\-3of12{-ms-flex:0 0 25%;flex:0 0 25%}.cell.\-4of12{-ms-flex:0 0 33.33333%;flex:0 0 33.33333%}.cell.\-5of12{-ms-flex:0 0 41.66667%;flex:0 0 41.66667%}.cell.\-6of12{-ms-flex:0 0 50%;flex:0 0 50%}.cell.\-7of12{-ms-flex:0 0 58.33333%;flex:0 0 58.33333%}.cell.\-8of12{-ms-flex:0 0 66.66667%;flex:0 0 66.66667%}.cell.\-9of12{-ms-flex:0 0 75%;flex:0 0 75%}.cell.\-10of12{-ms-flex:0 0 83.33333%;flex:0 0 83.33333%}.cell.\-11of12{-ms-flex:0 0 91.66667%;flex:0 0 91.66667%}}@media screen and (max-width:768px){.grid{-ms-flex-direction:column;flex-direction:column}.cell{-ms-flex:0 0 auto;flex:0 0 auto}}.hack,.hack blockquote,.hack code,.hack em,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack strong{font-size:1rem;font-style:normal;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif}.hack blockquote,.hack code,.hack em,.hack strong{line-height:20px}.hack blockquote,.hack code,.hack footer,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack header,.hack li,.hack ol,.hack p,.hack section,.hack ul{float:none;margin:0;padding:0}.hack blockquote,.hack h1,.hack ol,.hack p,.hack ul{margin-top:20px;margin-bottom:20px}.hack h1{position:relative;display:inline-block;display:table-cell;padding:20px 0 30px;margin:0;overflow:hidden}.hack h1:after{content:"====================================================================================================";position:absolute;bottom:10px;left:0}.hack h1+*{margin-top:0}.hack h2,.hack h3,.hack h4,.hack h5,.hack h6{position:relative;margin-bottom:1.75rem}.hack h2:before,.hack h3:before,.hack h4:before,.hack h5:before,.hack h6:before{display:inline}.hack h2:before{content:"## "}.hack h3:before{content:"### "}.hack h4:before{content:"#### "}.hack h5:before{content:"##### "}.hack h6:before{content:"###### "}.hack li{position:relative;display:block;padding-left:20px}.hack li:after{position:absolute;top:0;left:0}.hack ul>li:after{content:"-"}.hack ol{counter-reset:a}.hack ol>li:after{content:counter(a) ".";counter-increment:a}.hack blockquote{position:relative;padding-left:17px;padding-left:2ch;overflow:hidden}.hack blockquote:after{content:">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";white-space:pre;position:absolute;top:0;left:0;line-height:20px}.hack em:after,.hack em:before{content:"*";display:inline}.hack pre code:after,.hack pre code:before{content:''}.hack code{font-weight:700}.hack code:after,.hack code:before{content:"`";display:inline}.hack hr{position:relative;height:20px;overflow:hidden;border:0;margin:20px 0}.hack hr:after{content:"----------------------------------------------------------------------------------------------------";position:absolute;top:0;left:0;line-height:20px;width:100%;word-wrap:break-word}@-moz-document url-prefix(){.hack h1{display:block}}.hack-ones ol>li:after{content:"1."}p{margin:0 0 1.75rem}.container{max-width:70rem}.container,.container-fluid{margin:0 auto;padding:0 1rem}.inner{padding:1rem}.inner2x{padding:2rem}.pull-left{float:left}.pull-right{float:right}.progress-bar{height:8px;opacity:.8;background-color:#ccc;margin-top:12px}.progress-bar.progress-bar-show-percent{margin-top:38px}.progress-bar-filled{background-color:gray;height:100%;transition:width .3s ease;position:relative;width:0}.progress-bar-filled:before{content:'';border:6px solid transparent;border-top-color:gray;position:absolute;top:-12px;right:-6px}.progress-bar-filled:after{color:gray;content:attr(data-filled);display:block;font-size:12px;white-space:nowrap;position:absolute;border:6px solid transparent;top:-38px;right:0;-ms-transform:translateX(50%);transform:translateX(50%)}table{width:100%;border-collapse:collapse;margin:1.75rem 0;color:#778087}table td,table th{vertical-align:top;border:1px solid #ccc;line-height:15px;padding:10px}table thead th{font-size:10px}table tbody td:first-child{font-weight:700;color:#333}.form{width:30rem}.form-group{margin-bottom:1.75rem;overflow:auto}.form-group label{border-bottom:2px solid #ccc;color:#333;width:10rem;display:inline-block;height:38px;line-height:38px;padding:0;float:left;position:relative}.form-group.form-success label{color:#4caf50!important;border-color:#4caf50!important}.form-group.form-warning label{color:#ff9800!important;border-color:#ff9800!important}.form-group.form-error label{color:#f44336!important;border-color:#f44336!important}.form-control{outline:none;border:none;border-bottom:2px solid #ccc;padding:.5rem 0;width:20rem;height:38px;background-color:transparent}.form-control:focus{border-color:#555}.form-group.form-textarea label:after{position:absolute;content:'';width:2px;background-color:#fff;right:-2px;top:0;bottom:0}textarea.form-control{height:auto;resize:none;padding:1rem 0;border-bottom:2px solid #ccc;border-left:2px solid #ccc;padding:.5rem}select.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}.help-block{color:#999;margin-top:.5rem}.form-actions{margin-bottom:1.75rem}.btn{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;cursor:pointer;outline:none;padding:.65rem 2rem;font-size:1rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;z-index:1}.btn:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}.btn.btn-ghost{border-color:#757575;color:#757575;background-color:transparent}.btn.btn-ghost:focus,.btn.btn-ghost:hover{border-color:#424242;color:#424242;z-index:2}.btn.btn-ghost:hover{background-color:transparent}.btn-block{width:100%;display:-ms-flexbox;display:flex}.btn-default{color:#fff;background-color:#e0e0e0;border:1px solid #e0e0e0;color:#333}.btn-default:focus:not(.btn-ghost),.btn-default:hover{background-color:#dcdcdc;border-color:#dcdcdc}.btn-success{color:#fff;background-color:#4caf50;border:1px solid #4caf50}.btn-success:focus:not(.btn-ghost),.btn-success:hover{background-color:#43a047;border-color:#43a047}.btn-success.btn-ghost{border-color:#4caf50;color:#4caf50}.btn-success.btn-ghost:focus,.btn-success.btn-ghost:hover{border-color:#388e3c;color:#388e3c;z-index:2}.btn-error{color:#fff;background-color:#f44336;border:1px solid #f44336}.btn-error:focus:not(.btn-ghost),.btn-error:hover{background-color:#e53935;border-color:#e53935}.btn-error.btn-ghost{border-color:#f44336;color:#f44336}.btn-error.btn-ghost:focus,.btn-error.btn-ghost:hover{border-color:#d32f2f;color:#d32f2f;z-index:2}.btn-warning{color:#fff;background-color:#ff9800;border:1px solid #ff9800}.btn-warning:focus:not(.btn-ghost),.btn-warning:hover{background-color:#fb8c00;border-color:#fb8c00}.btn-warning.btn-ghost{border-color:#ff9800;color:#ff9800}.btn-warning.btn-ghost:focus,.btn-warning.btn-ghost:hover{border-color:#f57c00;color:#f57c00;z-index:2}.btn-info{color:#fff;background-color:#00bcd4;border:1px solid #00bcd4}.btn-info:focus:not(.btn-ghost),.btn-info:hover{background-color:#00acc1;border-color:#00acc1}.btn-info.btn-ghost{border-color:#00bcd4;color:#00bcd4}.btn-info.btn-ghost:focus,.btn-info.btn-ghost:hover{border-color:#0097a7;color:#0097a7;z-index:2}.btn-primary{color:#fff;background-color:#2196f3;border:1px solid #2196f3}.btn-primary:focus:not(.btn-ghost),.btn-primary:hover{background-color:#1e88e5;border-color:#1e88e5}.btn-primary.btn-ghost{border-color:#2196f3;color:#2196f3}.btn-primary.btn-ghost:focus,.btn-primary.btn-ghost:hover{border-color:#1976d2;color:#1976d2;z-index:2}.btn-group{overflow:auto}.btn-group .btn{float:left}.btn-group .btn-ghost:not(:first-child){margin-left:-1px}.card{border:1px solid #ccc}.card .card-header{color:#333;text-align:center;background-color:#ddd;padding:.5rem 0}.alert{color:#ccc;padding:1rem;border:1px solid #ccc;margin-bottom:1.75rem}.alert-success{color:#4caf50;border-color:#4caf50}.alert-error{color:#f44336;border-color:#f44336}.alert-info{color:#00bcd4;border-color:#00bcd4}.alert-warning{color:#ff9800;border-color:#ff9800}.media:not(:last-child){margin-bottom:1.25rem}.media-left{padding-right:1rem}.media-left,.media-right{display:table-cell;vertical-align:top}.media-right{padding-left:1rem}.media-body{display:table-cell;vertical-align:top}.media-heading{font-size:1.16667rem;font-weight:700}.media-content{margin-top:.3rem}.avatarholder,.placeholder{background-color:#f0f0f0;text-align:center;color:#b9b9b9;font-size:1rem;border:1px solid #f0f0f0}.avatarholder{width:48px;height:48px;line-height:46px;font-size:2rem;background-size:cover;background-position:50%;background-repeat:no-repeat}.avatarholder.rounded{border-radius:33px}.loading{height:20px;width:20px;animation:a .6s infinite linear;border:2px solid #e91e63;border-right-color:transparent;border-radius:50%}.btn .loading{display:inline-block;float:left;margin-right:.5rem;width:14px;height:14px}@keyframes a{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.menu{width:100%}.menu .menu-item{display:block;color:#616161;border-color:#616161}.menu .menu-item.active,.menu .menu-item:hover{color:#000;border-color:#000;background-color:transparent}@media screen and (max-width:768px){.form-group label{display:block;border-bottom:none;width:100%}.form-group.form-textarea label:after{display:none}.form-control{width:100%}textarea.form-control{border-left:none;padding:.5rem 0}pre::-webkit-scrollbar{height:3px}}@media screen and (max-width:480px){.form{width:100%}}
+.dark{color:#ccc}.dark,.dark pre{background-color:#000}.dark pre{padding:0;border:none}.dark pre code{color:#00bcd4}.dark h1 a,.dark h2 a,.dark h3 a,.dark h4 a,.dark h5 a{color:#ccc}.dark code,.dark strong{color:#fff}.dark code{font-weight:100}.dark table{color:#ccc}.dark table td,.dark table th{border-color:#444}.dark table tbody td:first-child{color:#fff}.dark .form-group label{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-group.form-textarea label:after{background-color:#000}.dark .form-control{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-control:focus{border-color:#ccc;color:#ccc}.dark textarea.form-control{color:#ccc}.dark .card{border-color:rgba(95,95,95,.78)}.dark .card .card-header{background-color:transparent;color:#ccc;border-bottom:1px solid rgba(95,95,95,.78)}.dark .btn.btn-ghost.btn-default{border-color:#ababab;color:#ababab}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#9c9c9c;color:#9c9c9c;z-index:1}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#e0e0e0;color:#e0e0e0}.dark .btn.btn-ghost.btn-primary:focus,.dark .btn.btn-ghost.btn-primary:hover{border-color:#64b5f6;color:#64b5f6}.dark .btn.btn-ghost.btn-success:focus,.dark .btn.btn-ghost.btn-success:hover{border-color:#81c784;color:#81c784}.dark .btn.btn-ghost.btn-info:focus,.dark .btn.btn-ghost.btn-info:hover{border-color:#4dd0e1;color:#4dd0e1}.dark .btn.btn-ghost.btn-error:focus,.dark .btn.btn-ghost.btn-error:hover{border-color:#e57373;color:#e57373}.dark .btn.btn-ghost.btn-warning:focus,.dark .btn.btn-ghost.btn-warning:hover{border-color:#ffb74d;color:#ffb74d}.dark .avatarholder,.dark .placeholder{background-color:transparent;border-color:#333}.dark .menu .menu-item{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .menu .menu-item.active,.dark .menu .menu-item:hover{color:#fff;border-color:#ccc}
+
+      @keyframes intro {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.muted {
+  color: rgba(255, 255, 255, 0.5);
+}
+main, footer {
+  animation: intro 0.3s both;
+  animation-delay: 0.15s;
+}
+:target {
+  color: #fff;
+}
+/* hack.css overrides and enhancements */
+.hack li ul {
+  margin: 0;
+}
+.main {
+  padding: 20px 10px;
+}
+nav a.active {
+  background-color: #ff2e88;
+  color: #fff;
+}
+a[itemprop="url"] {
+  color: #ff9800;
+}
+a[itemprop="url"]:hover {
+  color: #fff;
+}
+a[href*="//"]::after {
+  /* data uri svg icon. thanks to @Fastidious for the idea */
+  content: " " url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20class='i-external'%20viewBox='0%200%2032%2032'%20width='14'%20height='14'%20fill='none'%20stroke='%23ff9800'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='9.38%'%3E%3Cpath%20d='M14%209%20L3%209%203%2029%2023%2029%2023%2018%20M18%204%20L28%204%2028%2014%20M28%204%20L14%2018'/%3E%3C/svg%3E");
+}
+html {
+  font-size: 13px;
+}
+.hack pre {
+  font-size: 17px;
+}
+article [itemprop="description"] {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 1em;
+  }
+  .container {
+    max-width: 50rem;
+  }
+}
+
+      .highlight,pre.highlight{background:#282c34;color:#abb2bf}.highlight pre{background:#282c34}.highlight .ge{font-style:italic}.highlight .gs{font-weight:700}.highlight .ow{font-weight:700}.highlight .n,.highlight .nf,.highlight .nn,.highlight .o,.highlight .p{color:#abb2bf}.highlight .c,.highlight .c1,.highlight .cm,.highlight .cp,.highlight .cs{color:#5c6370;font-style:italic}.highlight .sr,.highlight .ss{color:#56b6c2}.highlight .k,.highlight .kc,.highlight .kd,.highlight .kn,.highlight .kp,.highlight .kr,.highlight .kt{color:#c678dd}.highlight .l,.highlight .ld,.highlight .s,.highlight .s1,.highlight .s2,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .se,.highlight .sh,.highlight .si,.highlight .sx{color:#98c379}.highlight .nt,.highlight .nx,.highlight .vi{color:#e06c75}.highlight .il,.highlight .m,.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo,.highlight .na{color:#d19a66}.highlight .bp,.highlight .nb,.highlight .nc,.highlight .nd,.highlight .ne,.highlight .ni,.highlight .nl,.highlight .no,.highlight .nv,.highlight .py,.highlight .vc,.highlight .vg{color:#e5c07b}.highlight .err{color:#fff;background-color:#e05252}.highlight .gd{color:#e05252}.highlight .gi{color:#43d08a}.highlight .w{color:#f8f8f2}.highlight .cpf{color:navy}.highlight .gu{color:#75715e}.highlight .lineno{color:#636d83;user-select:none}.highlight .hll{color:#abb2bf;background-color:#2c313a}.highlight .language-json .w+.s2{color:#e06c75}.highlight .language-json .kc{color:#56b6c2}
+
+p img {
+    width: 100%;
+}
+
+    </style>
+    
+    
+  </head>
+  
+  <body class="hack dark main container">
+    <header>
+  
+  <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+    
+    
+      <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
+    
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+    
+      <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
+    
+      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelikes</span></a>
+    
+  </nav>
+
+
+</header>
+    <main>
+  <article itemscope itemtype="http://schema.org/BlogPosting">
+    
+<meta itemprop="name" content="RoguelikeDev Builds a Roguelike, Week 2">
+<meta itemprop="description" content="Week 2: A more interesting map">
+
+
+<meta itemprop="dateModified" content="2017-07-11T13:41:06-06:00" />
+<meta itemprop="wordCount" content="3767">
+
+
+
+<meta itemprop="keywords" content="technology,go,programming,rldbar,roguelike," />
+
+    <header>
+      <h1 itemprop="headline">RoguelikeDev Builds a Roguelike, Week 2</h1>
+      <p class="muted">
+        <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+  <circle cx="16" cy="16" r="14" />
+  <path d="M16 8 L16 16 20 20" />
+</svg>
+<span>18 minute read</span>
+<svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+  <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+</svg>
+
+  Published: <time datetime="2017-07-11T13:41:06-06:00">11 Jul, 2017</time>
+
+
+      </p>
+    </header>
+    
+      <blockquote itemprop="description">Week 2: A more interesting map</blockquote>
+    
+    
+
+    <div itemprop="articleBody">
+      <p>Welcome to Week 2 of RoguelikeDev builds a Roguelike! This week, we&rsquo;re going to be fleshing out the map that the player will be playing the game on. If you recall, last time, we created an &lsquo;arena&rsquo; sort of map, with a large open space in the middle, surrounded by walls along the outside edges. Not very exciting, but it was something for the player to mover around in. This week, we&rsquo;re going to procedurally generate some (hopefully) realistic looking caverns that the player can explore. Certainly more exciting than a big empty room!</p>
+
+<!-- more -->
+
+<p>This week is all about making an interesting and dynamic map that the player can explore. One of the core tenants of Roguelikes is procedurally generated content, and one area where that is more noticeable is the game map. Every time the player plays our game, it would be awesome if their experience was different. We could certainly hardcode up some maps, and to be sure, there is value in that. But the real fun lies in random levels each and every time the game is played. Keeping true to this, we are going to code up a map generator that will be used whenever we need a new level of our dungeons (you can also extrapolate this concept out to any other map representation, overworld, buildings, etc). I&rsquo;ve decided that, rather than use the standard dungeon generator that the official tutorial uses, we&rsquo;re going to use a cellular automata algorithm to generate some nice looking caverns. I&rsquo;ll probably do the standard dungeon generator as a sidenote in the future.</p>
+
+<p>First things first, before we dive into the meat of things, there are some convenience changes we&rsquo;ll want to make, to make our cartographical lives easier. First, I&rsquo;m going to add an (x, y) coordinate set to our Tile struct, and then I&rsquo;m going to add a couple methods that we will leverage quite a bit later down the line:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">Tile</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #a6e22e">Blocked</span> <span style="color: #66d9ef">bool</span>
+    <span style="color: #a6e22e">Blocks_sight</span> <span style="color: #66d9ef">bool</span>
+    <span style="color: #a6e22e">Visited</span> <span style="color: #66d9ef">bool</span>
+    <span style="color: #a6e22e">X</span> <span style="color: #66d9ef">int</span>
+    <span style="color: #a6e22e">Y</span> <span style="color: #66d9ef">int</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">t</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">t</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #a6e22e">t</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #66d9ef">true</span>
+    <span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">t</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">is</span> <span style="color: #a6e22e">Visited</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">t</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Visited</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>Aside from adding an (x, y) set to the Tile, I&rsquo;ve also added a Visited property. This will come in handy later when we need to check if we have already dealt with a Tile during map generation. The two convenience methods should be pretty self explanatory in their uses.</p>
+
+<p>Alright, with that out of the way, lets do a quick refactor of some of our GameMap code:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">m</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">InitializeMap</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #75715e">// Initialize a two dimensional array that will represent the current game map (of dimensions Width x Height)</span>
+	<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">make([][]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">)</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">make([]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">)</span>
+	<span style="color: #f8f8f2">}</span>
+
+	<span style="color: #75715e">// Set a seed for procedural generation</span>
+	<span style="color: #a6e22e">rand</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Seed</span><span style="color: #f8f8f2">(</span> <span style="color: #a6e22e">time</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Now</span><span style="color: #f8f8f2">().</span><span style="color: #a6e22e">UTC</span><span style="color: #f8f8f2">().</span><span style="color: #a6e22e">UnixNano</span><span style="color: #f8f8f2">())</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">m</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">GenerateArena</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #75715e">// Generates a large, empty room, with walls ringing the outside edges</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">{</span><span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span>
+			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">{</span><span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span>
+			<span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>As you can see, I broke out the actual map generation code from the initialize logic. Initialize now just creates an empty 2D array of Tiles (though none of the Tiles have been initialized yet, or even created). It also sets a seed for our randomization. More on that later.</p>
+
+<p>Next, I broke our old map generation code into a new method, called GenerateArena(). This can be called on an initialized GameMap, and will create our familiar large room surrounded by walls. I&rsquo;m keeping this code around in case we want to create a map like this in the future.</p>
+
+<p>Alright, with the little stuff out of the way, we&rsquo;ve paved the path forward to creating a new map generator. I&rsquo;m going to create a new function, attached to the Map struct, called GenerateCavern (public, as we&rsquo;ll want to call it outside of our map package):</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">m</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">GenerateCavern</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{}</span>
+</pre></div>
+
+
+<p>The two ints that get returned will be a valid starting location for the player, so we can be sure it spawns in a valid location.</p>
+
+<p>We&rsquo;re going to be using whats known as a cellular automata to generate our cave. Cellular automata are most famous from Conways game of Life. I&rsquo;m not going to get into that here, so Google it if you&rsquo;re curious. A cellular automata is essentially a way of representing &ldquo;cells&rdquo; or in our case, Tiles in the map. We will start by generating a random assortment of wall and floor Tiles. Then, we will check each Tile, and see if it should stay in its current state, or transition to the other state. In a traditional cellular automata, this would be called the cell living or dying, but we&rsquo;re going to frame as the Tile being a floor or a wall. We&rsquo;ll set our rules for each Tiles state such that if a wall tile is all by itself (no neighbors that are walls), perhaps it should not be a wall, and if a Tile is surrounded by walls, perhaps it too, should be a wall. This probably sounds a little esoteric, so lets just jump in, and I&rsquo;ll explain as we go (with pretty pictures!).</p>
+
+<p>The first thing we need to do is fill up our empty 2D GameMap with a random assortment of Tiles:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Step 1: Fill the map space with a random assortment of walls and floors. This uses a roughly 40/60 ratio in favor</span>
+<span style="color: #75715e">// of floors, as I&#39;ve found that to produce the nicest results.</span>
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #a6e22e">state</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">rand</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Intn</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">100</span><span style="color: #f8f8f2">)</span>
+		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">state</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">{</span><span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">true</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">Tile</span><span style="color: #f8f8f2">{</span><span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">false</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>All this does, is loop over every element of the GameMap array, generate a random number between 0 and 100, and then give a 50% chance of creating a wall or floor Tile. The 50% is a very tweak-able percentage here, and I encourage you to play with it and see how it changes the overall outcome. I generally find that about 40% works best. Running our GenerateCavern() function should yield something like this:</p>
+
+<p><img src="/static/week-2-step-1.png" alt="Cellular Automata, Step 1" /></p>
+
+<p>Again, tweak the percentage and see the changes. It will have a larger impact later, but for now, with a 50% chance, it covers roughly half the map with walls, and half with floor. This random looking mess is going to be the basis for our cavern.</p>
+
+<p>Next up, we&rsquo;re going to go through each Tile we created in the previous step, and see if it should be a wall or a floor, based a couple of very simple rules. First, if 4 or more of the Tiles immediate neighbors are walls, or two or less neighbors up to 2 tiles away are walls, then that Tile becomes (or stays) a wall. If neither of those are true, the tile will become (or stay) a floor. Basically, going back to the cell analogy, if a cell is dead (floor), check to see if it has enough alive (wall) neighbors to be become alive again, and if a cell is alive (wall), check to ensure it has enough alive neighbors to remain alive.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Step 2: Decide what should remain as walls. If four or more of a tiles immediate (within 1 space) neighbors are</span>
+<span style="color: #75715e">// walls, then make that tile a wall. If 2 or less of the tiles next closest (2 spaces away) neighbors are walls,</span>
+<span style="color: #75715e">// then make that tile a wall. Any other scenario, and the tile will become (or stay) a floor tile.</span>
+<span style="color: #75715e">// Make several passes on this to help smooth out the walls of the cave.</span>
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">wallOneAway</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">countWallsNStepsAway</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)</span>
+
+			<span style="color: #a6e22e">wallTwoAway</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">countWallsNStepsAway</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)</span>
+
+			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">wallOneAway</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">5</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">wallTwoAway</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">2</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
+			<span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>Lets explain whats going on here. First up, we&rsquo;re going to make several passes over this code (5 to be precise). This will ensure that each time through, we &ldquo;smooth&rdquo; out the newly forming cavern a little bit more. This is also what will allow our cave formations to take shape. Any openings that are present after the first pass will be made more prominent in subsequent passes, as the algorithm tries to maintain groups of like Tiles.</p>
+
+<p>Next, we set up a loop over every Tile in the GameMap, and call a new function, countWallsNStepsAway(). That function, which hopefully should be self explanatory from the name, looks like this:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">m</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">countWallsNStepsAway</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">n</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #75715e">// Return the number of wall tiles that are within n spaces of the given tile</span>
+	<span style="color: #a6e22e">wallCount</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span>
+
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">r</span> <span style="color: #f92672">:=</span> <span style="color: #f92672">-</span><span style="color: #a6e22e">n</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">r</span> <span style="color: #f92672">&lt;=</span> <span style="color: #a6e22e">n</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">r</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">c</span> <span style="color: #f92672">:=</span> <span style="color: #f92672">-</span><span style="color: #a6e22e">n</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">c</span> <span style="color: #f92672">&lt;=</span> <span style="color: #a6e22e">n</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">c</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">r</span> <span style="color: #f92672">&gt;=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">r</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">c</span> <span style="color: #f92672">&gt;=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">c</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #75715e">// Check if the current coordinates would be off the map. Off map coordinates count as a wall.</span>
+				<span style="color: #a6e22e">wallCount</span> <span style="color: #f92672">++</span>
+			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">r</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">r</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">wallCount</span> <span style="color: #f92672">++</span>
+			<span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+
+	<span style="color: #66d9ef">return</span> <span style="color: #a6e22e">wallCount</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>This function simply returns how many neighbors, n steps away from the provided Tile, are walls. We call that function twice, one for immediate (1 step away) neighbors, and once for neighbors two steps away. We then compare those returned values to the rules we laid out above. If it meets the criteria for neighbor walls, it becomes a wall, otherwise, we make it a floor. After one pass, our caverns look like this:</p>
+
+<p><img src="/static/week-2-step2-1.png" alt="Cellular Automata, Step 2, 1" /></p>
+
+<p>And, after five passes, it looks like this:</p>
+
+<p><img src="/static/week-2-step2-2.png" alt="Cellular Automata, Step 2, 5" /></p>
+
+<p>You can see how our algorithm has broken out multiple separate caverns, and has &ldquo;smoothed&rdquo; them out, getting rid of jagged edges and odd outcroppings that don&rsquo;t fit in their surroundings. Its actually starting to look like a proper set of caverns!</p>
+
+<p>Next, we&rsquo;ll do a few more passes, but this time only looking for bits of wall that are by themselves, or extremely isolated among floor tiles (this will get rid of the walls that are standing out in the middle of the caverns by themselves):</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Step 3: Make a few more passes, smoothing further, and removing any small or single tile, unattached walls.</span>
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">wallOneAway</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">countWallsNStepsAway</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)</span>
+
+			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">wallOneAway</span> <span style="color: #f92672">&gt;=</span> <span style="color: #ae81ff">5</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
+				<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
+			<span style="color: #f8f8f2">}</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>This pass is pretty simple, nothing new of note, aside from the slightly different wall rule. After five more passes of this, our cave now looks like this:</p>
+
+<p><img src="/static/week-2-step3.png" alt="Cellular Automata, Step 3" /></p>
+
+<p>We&rsquo;ve now got some nice, smooth, artifact free caverns. The bottom edge of the screen looks a little ragged, but we&rsquo;ll clean that up in a minute. The next thing we&rsquo;re going to do is seal up the edges of the map, in case any of our caverns has an opening off the edge of the map. We don&rsquo;t want the player to be able to wander outside our designated map area:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Step 4: Seal up the edges of the map, so the player, and the following flood fill passes, cannot go beyond the</span>
+<span style="color: #75715e">// intended game area</span>
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>This is straight-forward, we just go around the edges, and make every edge Tile a wall.</p>
+
+<p><img src="/static/week-2-step4.png" alt="Cellular Automata, Step 4" /></p>
+
+<p>At this point, we&rsquo;ve got a bunch of small to large caverns, all nicely shaped, and very natural looking (I think so, at least :). However, the astute may have noticed that if the player were to spawn in one cavern, they would have no way of reaching any of the others (no digging in my roguelikes, not fond of the mechanic). So, how do we solve that? Well, the best way is to ensure there is only one main cavern. We could tunnel between each cavern, and run a few more passes of smoothing, but I actually like the idea of choosing the largest continuous cavern, and filling in the rest. That way, we ensure the player can reach every reachable part of the cavern they land in. The approach towards doing this also uses a neat algorithm called a flood fill, which we&rsquo;ll go over next.</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Step 5: Flood fill. This will find each individual cavern in the cave system, and add them to a list. It will</span>
+<span style="color: #75715e">// then find the largest one, and will make that as the main play area. The smaller caverns will be filled in.</span>
+<span style="color: #75715e">// In the future, it might make sense to tunnel between caverns, and apply a few more smoothing passes, to make</span>
+<span style="color: #75715e">// larger, more realistic caverns.</span>
+
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">[]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">totalCavernArea</span> <span style="color: #f8f8f2">[]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">caverns</span> <span style="color: #f8f8f2">[][]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">tile</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">node</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #a6e22e">tile</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">]</span>
+
+		<span style="color: #75715e">// If the current tile is a wall, or has already been visited, ignore it and move on</span>
+		<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">tile</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">isVisited</span><span style="color: #f8f8f2">()</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">tile</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #75715e">// This is a non-wall, unvisited tile</span>
+			<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">])</span>
+
+			<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
+				<span style="color: #75715e">// While the current node tile has valid neighbors, keep looking for more valid neighbors off of</span>
+				<span style="color: #75715e">// each one</span>
+				<span style="color: #a6e22e">node</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">[len(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]</span>
+				<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">[:len(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]</span>
+
+				<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">isVisited</span><span style="color: #f8f8f2">()</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+					<span style="color: #75715e">// Mark the node as visited, and add it to the cavern area for this cavern</span>
+					<span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Visited</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+					<span style="color: #a6e22e">totalCavernArea</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">totalCavernArea</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">node</span><span style="color: #f8f8f2">)</span>
+
+					<span style="color: #75715e">// Add the tile to the west, if valid</span>
+					<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+						<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">])</span>
+					<span style="color: #f8f8f2">}</span>
+
+					<span style="color: #75715e">// Add the tile to east, if valid</span>
+					<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+						<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">])</span>
+					<span style="color: #f8f8f2">}</span>
+
+					<span style="color: #75715e">// Add the tile to north, if valid</span>
+					<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+						<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">])</span>
+					<span style="color: #f8f8f2">}</span>
+
+					<span style="color: #75715e">// Add the tile to south, if valid</span>
+					<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">isWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+						<span style="color: #a6e22e">cavern</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">cavern</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">m</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">node</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">])</span>
+					<span style="color: #f8f8f2">}</span>
+				<span style="color: #f8f8f2">}</span>
+			<span style="color: #f8f8f2">}</span>
+
+			<span style="color: #75715e">// All non-wall tiles have been found for the current cavern, add it to the list, and start looking for</span>
+			<span style="color: #75715e">// the next one</span>
+			<span style="color: #a6e22e">caverns</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">append(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">totalCavernArea</span><span style="color: #f8f8f2">)</span>
+			<span style="color: #a6e22e">totalCavernArea</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">nil</span>
+		<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #a6e22e">tile</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Visited</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+		<span style="color: #f8f8f2">}</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>Whoa, there&rsquo;s a lot going on there. Lets step through. First off, a flood fill algorithm is literally what it sounds like. It starts at a point, and will attempt to get each element nearby that shares a characteristic, while ignoring those that do not (flooding over an area until that area is filled). In our case, you can think of it like checking for an empty area (floor spaces), and expanding out, until it has found the maximum bounds of that area. At the end, we will have a list of all tiles in that area, and then the algorithm will move on, looking for the next open space that has not been checked yet.</p>
+
+<p>We start out by defining a few variables, mainly slices to keep track of various things, like the current cavern, the size of the current cavern, and a list of all individual caverns we have found so far. Then, we begin by looping over every Tile element in our GameMap, and grabbing the Tile at each location. You&rsquo;ll notice I&rsquo;m using pointers for everything, including my slices. This makes it much easier, as we are dealing with the actual object, rather than a copy of it.</p>
+
+<p>Once we have a Tile, we use our two new convenience methods from earlier to see if, a) have we already visited this Tile, and b) is this Tile a wall. If either of those are true, we mark this Tile visited, and move on. We keep track of Tiles we&rsquo;ve visited, so as not to double (or more) process them in the future. If a tile has not been visited, and is not a wall, we have found a Tile that is part of a cavern, so we add it to the cavern slice.</p>
+
+<p>While there are Tiles present in the cavern slice, we will attempt to get every valid neighbor of each one. This is the flood in flood fill. Inside our cavern loop, we pop the latest Tile off the slice, make sure we don&rsquo;t have a visited or wall Tile once more, and then mark the Tile as visited (since we will not need to process it after this. We also push it onto the totalCavernArea slice, to keep track of Tiles in this current cavern. Then, we check each of its neighbors, north, south, east and west. If any of those are not visited and not walls, we add them to the current cavern. Then, we loop again, popping off a new Tile, and processing it in the same way.</p>
+
+<p>In this way, we will eventually get every floor tile in the current cavern, and at the end, have a complete representation of that cavern in terms of the floor tiles that compose it. When we have exhausted (filled, to use the algorithms parlance) a cavern, we take that set of Tiles representing the cavern, and append it to the caverns slice, which is a slice of slices. Each sub slice in that slice represents a single complete cavern.</p>
+
+<p>Once we are done here, we should have 12 entries in our caverns slice, one for each cavern present on our map. Keep in mind that you will have a different number.</p>
+
+<p>Nice! We now have a comprehensive list of every cavern in our greater cavern system. At this point, you could do all sorts of neat things, but we&rsquo;re going to stick with our original plan, and fill in all but the largest cavern. This is pretty straight forward, but uses a new (to me at least) Go concept, sorting a slice.</p>
+
+<p><div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Sort the caverns slice by size. This will make the largest cavern last, which will then be removed from the list.</span>
+<span style="color: #75715e">// Then, fill in any remaining caverns (aside from the main one). This will ensure that there are no areas on the</span>
+<span style="color: #75715e">// map that the player cannot reach.</span>
+<span style="color: #a6e22e">sort</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Sort</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">BySize</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">))</span>
+<span style="color: #a6e22e">mainCave</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">[len(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]</span>
+<span style="color: #a6e22e">caverns</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">[:len(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]</span>
+
+<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">);</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">j</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">j</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]);</span> <span style="color: #a6e22e">j</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">j</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+		<span style="color: #a6e22e">caverns</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">j</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+</p>
+
+<p>In order to sort our caverns slice, we&rsquo;ll need to define some custom logic. We want to sort it by the size of the sub slice, smallest to largest, so we can just pop off the last element of the slice, and be sure we have the largest cavern. In order to properly do this, we&rsquo;ll need to define a new type to sort by, called BySize:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">BySize</span> <span style="color: #f8f8f2">[][]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">Tile</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">s</span> <span style="color: #a6e22e">BySize</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">Len</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">s</span><span style="color: #f8f8f2">)</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">s</span> <span style="color: #a6e22e">BySize</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">Swap</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">j</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">],</span> <span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">j</span><span style="color: #f8f8f2">]=</span> <span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">j</span><span style="color: #f8f8f2">],</span> <span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">s</span> <span style="color: #a6e22e">BySize</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">Less</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">j</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">])</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">s</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">j</span><span style="color: #f8f8f2">])</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>Our new type is a 2D slice of Tile pointers, just like our caverns slice. We then define three functions attached to it, to allow for our comparisons. This code is all pretty self explanatory, so I&rsquo;ll leave it at that. Suffice it to say, that when we call sort.Sort() and pass in our new sorting type and our caverns array, it will return a neatly sorted array of caverns, from smallest to largest. Then, we simply just pull the largest cavern off the caverns array, and then systematically fill in the rest.</p>
+
+<p>This leaves us with a single, connected cavern:</p>
+
+<p><img src="/static/week-2-step-final.png" alt="Cellular Automata, final" /></p>
+
+<p>Now, all we need to do is place out player in a valid location within the main cave:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Finally, choose a starting position for the player within the newly created cave</span>
+<span style="color: #a6e22e">pos</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">rand</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Int</span><span style="color: #f8f8f2">()</span> <span style="color: #f92672">%</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">mainCave</span><span style="color: #f8f8f2">)</span>
+<span style="color: #66d9ef">return</span> <span style="color: #a6e22e">mainCave</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mainCave</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Y</span>
+</pre></div>
+
+
+<p>And that&rsquo;s that. Lets call our new method in our main file, in our init function, so our cave will be the default map:</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Create a GameMap, and initialize it (and set the player position within it, for now)</span>
+<span style="color: #a6e22e">gameMap</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">gamemap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">MapWidth</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">MapHeight</span><span style="color: #f8f8f2">}</span>
+<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">InitializeMap</span><span style="color: #f8f8f2">()</span>
+
+<span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GenerateCavern</span><span style="color: #f8f8f2">()</span>
+<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">playerX</span>
+<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">playerY</span>
+</pre></div>
+
+
+<p>Now, when you fire up the game, you should have a sweet, random cave to explore every time! I would like to note that my cave in my example is a little lackluster, as it didn&rsquo;t generate the largest cave possible, but that&rsquo;s the beauty of procedural generation. I find that the caves are quite complex if done on a much bigger map. My example is 100x35, but here&rsquo;s some examples on a 200x200 map:</p>
+
+<p><img src="/static/week-2-final1.png" alt="Cellular Automata, Complete1" /></p>
+
+<p>The variety it can create is pretty neat</p>
+
+<p><img src="/static/week-2-final2.png" alt="Cellular Automata, Complete2" /></p>
+
+<p>I&rsquo;m generally pretty happy with the results</p>
+
+<p><img src="/static/week-2-final3.png" alt="Cellular Automata, Complete3" /></p>
+
+<p>So, that&rsquo;s it, we now have an exciting map for our player to explore and get lost in. As I mentioned earlier, play around with various knobs on the algorithms (number of passes, percentages, ratios, etc), and see what works best. By tweaking a few small things, you can get drastically different results. As usual, if you want to see the full code for this post, you can find it in my <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial/releases/tag/v0.0.5">repo</a></p>
+
+<p>Be sure and join me next time when we&rsquo;ll be tackling field of vision, so not only can our player get lost, they can get lost in the cold, lonely, dark. Until next time, happy developing!</p>
+
+    </div>
+    
+    <footer>
+      <hr>
+      <p>
+  Published
+  
+    
+      by <span itemprop="author">Jeremy Cerise</span>
+    
+  
+  <time datetime="2017-07-11T13:41:06-06:00">
+    11 Jul, 2017
+  </time>
+  
+    in <span itemprop="articleSection"><a href="/categories/technology/">technology</a></span>
+  
+  
+    and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a> and <a href="/tags/roguelike/">roguelike</a>
+  
+  using <span itemprop="wordCount">3767</span> words.
+</p>
+
+      
+  
+
+
+
+  <aside>
+    <header>Related Content</header>
+    <ul>
+      
+      
+        <li><a href="/post/sidenote-1-cameras/">RLDBAR Sidenote #1: Cameras</a> &ndash; 9 minutes
+      
+        <li><a href="/post/roguelike-dev-week-1-part-2/">RoguelikeDev Builds A Roguelike, Week 1, Part 2</a> &ndash; 18 minutes
+      
+        <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Week 1, Part 1</a> &ndash; 8 minutes
+      
+        <li><a href="/post/roguelike-dev-week-0/">RoguelikeDev Builds a Roguelike, Week 0</a> &ndash; 7 minutes
+      
+    </ul>
+  </aside>
+
+
+    </footer>
+  </article>
+</main>
+    <footer>
+  
+  <p class="muted">
+    This page was generated using
+    <a target="_blank" rel="noopener" href="https://comfusion.github.io/after-dark/">After Dark</a>
+    for
+    <a target="_blank" rel="noopener" href="https://gohugo.io/">Hugo</a>.
+  </p>
+
+
+</footer>
+  </body>
+</html>
