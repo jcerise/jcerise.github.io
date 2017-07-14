@@ -2,57 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jeremy&#39;s Ramblings</title>
-    <link>https://jeremyceri.se/</link>
+    <link>http://jeremyceri.se/</link>
     <description>Recent content on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 13 Jul 2017 22:30:50 -0600</lastBuildDate>
     
-	<atom:link href="https://jeremyceri.se/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://jeremyceri.se/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 3, Part 1</title>
-      <link>https://jeremyceri.se/post/roguelike-dev-week-3-part-1/</link>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-3-part-1/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/roguelike-dev-week-3-part-1/</guid>
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-3-part-1/</guid>
       <description>Welcome to week 3, part 1 of RoguelikeDev builds a Roguelike! In this weeks installment, we&amp;rsquo;re going to be talking about field of vision (fov for short), and how we can apply that to our game in progress. Field of vision is how far the player can see. If something is beyond the field of vision of the player, it will not be visible. This adds a nice exploration element to our game, as the game map starts completely unexplored.</description>
     </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 2</title>
-      <link>https://jeremyceri.se/post/roguelike-dev-week-2/</link>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-2/</link>
       <pubDate>Tue, 11 Jul 2017 13:41:06 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/roguelike-dev-week-2/</guid>
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-2/</guid>
       <description>Welcome to Week 2 of RoguelikeDev builds a Roguelike! This week, we&amp;rsquo;re going to be fleshing out the map that the player will be playing the game on. If you recall, last time, we created an &amp;lsquo;arena&amp;rsquo; sort of map, with a large open space in the middle, surrounded by walls along the outside edges. Not very exciting, but it was something for the player to mover around in. This week, we&amp;rsquo;re going to procedurally generate some (hopefully) realistic looking caverns that the player can explore.</description>
     </item>
     
     <item>
       <title>RLDBAR Sidenote #1: Cameras</title>
-      <link>https://jeremyceri.se/post/sidenote-1-cameras/</link>
+      <link>http://jeremyceri.se/post/sidenote-1-cameras/</link>
       <pubDate>Wed, 05 Jul 2017 22:14:21 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/sidenote-1-cameras/</guid>
+      <guid>http://jeremyceri.se/post/sidenote-1-cameras/</guid>
       <description>This is the first of what I anticipate to be several sidenotes to the main RoguelikeDev Builds a Roguelike shenanigans. These sidenotes will deal with things that are not covered in the main tutorial, but I still feel add value, either to gameplay, programming knowledge, or both. For the inaugural Sidenote, we&amp;rsquo;ll be discussing adding a camera to our in progress roguelike. A camera will give us a couple of benefits, but the most immediate is that we can support maps larger than the terminal window.</description>
     </item>
     
     <item>
       <title>RoguelikeDev Builds A Roguelike, Week 1, Part 2</title>
-      <link>https://jeremyceri.se/post/roguelike-dev-week-1-part-2/</link>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-1-part-2/</link>
       <pubDate>Sun, 02 Jul 2017 20:25:13 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/roguelike-dev-week-1-part-2/</guid>
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-1-part-2/</guid>
       <description>Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is the second part of Week 1, the first being concerned with creating a player representation and moving it around using player input. In the second part of this week, we&amp;rsquo;re going to start thinking about the overall structure of our game, as well as get an intial version of the gameplay map, which is the world the player will be interacting with.</description>
     </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 1, Part 1</title>
-      <link>https://jeremyceri.se/post/roguelike-dev-week-1-part-1/</link>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-1-part-1/</link>
       <pubDate>Tue, 27 Jun 2017 22:33:11 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/roguelike-dev-week-1-part-1/</guid>
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-1-part-1/</guid>
       <description>&lt;p&gt;Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is Week 1, and this week, we&amp;rsquo;ve got things split into two parts. The first part, which this post will be concerned with, involves displaying the player and the screen, and implementing basic four direction movement. Part two will consist of creating a generic &amp;lsquo;Object&amp;rsquo; type that will represent things in the game, as well as creating an initial dungeon map.&lt;/p&gt;
 
 &lt;p&gt;Lets dive right in creating our player, and getting it moving!
@@ -61,10 +61,10 @@
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 0</title>
-      <link>https://jeremyceri.se/post/roguelike-dev-week-0/</link>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-0/</link>
       <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/post/roguelike-dev-week-0/</guid>
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-0/</guid>
       <description>&lt;p&gt;So it begins! This is the first in a series of posts following my attempts at making a Roguelike, in Go, using BearLibTerminal. I&amp;rsquo;ll be following along with the &lt;code&gt;RoguelikeDev builds a Roguelike&lt;/code&gt; posts as I progress.&lt;/p&gt;
 
 &lt;p&gt;So, without further ado, lets begin week 0: Setup!`&lt;/p&gt;</description>
@@ -72,10 +72,10 @@
     
     <item>
       <title>About Me</title>
-      <link>https://jeremyceri.se/about-me/</link>
+      <link>http://jeremyceri.se/about-me/</link>
       <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/about-me/</guid>
+      <guid>http://jeremyceri.se/about-me/</guid>
       <description>I am a software engineer. I program primarily in Python, Javascript, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
 Contact Me
 mail@jeremyceri.se
@@ -85,10 +85,10 @@ Twitter: jcerise</description>
     
     <item>
       <title>Roguelike Development</title>
-      <link>https://jeremyceri.se/roguelikes/</link>
+      <link>http://jeremyceri.se/roguelikes/</link>
       <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/roguelikes/</guid>
+      <guid>http://jeremyceri.se/roguelikes/</guid>
       <description>I am currently participating in r/roguelikedev&amp;rsquo;s &amp;lsquo;RoguelikeDev Does the Complete Python Tutorial&amp;rsquo;. The goal of this is to, as a group, run through the entire &amp;lsquo;Complete Roguelike Tutorial in Python&amp;rsquo;, from RogueBasin, written by Jotaf. This tutorial is a classic, in my opinion (and a few years ago, I took the opportunity to run through it myself, you can find my code on github), and is very well suited to new coders, or those who are looking to get a good overview of how a Roguelike is constructed.</description>
     </item>
     

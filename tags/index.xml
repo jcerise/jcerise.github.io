@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Jeremy&#39;s Ramblings</title>
-    <link>https://jeremyceri.se/tags/</link>
+    <link>http://jeremyceri.se/tags/</link>
     <description>Recent content in Tags on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Tue, 11 Jul 2017 13:41:06 -0600</lastBuildDate>
     
-	<atom:link href="https://jeremyceri.se/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://jeremyceri.se/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Cellular Automata</title>
-      <link>https://jeremyceri.se/tags/cellular-automata/</link>
+      <link>http://jeremyceri.se/tags/cellular-automata/</link>
       <pubDate>Tue, 11 Jul 2017 13:41:06 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/cellular-automata/</guid>
+      <guid>http://jeremyceri.se/tags/cellular-automata/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Field Of Vision</title>
-      <link>https://jeremyceri.se/tags/field-of-vision/</link>
+      <link>http://jeremyceri.se/tags/field-of-vision/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/field-of-vision/</guid>
+      <guid>http://jeremyceri.se/tags/field-of-vision/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://jeremyceri.se/tags/go/</link>
+      <link>http://jeremyceri.se/tags/go/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/go/</guid>
+      <guid>http://jeremyceri.se/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Programming</title>
-      <link>https://jeremyceri.se/tags/programming/</link>
+      <link>http://jeremyceri.se/tags/programming/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/programming/</guid>
+      <guid>http://jeremyceri.se/tags/programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rldbar</title>
-      <link>https://jeremyceri.se/tags/rldbar/</link>
+      <link>http://jeremyceri.se/tags/rldbar/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/rldbar/</guid>
+      <guid>http://jeremyceri.se/tags/rldbar/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Roguelike</title>
-      <link>https://jeremyceri.se/tags/roguelike/</link>
+      <link>http://jeremyceri.se/tags/roguelike/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/tags/roguelike/</guid>
+      <guid>http://jeremyceri.se/tags/roguelike/</guid>
       <description></description>
     </item>
     

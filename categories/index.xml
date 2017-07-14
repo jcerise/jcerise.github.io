@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Jeremy&#39;s Ramblings</title>
-    <link>https://jeremyceri.se/categories/</link>
+    <link>http://jeremyceri.se/categories/</link>
     <description>Recent content in Categories on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     
-	<atom:link href="https://jeremyceri.se/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://jeremyceri.se/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Technology</title>
-      <link>https://jeremyceri.se/categories/technology/</link>
+      <link>http://jeremyceri.se/categories/technology/</link>
       <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
       
-      <guid>https://jeremyceri.se/categories/technology/</guid>
+      <guid>http://jeremyceri.se/categories/technology/</guid>
       <description></description>
     </item>
     
