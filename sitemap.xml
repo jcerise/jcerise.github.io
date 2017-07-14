@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jeremyceri.se/post/roguelike-dev-week-3-part-1/</loc>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jeremyceri.se/post/roguelike-dev-week-2/</loc>
     <lastmod>2017-07-11T13:41:06-06:00</lastmod>
   </url>
@@ -43,38 +48,50 @@
   </url>
   
   <url>
-    <loc>https://jeremyceri.se/tags/go/</loc>
+    <loc>https://jeremyceri.se/tags/cellular-automata/</loc>
     <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/tags/field-of-vision/</loc>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jeremyceri.se/tags/go/</loc>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jeremyceri.se/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jeremyceri.se/post/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jeremyceri.se/tags/programming/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jeremyceri.se/tags/rldbar/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://jeremyceri.se/tags/roguelike/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -86,7 +103,7 @@
   
   <url>
     <loc>https://jeremyceri.se/categories/technology/</loc>
-    <lastmod>2017-07-11T13:41:06-06:00</lastmod>
+    <lastmod>2017-07-13T22:30:50-06:00</lastmod>
     <priority>0</priority>
   </url>
   

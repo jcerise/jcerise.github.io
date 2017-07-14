@@ -6,10 +6,19 @@
     <description>Recent content in Roguelike on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 11 Jul 2017 13:41:06 -0600</lastBuildDate>
+    <lastBuildDate>Thu, 13 Jul 2017 22:30:50 -0600</lastBuildDate>
     
 	<atom:link href="https://jeremyceri.se/tags/roguelike/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RoguelikeDev Builds a Roguelike, Week 3, Part 1</title>
+      <link>https://jeremyceri.se/post/roguelike-dev-week-3-part-1/</link>
+      <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
+      
+      <guid>https://jeremyceri.se/post/roguelike-dev-week-3-part-1/</guid>
+      <description>Welcome to week 3, part 1 of RoguelikeDev builds a Roguelike! In this weeks installment, we&amp;rsquo;re going to be talking about field of vision (fov for short), and how we can apply that to our game in progress. Field of vision is how far the player can see. If something is beyond the field of vision of the player, it will not be visible. This adds a nice exploration element to our game, as the game map starts completely unexplored.</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 2</title>
