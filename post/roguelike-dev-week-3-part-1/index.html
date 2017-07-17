@@ -152,7 +152,7 @@ p img {
 
 
 <meta itemprop="dateModified" content="2017-07-13T22:30:50-06:00" />
-<meta itemprop="wordCount" content="2342">
+<meta itemprop="wordCount" content="2469">
 
 
 
@@ -165,7 +165,7 @@ p img {
   <circle cx="16" cy="16" r="14" />
   <path d="M16 8 L16 16 20 20" />
 </svg>
-<span>11 minute read</span>
+<span>12 minute read</span>
 <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
   <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
 </svg>
@@ -274,20 +274,27 @@ p img {
 			<span style="color: #a6e22e">x</span> <span style="color: #f92672">-=</span> <span style="color: #a6e22e">ax</span>
 			<span style="color: #a6e22e">y</span> <span style="color: #f92672">-=</span> <span style="color: #a6e22e">ay</span>
 
+            <span style="color: #a6e22e">roundedX</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">int(</span><span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">))</span>
+            <span style="color: #a6e22e">roundedY</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">int(</span><span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">))</span>
+
 			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
 				<span style="color: #75715e">// If the ray is cast outside of the map, stop</span>
 				<span style="color: #66d9ef">break</span>
 			<span style="color: #f8f8f2">}</span>
 
-			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[int(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">)][int(</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)].</span><span style="color: #a6e22e">Explored</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
-			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[int(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">)][int(</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roundedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Explored</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roundedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
 
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[int(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">)][int(</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">)].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f92672">==</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">{</span>
+			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roudnedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f92672">==</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">{</span>
 				<span style="color: #75715e">// The ray hit a wall, go no further</span>
 				<span style="color: #66d9ef">break</span>
 			<span style="color: #f8f8f2">}</span>
 		<span style="color: #f8f8f2">}</span>
 	<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">func</span> <span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #66d9ef">float64</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">float64</span> <span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Floor</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">.5</span><span style="color: #f8f8f2">)</span>
 <span style="color: #f8f8f2">}</span>
 </pre></div>
 
@@ -297,6 +304,8 @@ p img {
 <p>We start things off by setting up a loop that will iterate 360 times. This can be tweaked if we want less accuracy, by incrementing i by +2, or +3, etc. This will be more efficient, but the fov will not be as accurate. Something to play with later. We then grab the value for this degree from our pre-calculated sin and cos tables, and then convert the players X and Y into float64, as that&rsquo;s the type of our sin and cos values. Lastly, we set the Tile that the player currently occupies as explored.</p>
 
 <p>Next, we iterate x times, where x is the torchRadius (in our case, 6). This is where we will actually begin casting the rays from the player (origin). We subtract the sin value from player.X and the cos value from player.Y. This will give us an approximation of one tile away, in the direction of whatever degree we are currently calculating. We then check to make sure that Tile is not outside of the map (if it is, quit early, as the edge of the map technically blocks sight). Then, we mark the Tile as both explored and visible. If it is a wall, it will be illuminated, but nothing beyond it will be visible. If its floor, it will be illuminated, and the Tiles beyond will be visible as well. Finally, we check to see if the Tile blocks sight. If it does, we&rsquo;ll break out of the loop, as nothing beyond the wall Tile is visible.</p>
+
+<p><strong>[Update: 7/17/17]</strong> As a note, I was originally just casting my float64s back to ints, which seemed to generally work alright, but as user VedVid on Reddit pointed out, Go will just remove the precision when casting this way, so 5.999999999 becomes 5. Obviously, this throws out a lot of accuracy in how we are getting the tiles that are visible. So, I added a very simple little round function, that will at least give us the correct rounded number when we cast back to an int. Round(5.9999999) will return 6, whereas Round(5.23457) will return 5, as we would expect. This should result in much more accurate fov caclulations. Thanks, VedVid!</p>
 
 <p>That&rsquo;s it, we&rsquo;re basically just checking 360 degrees around the player, and marking visible tiles as visible and explored. Tiles that are neither visible nor explored will not be displayed to the player.</p>
 
@@ -419,7 +428,7 @@ p img {
   
     and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/field-of-vision/">field of vision</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a> and <a href="/tags/roguelike/">roguelike</a>
   
-  using <span itemprop="wordCount">2342</span> words.
+  using <span itemprop="wordCount">2469</span> words.
 </p>
 
       
