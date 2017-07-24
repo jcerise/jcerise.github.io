@@ -6,10 +6,19 @@
     <description>Recent content in Roguelike on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 13 Jul 2017 22:30:50 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 23 Jul 2017 22:20:22 -0600</lastBuildDate>
     
 	<atom:link href="http://jeremyceri.se/tags/roguelike/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RoguelikeDev Builds a Roguelike, Week 3, Part 2</title>
+      <link>http://jeremyceri.se/post/roguelike-dev-week-3-part-2/</link>
+      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/post/roguelike-dev-week-3-part-2/</guid>
+      <description>Welcome back to my series about building a Roguelike in Go (and following along with RoguelikeDev&amp;rsquo;s dev-along)! Last time, we added a field of vision algorithm to our game, putting the player in the dark, except the immediate area surrounding them. In this installment, we&amp;rsquo;re going to start adding the framework for monsters that inhabit the dark corners of the caverns. In particular, our goal will be to randomly place Game Entities, representing things such as Goblins, Troll, and Orcs, around our generated caverns, make sure they get to take actions, and allow the player to interact with them.</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Week 3, Part 1</title>
