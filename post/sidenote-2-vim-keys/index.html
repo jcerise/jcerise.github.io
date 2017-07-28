@@ -4,28 +4,28 @@
     <meta name="generator" content="Hugo 0.25.1" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tags | Jeremy&#39;s Ramblings</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="technology, ">
+    <title>RLDBAR Sidenote #2: Vim Keys and Diagonal Movement | Jeremy&#39;s Ramblings</title>
+    <meta name="description" content="Vim key movement, and moving diagonally">
+    <meta name="keywords" content="RLDBAR, go, programming, roguelike, roguelike movement">
     
     
     
-    
-      <meta name="robots" content="noindex">
     
     
 
   <meta name="author" content="Jeremy Cerise">
 
 
-    <meta property="og:title" content="Tags" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://jeremyceri.se/tags/" />
+    <meta property="og:title" content="RLDBAR Sidenote #2: Vim Keys and Diagonal Movement" />
+<meta property="og:description" content="Vim key movement, and moving diagonally" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://jeremyceri.se/post/sidenote-2-vim-keys/" />
 
 
 
-<meta property="og:updated_time" content="2017-07-11T13:41:06-06:00"/>
+<meta property="article:published_time" content="2017-07-27T22:10:20-06:00"/>
+<meta property="article:modified_time" content="2017-07-27T22:10:20-06:00"/>
+
 
 
 
@@ -38,9 +38,9 @@
 
     
 
+
+
   <meta property="og:image" content="https://source.unsplash.com/category/technology/1600x900">
-
-
 
 
     <meta name="theme-color" content="#000">
@@ -48,9 +48,7 @@
     
     
     
-      <link href="http://jeremyceri.se/tags/index.xml" rel="alternate" type="application/rss+xml" title="Jeremy&#39;s Ramblings" />
-    
-    <link rel="canonical" href="http://jeremyceri.se/tags/">
+    <link rel="canonical" href="http://jeremyceri.se/post/sidenote-2-vim-keys/">
     
     
     <link rel="icon" sizes="any" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2046%2045'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EAfter%20Dark%3C/title%3E%3Cpath%20d='M.708%2045L23%20.416%2045.292%2045H.708zM35%2038L23%2019%2011%2038h24z'%20fill='%23000'/%3E%3C/svg%3E">
@@ -136,7 +134,7 @@ p img {
     
       <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
     
-      <a itemprop="url" class="" href="/post/"><span itemprop="name">Posts</span></a>
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
     
       <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
     
@@ -147,28 +145,140 @@ p img {
 
 </header>
     <main>
-  <header>
-    <h1>Tags</h1>
-  </header>
-  <ul>
+  <article itemscope itemtype="http://schema.org/BlogPosting">
     
-      <li><a href="cellular-automata">cellular-automata</a> (1)
+<meta itemprop="name" content="RLDBAR Sidenote #2: Vim Keys and Diagonal Movement">
+<meta itemprop="description" content="Vim key movement, and moving diagonally">
+
+
+<meta itemprop="dateModified" content="2017-07-27T22:10:20-06:00" />
+<meta itemprop="wordCount" content="426">
+
+
+
+<meta itemprop="keywords" content="RLDBAR,go,programming,roguelike,roguelike movement," />
+
+    <header>
+      <h1 itemprop="headline">RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</h1>
+      <p class="muted">
+        <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+  <circle cx="16" cy="16" r="14" />
+  <path d="M16 8 L16 16 20 20" />
+</svg>
+<span>2 minute read</span>
+<svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+  <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+</svg>
+
+  Published: <time datetime="2017-07-27T22:10:20-06:00">27 Jul, 2017</time>
+
+
+      </p>
+    </header>
     
-      <li><a href="combat">combat</a> (1)
+      <blockquote itemprop="description">Vim key movement, and moving diagonally</blockquote>
     
-      <li><a href="field-of-vision">field-of-vision</a> (1)
     
-      <li><a href="go">go</a> (8)
+
+    <div itemprop="articleBody">
+      <p>In this second sidenote to the main RLDBAR tutorial, we&rsquo;re going to make a very small, but very useful change: diagnonal movement, and allowing users to move via VIM keys. The first, diagonal movement, opens up many more tactical options over just being able to move in the cardinal directions (north, south, east, west), and will give the player more flexibility. Adding in support for VIM key movement (h, j, k, l, y, u, b, n) will give our game a bit more reach to users without full keyboards (not that we&rsquo;ve implemented number pad support yet&hellip; :P ). Lets get it done!</p>
+
+<!-- more -->
+
+<p>As I already mentioned, this is a very small, even trivial, change. Lets just go ahead and look at the code (this is the handleInput() function from our main file):</p>
+
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">entity</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #75715e">// Handle basic character movement in the four main directions, plus diagonals (and vim keys)</span>
+
+	<span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">(</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #66d9ef">int</span>
+	<span style="color: #f8f8f2">)</span>
+
+	<span style="color: #66d9ef">switch</span> <span style="color: #a6e22e">key</span> <span style="color: #f8f8f2">{</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_RIGHT</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_L</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_LEFT</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_H</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_UP</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_K</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_DOWN</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_J</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_Y</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_U</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_B</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span>
+	<span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_N</span><span style="color: #f8f8f2">:</span>
+		<span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span>
+	<span style="color: #f8f8f2">}</span>
     
-      <li><a href="programming">programming</a> (8)
+    <span style="color: #f92672">...</span>
+<span style="color: #f8f8f2">}</span>
+</pre></div>
+
+
+<p>And thats it. All we&rsquo;re doing is allowing the player to use the standard VIM movement keys (l for right, h for left, k for up, and j for down) for cardinal navigation (in addition to the arrow keys). This makes our movement more flexible, and more VIM friendly (sorry emacs fans).</p>
+
+<p>The next addition is the four cases for the y, u, b, and n keys. These will allow for diagonal movement. Y for example, will move our player -1 on the x axis, and -1 on the y axis, which translates to diagonally up and to the left. N, on the other hand, translates to  diagonally down and to the right.</p>
+
+<p>Pretty straight forward, but very powerful, especially since any monsters we create in the future will be able to move diagonally. We wouldn&rsquo;t want them to have an unfair advantage, now would we?</p>
+
+<p>That&rsquo;s about all for this sidenote, I don&rsquo;t have a release for this one, as it was such a small change, but you can always check out the latest code for the in progress roguelike on my <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial">repo</a>. Hopefully, I&rsquo;ll be back on the main tutorial track here shortly, and until then, happy developing!</p>
+
+    </div>
     
-      <li><a href="rldbar">rldbar</a> (8)
+    <footer>
+      <hr>
+      <p>
+  Published
+  
     
-      <li><a href="roguelike">roguelike</a> (8)
+      by <span itemprop="author">Jeremy Cerise</span>
     
-      <li><a href="roguelike-movement">roguelike-movement</a> (1)
-    
-  </ul>
+  
+  <time datetime="2017-07-27T22:10:20-06:00">
+    27 Jul, 2017
+  </time>
+  
+    in <span itemprop="articleSection"><a href="/categories/technology/">technology</a></span>
+  
+  
+    and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a>, <a href="/tags/roguelike/">roguelike</a> and <a href="/tags/roguelike-movement/">roguelike movement</a>
+  
+  using <span itemprop="wordCount">426</span> words.
+</p>
+
+      
+  
+
+
+
+  <aside>
+    <header>Related Content</header>
+    <ul>
+      
+      
+        <li><a href="/post/roguelike-dev-week-3-part-2/">RoguelikeDev Builds a Roguelike, Week 3, Part 2</a> &ndash; 13 minutes
+      
+        <li><a href="/post/roguelike-dev-week-3-part-1/">RoguelikeDev Builds a Roguelike, Week 3, Part 1</a> &ndash; 12 minutes
+      
+        <li><a href="/post/roguelike-dev-week-2/">RoguelikeDev Builds a Roguelike, Week 2</a> &ndash; 18 minutes
+      
+        <li><a href="/post/sidenote-1-cameras/">RLDBAR Sidenote #1: Cameras</a> &ndash; 9 minutes
+      
+        <li><a href="/post/roguelike-dev-week-1-part-2/">RoguelikeDev Builds A Roguelike, Week 1, Part 2</a> &ndash; 18 minutes
+      
+        <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Week 1, Part 1</a> &ndash; 8 minutes
+      
+        <li><a href="/post/roguelike-dev-week-0/">RoguelikeDev Builds a Roguelike, Week 0</a> &ndash; 7 minutes
+      
+    </ul>
+  </aside>
+
+
+    </footer>
+  </article>
 </main>
     <footer>
   

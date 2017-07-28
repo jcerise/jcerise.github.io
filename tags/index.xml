@@ -41,7 +41,7 @@
     <item>
       <title>Go</title>
       <link>http://jeremyceri.se/tags/go/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
       
       <guid>http://jeremyceri.se/tags/go/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>Programming</title>
       <link>http://jeremyceri.se/tags/programming/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
       
       <guid>http://jeremyceri.se/tags/programming/</guid>
       <description></description>
@@ -59,7 +59,7 @@
     <item>
       <title>Rldbar</title>
       <link>http://jeremyceri.se/tags/rldbar/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
       
       <guid>http://jeremyceri.se/tags/rldbar/</guid>
       <description></description>
@@ -68,9 +68,18 @@
     <item>
       <title>Roguelike</title>
       <link>http://jeremyceri.se/tags/roguelike/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
       
       <guid>http://jeremyceri.se/tags/roguelike/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Roguelike Movement</title>
+      <link>http://jeremyceri.se/tags/roguelike-movement/</link>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/tags/roguelike-movement/</guid>
       <description></description>
     </item>
     

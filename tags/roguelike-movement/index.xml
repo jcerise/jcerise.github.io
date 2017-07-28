@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Roguelike Movement on Jeremy&#39;s Ramblings</title>
+    <link>http://jeremyceri.se/tags/roguelike-movement/</link>
+    <description>Recent content in Roguelike Movement on Jeremy&#39;s Ramblings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 27 Jul 2017 22:10:20 -0600</lastBuildDate>
+    
+	<atom:link href="http://jeremyceri.se/tags/roguelike-movement/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</title>
+      <link>http://jeremyceri.se/post/sidenote-2-vim-keys/</link>
+      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/post/sidenote-2-vim-keys/</guid>
+      <description>In this second sidenote to the main RLDBAR tutorial, we&amp;rsquo;re going to make a very small, but very useful change: diagnonal movement, and allowing users to move via VIM keys. The first, diagonal movement, opens up many more tactical options over just being able to move in the cardinal directions (north, south, east, west), and will give the player more flexibility. Adding in support for VIM key movement (h, j, k, l, y, u, b, n) will give our game a bit more reach to users without full keyboards (not that we&amp;rsquo;ve implemented number pad support yet&amp;hellip; :P ).</description>
+    </item>
+    
+  </channel>
+</rss>
