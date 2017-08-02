@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Entity Component System on Jeremy&#39;s Ramblings</title>
+    <link>http://jeremyceri.se/tags/entity-component-system/</link>
+    <description>Recent content in Entity Component System on Jeremy&#39;s Ramblings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 27 Jul 2017 22:58:00 -0600</lastBuildDate>
+    
+	<atom:link href="http://jeremyceri.se/tags/entity-component-system/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RoguelikeDev Builds a Roguelike, Part 7</title>
+      <link>http://jeremyceri.se/post/roguelike-dev-part-7/</link>
+      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/post/roguelike-dev-part-7/</guid>
+      <description>The time has finally come where our small game is going to become unmanageable when adding new features. Certainly, we could make it work (and in fact the official tutorial and revamped tutorial come up with some clever ways around this complexity), but I&amp;rsquo;m not a fan of headaches, or unmaintainable code. I&amp;rsquo;ve always wanted to write an entity component system setup from scratch, to better understand how they work, and and ECS can dramatically help us cut down on complexity of new features.</description>
+    </item>
+    
+  </channel>
+</rss>
