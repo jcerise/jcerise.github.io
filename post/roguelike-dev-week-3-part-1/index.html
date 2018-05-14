@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.25.1" />
+    <meta name="generator" content="Hugo 0.40.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoguelikeDev Builds a Roguelike, Part 5 | Jeremy&#39;s Ramblings</title>
@@ -24,6 +24,7 @@
 
 
 <meta property="article:published_time" content="2017-07-13T22:30:50-06:00"/>
+
 <meta property="article:modified_time" content="2017-07-13T22:30:50-06:00"/>
 
 
@@ -134,11 +135,13 @@ p img {
     
       <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
-    
       <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelikes</span></a>
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+    
+      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
+    
+      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
     
   </nav>
 
@@ -151,6 +154,7 @@ p img {
 <meta itemprop="description" content="Part 5: Field of Vision">
 
 
+<meta itemprop="datePublished" content="2017-07-13T22:30:50-06:00" />
 <meta itemprop="dateModified" content="2017-07-13T22:30:50-06:00" />
 <meta itemprop="wordCount" content="2472">
 
@@ -199,37 +203,33 @@ p img {
 
 <p>We&rsquo;re going to start (as usual), by creating a new package, called fov. In that package, we&rsquo;re going to define a struct, called FieldOfVision:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">FieldOfVision</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">sinTable</span> <span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">int</span><span style="color: #f8f8f2">]</span><span style="color: #66d9ef">float64</span>
-    <span style="color: #a6e22e">cosTable</span> <span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">int</span><span style="color: #f8f8f2">]</span><span style="color: #66d9ef">float64</span>
-    <span style="color: #a6e22e">torchRadius</span> <span style="color: #66d9ef">int</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FieldOfVision</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">sinTable</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">float64</span>
+    <span style="color:#a6e22e">cosTable</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">float64</span>
+    <span style="color:#a6e22e">torchRadius</span> <span style="color:#66d9ef">int</span>
+}</code></pre></div>
 
 <p>The sinTable and cosTable maps will contain our pre-calculated values for sin and cos, which we&rsquo;ll see how to initialize in a minute. TorchRadius will be the radius (distance) that the player can see around him. We&rsquo;re going to add a setter for torchRadius, so future gameplay elements can modify how far the player can see (like a +10 Rod of Blazing Sunlight, for example). Now that we have our struct, lets attach the aforementioned setter method for torchRadius, and an initialize function to it:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">FieldOfVision</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">Initialize</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FieldOfVision</span>) <span style="color:#a6e22e">Initialize</span>() {
 
-	<span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">cosTable</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">make(</span><span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">int</span><span style="color: #f8f8f2">]</span><span style="color: #66d9ef">float64</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">sinTable</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">make(</span><span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">int</span><span style="color: #f8f8f2">]</span><span style="color: #66d9ef">float64</span><span style="color: #f8f8f2">)</span>
+	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">cosTable</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">float64</span>)
+	<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">sinTable</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">float64</span>)
 
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">360</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">ax</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Sin</span><span style="color: #f8f8f2">(float64(</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">/</span> <span style="color: #f8f8f2">(float64(</span><span style="color: #ae81ff">180</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">/</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Pi</span><span style="color: #f8f8f2">))</span>
-		<span style="color: #a6e22e">ay</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Cos</span><span style="color: #f8f8f2">(float64(</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">/</span> <span style="color: #f8f8f2">(float64(</span><span style="color: #ae81ff">180</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">/</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Pi</span><span style="color: #f8f8f2">))</span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">360</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">ax</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Sin</span>(float64(<span style="color:#a6e22e">i</span>) <span style="color:#f92672">/</span> (float64(<span style="color:#ae81ff">180</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Pi</span>))
+		<span style="color:#a6e22e">ay</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Cos</span>(float64(<span style="color:#a6e22e">i</span>) <span style="color:#f92672">/</span> (float64(<span style="color:#ae81ff">180</span>) <span style="color:#f92672">/</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Pi</span>))
 
-		<span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">sinTable</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">ax</span>
-		<span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">cosTable</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">ay</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
+		<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">sinTable</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">ax</span>
+		<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">cosTable</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">ay</span>
+	}
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">FieldOfVision</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">SetTorchRadius</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">radius</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">radius</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">torchRadius</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">radius</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FieldOfVision</span>) <span style="color:#a6e22e">SetTorchRadius</span>(<span style="color:#a6e22e">radius</span> <span style="color:#66d9ef">int</span>) {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">radius</span> &gt; <span style="color:#ae81ff">1</span> {
+		<span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">torchRadius</span> = <span style="color:#a6e22e">radius</span>
+	}
+}</code></pre></div>
 
 <p>Our Initialize() function serves to set up the pre-calculated values for our sin and cos maps, as discussed earlier. We simply calculate one value for each degree of a circle, to be sin(i / 180 / PI) and cos(i / 180 / PI). This will give us an easy way to cast our rays out from the player in increments of 1 degree later on.</p>
 
@@ -237,67 +237,63 @@ p img {
 
 <p>Before we move on, we need to add a couple of properties to our Tile struct:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">Tile</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">Blocked</span> <span style="color: #66d9ef">bool</span>
-	<span style="color: #a6e22e">Blocks_sight</span> <span style="color: #66d9ef">bool</span>
-	<span style="color: #a6e22e">Visited</span> <span style="color: #66d9ef">bool</span>
-	<span style="color: #a6e22e">Explored</span> <span style="color: #66d9ef">bool</span>
-	<span style="color: #a6e22e">Visible</span> <span style="color: #66d9ef">bool</span>
-	<span style="color: #a6e22e">X</span> <span style="color: #66d9ef">int</span>
-	<span style="color: #a6e22e">Y</span> <span style="color: #66d9ef">int</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Tile</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Blocked</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">Blocks_sight</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">Visited</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">Explored</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">Visible</span> <span style="color:#66d9ef">bool</span>
+	<span style="color:#a6e22e">X</span> <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Y</span> <span style="color:#66d9ef">int</span>
+}</code></pre></div>
 
 <p>Pretty simple, we just added a Explored and Visible bool, which should be pretty self explanatory. If not, we&rsquo;ll be jumping into their uses momentarily.</p>
 
 <p>Alright, now that we have initialization out of the way, lets get into the meat of the fov code, the actual ray casting. This function will not only handle casting of rays, it will also be responsible for marking a Tile as explored or visible. I&rsquo;m gonna dump the whole function here, and then explain it step by step afterwards.</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">FieldOfVision</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">RayCast</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">gamemap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Cast out rays each degree in a 360 circle from the player. If a ray passes over a floor (does not block sight)</span>
-	<span style="color: #75715e">// tile, keep going, up to the maximum torch radius (view radius) of the player. If the ray intersects a wall</span>
-	<span style="color: #75715e">// (blocks sight), stop, as the player will not be able to see past that. Every visible tile will get the Visible</span>
-	<span style="color: #75715e">// and Explored properties set to true.</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">f</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">FieldOfVision</span>) <span style="color:#a6e22e">RayCast</span>(<span style="color:#a6e22e">playerX</span>, <span style="color:#a6e22e">playerY</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>) {
+	<span style="color:#75715e">// Cast out rays each degree in a 360 circle from the player. If a ray passes over a floor (does not block sight)
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// tile, keep going, up to the maximum torch radius (view radius) of the player. If the ray intersects a wall
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// (blocks sight), stop, as the player will not be able to see past that. Every visible tile will get the Visible
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// and Explored properties set to true.
+</span><span style="color:#75715e"></span>
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">360</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">++</span> {
 
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">360</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
+		<span style="color:#a6e22e">ax</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">sinTable</span>[<span style="color:#a6e22e">i</span>]
+		<span style="color:#a6e22e">ay</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">cosTable</span>[<span style="color:#a6e22e">i</span>]
 
-		<span style="color: #a6e22e">ax</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">sinTable</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span>
-		<span style="color: #a6e22e">ay</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">cosTable</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]</span>
+		<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">playerX</span>)
+		<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> float64(<span style="color:#a6e22e">playerY</span>)
 
-		<span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">)</span>
+		<span style="color:#75715e">// Mark the players current position as explored
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">playerX</span>][<span style="color:#a6e22e">playerY</span>].<span style="color:#a6e22e">Explored</span> = <span style="color:#66d9ef">true</span>
 
-		<span style="color: #75715e">// Mark the players current position as explored</span>
-		<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Explored</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">torchRadius</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">x</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">ax</span>
+			<span style="color:#a6e22e">y</span> <span style="color:#f92672">-=</span> <span style="color:#a6e22e">ay</span>
 
-		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">j</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">j</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">f</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">torchRadius</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">j</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">x</span> <span style="color: #f92672">-=</span> <span style="color: #a6e22e">ax</span>
-			<span style="color: #a6e22e">y</span> <span style="color: #f92672">-=</span> <span style="color: #a6e22e">ay</span>
+            <span style="color:#a6e22e">roundedX</span> <span style="color:#f92672">:=</span> int(<span style="color:#a6e22e">Round</span>(<span style="color:#a6e22e">x</span>))
+            <span style="color:#a6e22e">roundedY</span> <span style="color:#f92672">:=</span> int(<span style="color:#a6e22e">Round</span>(<span style="color:#a6e22e">y</span>))
 
-            <span style="color: #a6e22e">roundedX</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">int(</span><span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">))</span>
-            <span style="color: #a6e22e">roundedY</span> <span style="color: #f92672">:=</span> <span style="color: #f8f8f2">int(</span><span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">))</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">x</span> &gt; float64(<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Width</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> &lt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> &gt; float64(<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Height</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) {
+				<span style="color:#75715e">// If the ray is cast outside of the map, stop
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>
+			}
 
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #f8f8f2">float64(</span><span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #75715e">// If the ray is cast outside of the map, stop</span>
-				<span style="color: #66d9ef">break</span>
-			<span style="color: #f8f8f2">}</span>
+			<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">roundedX</span>][<span style="color:#a6e22e">roundedY</span>].<span style="color:#a6e22e">Explored</span> = <span style="color:#66d9ef">true</span>
+			<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">roundedX</span>][<span style="color:#a6e22e">roundedY</span>].<span style="color:#a6e22e">Visible</span> = <span style="color:#66d9ef">true</span>
 
-			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roundedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Explored</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
-			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roundedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">true</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">roundedX</span>][<span style="color:#a6e22e">roudnedY</span>].<span style="color:#a6e22e">Blocks_sight</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
+				<span style="color:#75715e">// The ray hit a wall, go no further
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>
+			}
+		}
+	}
+}
 
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">roundedX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">roudnedY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocks_sight</span> <span style="color: #f92672">==</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #75715e">// The ray hit a wall, go no further</span>
-				<span style="color: #66d9ef">break</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-
-<span style="color: #66d9ef">func</span> <span style="color: #a6e22e">Round</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #66d9ef">float64</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">float64</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">return</span> <span style="color: #a6e22e">math</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Floor</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">f</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">.5</span><span style="color: #f8f8f2">)</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Round</span>(<span style="color:#a6e22e">f</span> <span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Floor</span>(<span style="color:#a6e22e">f</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">.5</span>)
+}</code></pre></div>
 
 <p>To start with, our RayCast() function takes three arguments, the current player X and Y position, and a pointer to the current GameMap. The players X and Y are the origin for our ray casting, and we&rsquo;ll use the GameMap&rsquo;s Tiles property to keep track of which tiles are visible and explored (thus why its a pointer).</p>
 
@@ -311,66 +307,62 @@ p img {
 
 <p>Cool, so now lets actually use our new FieldOfView struct. Back in our main file, we&rsquo;ll need to initialize a new FieldOfView object:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">(</span>
-    <span style="color: #f92672">...</span>
-    <span style="color: #a6e22e">fieldOfVision</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">fov</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">FieldOfVision</span>
-<span style="color: #f8f8f2">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> (
+    <span style="color:#f92672">...</span>
+    <span style="color:#a6e22e">fieldOfVision</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">fov</span>.<span style="color:#a6e22e">FieldOfVision</span>
+)
 
-<span style="color: #66d9ef">func</span> <span style="color: #a6e22e">init</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #f92672">...</span>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+    <span style="color:#f92672">...</span>
 
-    <span style="color: #a6e22e">fieldOfVision</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">fov</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">FieldOfVision</span><span style="color: #f8f8f2">{}</span>
-    <span style="color: #a6e22e">fieldOfVision</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Initialize</span><span style="color: #f8f8f2">()</span>
-    <span style="color: #a6e22e">fieldOfVision</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SetTorchRadius</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">6</span><span style="color: #f8f8f2">)</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+    <span style="color:#a6e22e">fieldOfVision</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">fov</span>.<span style="color:#a6e22e">FieldOfVision</span>{}
+    <span style="color:#a6e22e">fieldOfVision</span>.<span style="color:#a6e22e">Initialize</span>()
+    <span style="color:#a6e22e">fieldOfVision</span>.<span style="color:#a6e22e">SetTorchRadius</span>(<span style="color:#ae81ff">6</span>)
+}</code></pre></div>
 
 <p>Once we have our fieldOfVision var initialized and the torchRadius set, we&rsquo;re ready to start using it. We&rsquo;re going to be altering our renderMap() function:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">renderMap</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block</span>
-	<span style="color: #75715e">// sight, draw a &#39;.&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderMap</span>() {
+	<span style="color:#75715e">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// sight, draw a &#39;.&#39;
+</span><span style="color:#75715e"></span>
+	<span style="color:#75715e">// First, set the entire map to not visible. We&#39;ll decide what is visible based on the torch radius.
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// In the process, clear every Tile on the map as well
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">x</span> &lt; <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Width</span>; <span style="color:#a6e22e">x</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">y</span> &lt; <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Height</span>; <span style="color:#a6e22e">y</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">x</span>][<span style="color:#a6e22e">y</span>].<span style="color:#a6e22e">Visible</span> = <span style="color:#66d9ef">false</span>
+			<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34; &#34;</span>)
+		}
+	}
 
-	<span style="color: #75715e">// First, set the entire map to not visible. We&#39;ll decide what is visible based on the torch radius.</span>
-	<span style="color: #75715e">// In the process, clear every Tile on the map as well</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
-			<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot; &quot;</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#75715e">// Next figure out what is visible to the player, and what is not.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fieldOfView</span>.<span style="color:#a6e22e">RayCast</span>(<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">Y</span>, <span style="color:#a6e22e">gameMap</span>)
 
-	<span style="color: #75715e">// Next figure out what is visible to the player, and what is not.</span>
-	<span style="color: #a6e22e">fieldOfView</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">RayCast</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">)</span>
+	<span style="color:#75715e">// Now draw each tile that should appear on the screen, if its visible, or explored
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">x</span> &lt; <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Width</span>; <span style="color:#a6e22e">x</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">y</span> &lt; <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Height</span>; <span style="color:#a6e22e">y</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">mapX</span>, <span style="color:#a6e22e">mapY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">X</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Y</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>
 
-	<span style="color: #75715e">// Now draw each tile that should appear on the screen, if its visible, or explored</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">y</span>
-
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">IsWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;white&quot;</span><span style="color: #f8f8f2">))</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;#&quot;</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;white&quot;</span><span style="color: #f8f8f2">))</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;.&quot;</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span>
-			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Explored</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">IsWall</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;gray&quot;</span><span style="color: #f8f8f2">))</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;#&quot;</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;gray&quot;</span><span style="color: #f8f8f2">))</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;.&quot;</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">mapX</span>][<span style="color:#a6e22e">mapY</span>].<span style="color:#a6e22e">Visible</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">mapX</span>][<span style="color:#a6e22e">mapY</span>].<span style="color:#a6e22e">IsWall</span>() {
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;white&#34;</span>))
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;#&#34;</span>)
+				} <span style="color:#66d9ef">else</span> {
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;white&#34;</span>))
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;.&#34;</span>)
+				}
+			} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">mapX</span>][<span style="color:#a6e22e">mapY</span>].<span style="color:#a6e22e">Explored</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">mapX</span>][<span style="color:#a6e22e">mapY</span>].<span style="color:#a6e22e">IsWall</span>() {
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;gray&#34;</span>))
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;#&#34;</span>)
+				} <span style="color:#66d9ef">else</span> {
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;gray&#34;</span>))
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;.&#34;</span>)
+				}
+			}
+		}
+	}
+}</code></pre></div>
 
 <p>The very first thing we do, is clear every single Tile off the visible map. We do this by setting its visible property to false, and replacing it with a &lsquo; &rsquo; character. This is necessary, as every iteration through the game loop, we will need to recalculate our fov (this is not entirely true, and a good spot for some future improvement; only recalculate the fov when the player has moved, for example. Our current approach is a bit naive). Recalculating the fov will set a new batch of Tiles as visible, and if we didn&rsquo;t clear the old ones, we would have a line of visible Tiles behind the character as movement occurred, and also get some strange artifacts when the map is drawn.</p>
 
@@ -390,17 +382,15 @@ p img {
 
 <p>One last thing we need to take care of, in preparation for the next part (adding monsters), is making sure that any entities other than the player are not visible, unless they are within the players field of vision (like our hapless, red NPC in the far left corner of the map). To do this, we simply need to check if the Tile they occupy is visible. If its not, don&rsquo;t draw it:</p>
 
-<p><div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">renderEntities</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Draw every Entity present in the game. This gets called on each iteration of the game loop.</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ToCameraCoordinates</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Draw</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderEntities</span>() {
+	<span style="color:#75715e">// Draw every Entity present in the game. This gets called on each iteration of the game loop.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
+		<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>][<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>].<span style="color:#a6e22e">Visible</span> {
+			<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Draw</span>(<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span>)
+		}
+	}
+}</code></pre></div>
 
 <p>Easy. Now any entities outside the line of sight will not be drawn. The player will have to hunt them down to see them (or wait until they hunt him down&hellip;).</p>
 

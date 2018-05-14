@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.25.1" />
+    <meta name="generator" content="Hugo 0.40.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RLDBAR Sidenote #1: Cameras | Jeremy&#39;s Ramblings</title>
@@ -26,6 +26,7 @@
 
 
 <meta property="article:published_time" content="2017-07-05T22:14:21-06:00"/>
+
 <meta property="article:modified_time" content="2017-07-05T22:14:21-06:00"/>
 
 
@@ -134,11 +135,13 @@ p img {
     
       <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
-    
       <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelikes</span></a>
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+    
+      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
+    
+      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
     
   </nav>
 
@@ -151,6 +154,7 @@ p img {
 <meta itemprop="description" content="A camera and larger maps for our in progress Roguelike">
 
 
+<meta itemprop="datePublished" content="2017-07-05T22:14:21-06:00" />
 <meta itemprop="dateModified" content="2017-07-05T22:14:21-06:00" />
 <meta itemprop="wordCount" content="1760">
 
@@ -196,61 +200,55 @@ p img {
 
 <p>Lets get started with creating a new package, called &lsquo;camera&rsquo;, that will contain our GameCamera:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">package</span> <span style="color: #a6e22e">camera</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">camera</span>
 
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">GameCamera</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">X</span> <span style="color: #66d9ef">int</span>
-    <span style="color: #a6e22e">Y</span> <span style="color: #66d9ef">int</span>
-    <span style="color: #a6e22e">Width</span> <span style="color: #66d9ef">int</span>
-    <span style="color: #a6e22e">Height</span> <span style="color: #66d9ef">int</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GameCamera</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">X</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Y</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Width</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Height</span> <span style="color:#66d9ef">int</span>
+}</code></pre></div>
 
 <p>Our GameCamera has four basic properties: an (x, y) coordinate set, which will keep track of where the camera currently starts its viewport from, and a Width and Height. Nice and simple. Next, we need a way to &ldquo;move&rdquo; the camera around when the player moves:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">c</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameCamera</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">MoveCamera</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">targetX</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">targetY</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapWidth</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapHeight</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #75715e">// Update the camera coordinates to the target coordinates</span>
-    <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">targetX</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">/</span> <span style="color: #ae81ff">2</span>
-	<span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">targetY</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f92672">/</span> <span style="color: #ae81ff">2</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameCamera</span>) <span style="color:#a6e22e">MoveCamera</span>(<span style="color:#a6e22e">targetX</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">targetY</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">mapWidth</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">mapHeight</span> <span style="color:#66d9ef">int</span>) {
+    <span style="color:#75715e">// Update the camera coordinates to the target coordinates
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">targetX</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Width</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+	<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">targetY</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Height</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">x</span> = <span style="color:#ae81ff">0</span>
+	}
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">y</span> &lt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">y</span> = <span style="color:#ae81ff">0</span>
+	}
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">mapWidth</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span>  <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">mapWidth</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &gt; <span style="color:#a6e22e">mapWidth</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Width</span>  {
+		<span style="color:#a6e22e">x</span> = <span style="color:#a6e22e">mapWidth</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Width</span>
+	}
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">mapHeight</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">mapHeight</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">y</span> &gt; <span style="color:#a6e22e">mapHeight</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Height</span> {
+		<span style="color:#a6e22e">y</span> = <span style="color:#a6e22e">mapHeight</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Height</span>
+	}
 
-	<span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+	<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Y</span> = <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>
+}</code></pre></div>
 
 <p>&lsquo;targetX&rsquo; and &lsquo;targetY&rsquo; here are the current position of the player. The (x, y) position of our camera is the top left corner of a rectangle (of size width x height) centered on the player. So, in the first two lines, we take half the width and half the height, and subtract the players x and y, respectively. Next, we check for a few edge cases (literally). If the position of the camera is ever beyond the edges of the map (x &lt; 0, y &lt; 0 or x &gt; mapWidth, y &gt; mapHeight), we&rsquo;ll want to bound the camera to the nearest edge. For example, the player has moved to the far edge of the map, and the distance between the player and the edge is less than half the cameras width. In this case, we will stop moving the camera, and the player will appear to move towards the wall, without the game world shifting; the camera is effectively locked on the edge of the world.</p>
 
 <p>Great, we have a way to move the camera. Now, we need a way to translate coordinates from the map to the camera, as the map will be larger than the camera. Lets take a quick look at that:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">c</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameCamera</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">ToCameraCoordinates</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">mapX</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">cameraX</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #75715e">// Convert coordinates on the map, to coordinates on the viewport</span>
-	<span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">mapX</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span> <span style="color: #f92672">-</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameCamera</span>) <span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">mapX</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">mapY</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">cameraX</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">cameraY</span> <span style="color:#66d9ef">int</span>) {
+    <span style="color:#75715e">// Convert coordinates on the map, to coordinates on the viewport
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mapX</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">mapY</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Y</span>
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">&gt;=</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span> <span style="color: #f92672">||</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">&gt;=</span> <span style="color: #a6e22e">c</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
-	<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> &lt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Width</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Height</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+	}
 
-	<span style="color: #66d9ef">return</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>
+}</code></pre></div>
 
 <p>This function takes a set of map coordinates, and translates them to camera coordinates. We accomplish this by simply subtracting the map coordinates from the width and height of the camera, respectively. This will give us a set of coordinates, that we can then test to see if it is within the current view of the camera. If it is not, we&rsquo;ll return (-1, -1), so it will not be drawn to the screen (we&rsquo;ll be calling this function before we draw anything in the game, henceforth).</p>
 
@@ -258,75 +256,63 @@ p img {
 
 <p>The first thing we&rsquo;ll do is to set our MapWidth and MapHeight consts to 200 each. Because why not? Large maps are fun. Next, we&rsquo;ll need to add a new variable to represent our camera:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">(</span>
-    <span style="color: #f92672">...</span>
-    <span style="color: #a6e22e">gameCamera</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">camera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameCamera</span>
-<span style="color: #f8f8f2">)</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> (
+    <span style="color:#f92672">...</span>
+    <span style="color:#a6e22e">gameCamera</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">GameCamera</span>
+)</code></pre></div>
 
 <p>Then, in our init() function, we need to initialize our new camera:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">init</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #f92672">...</span>
-    <span style="color: #75715e">// Initialize a camera object</span>
-    <span style="color: #a6e22e">gameCamera</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">camera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameCamera</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">:,</span> <span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+    <span style="color:#f92672">...</span>
+    <span style="color:#75715e">// Initialize a camera object
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">gameCamera</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">GameCamera</span>{<span style="color:#a6e22e">X</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Y</span>:, <span style="color:#a6e22e">Width</span>: <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">Height</span>: <span style="color:#a6e22e">WindowSizeY</span>}
+}</code></pre></div>
 
 <p>I&rsquo;ve initialized the initial camera position to (1, 1). This won&rsquo;t matter, as we&rsquo;ll quickly be changing that once the player starts moving. I&rsquo;ve also, for now, set the width and height of the camera to match the size of the window.</p>
 
 <p>Next up, lets actually implement our camera. In our renderAll() function, add the following line before the rest of the code:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MoveCamera</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">MapWidth</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">MapHeight</span><span style="color: #f8f8f2">)</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">MoveCamera</span>(<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">Y</span>, <span style="color:#a6e22e">MapWidth</span>, <span style="color:#a6e22e">MapHeight</span>)</code></pre></div>
 
 <p>At this point, when we are calling renderAll(), we have already determined if the player has moved, and as such, should have new coordinates for it (or not, in which case we still have the players x, y coordinates regardless). We feed those into the MoveCamera() function, which will update the position of the camera to center the player (if it can; remember, if the player is near the map edge, it will not end up centered). Once we have moved the camera, we can go along rendering as normal.</p>
 
 <p>Now, we&rsquo;ve got a bit of house keeping to do. We need to update our GameEntities Draw() and Clear() functions to use camera coordinates, instead of map coordinates. Remember, if a GameEntity is outside of the bounds of the camera, we just won&rsquo;t draw it. Lets modify our renderEntities() function as follows:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">renderEntities</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Draw every Entity present in the game. This gets called on each iteration of the game loop.</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ToCameraCoordinates</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Draw</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderEntities</span>() {
+	<span style="color:#75715e">// Draw every Entity present in the game. This gets called on each iteration of the game loop.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
+		<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>)
+		<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Draw</span>(<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span>)
+	}
+}</code></pre></div>
 
 <p>This will give us the coordinates within the cameras view that the GameEntity will appear (or not, if its outside the screen). We&rsquo;ll need to do the same thing before we call Clear() in our main game loop:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Clear each Entity off the screen</span>
-<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ToCameraCoordinates</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Clear</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">)</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Clear each Entity off the screen
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
+	<span style="color:#a6e22e">mapX</span>, <span style="color:#a6e22e">mapY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>)
+	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Clear</span>(<span style="color:#a6e22e">mapX</span>, <span style="color:#a6e22e">mapY</span>)
+}</code></pre></div>
 
 <p>Now that we&rsquo;re drawing our entities to the correct locations, lets look at what we need to change to properly draw the map (or rather, the portion of the map the camera can see):</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">renderMap</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block</span>
-	<span style="color: #75715e">// sight, draw a &#39;.&#39;</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">y</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Height</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">y</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">x</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Width</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">x</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">mapY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+</span> <span style="color: #a6e22e">y</span>
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">mapX</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">mapY</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Blocked</span> <span style="color: #f92672">==</span> <span style="color: #66d9ef">true</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;gray&quot;</span><span style="color: #f8f8f2">))</span>
-				<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;#&quot;</span><span style="color: #f8f8f2">)</span>
-			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;brown&quot;</span><span style="color: #f8f8f2">))</span>
-				<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;.&quot;</span><span style="color: #f8f8f2">)</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderMap</span>() {
+	<span style="color:#75715e">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// sight, draw a &#39;.&#39;
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">y</span> &lt; <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Height</span>; <span style="color:#a6e22e">y</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">x</span> &lt; <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Width</span>; <span style="color:#a6e22e">x</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">mapX</span>, <span style="color:#a6e22e">mapY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">X</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">gameCamera</span>.<span style="color:#a6e22e">Y</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">mapX</span>][<span style="color:#a6e22e">mapY</span>].<span style="color:#a6e22e">Blocked</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
+				<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;gray&#34;</span>))
+				<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;#&#34;</span>)
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;brown&#34;</span>))
+				<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;.&#34;</span>)
+			}
+		}
+	}
+}</code></pre></div>
 
 <p>As you can see, we&rsquo;re now using the GameCamera as the basis for our drawing loop. We only want to draw things that appear within the bounds of the camera, so we only loop over the width and height of the camera, rather than the map. We then add the camera X and Y to the current x and y to get the actual map tile, and then we render the tile as usual. This works because the GameCamera will be a rectangle centered on the player, so GameCamera.X + x will give us the actual map location, as it simply applies the offset. If the GameCamera is currently at (2, 2), the first time through the loop, mapX and mapY would be (2, 2) (since x and y are 0). The next time around, mapX and mapY would be (3, 2), as we are now at y = 0, x= 1. Hopefully, you can follow that example along and convince yourself of what this is doing (since I&rsquo;m not very good at explaining it).</p>
 

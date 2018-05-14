@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://jeremyceri.se/about-me/</loc>
+    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jeremyceri.se/roguelikes/</loc>
+    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://jeremyceri.se/post/roguelike-dev-part-7/</loc>
     <lastmod>2017-07-27T22:58:00-06:00</lastmod>
   </url>
@@ -48,16 +58,6 @@
   </url>
   
   <url>
-    <loc>http://jeremyceri.se/about-me/</loc>
-    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://jeremyceri.se/roguelikes/</loc>
-    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://jeremyceri.se/categories/</loc>
     <priority>0</priority>
   </url>
@@ -100,7 +100,7 @@
   
   <url>
     <loc>http://jeremyceri.se/</loc>
-    <lastmod>2017-07-27T22:58:00-06:00</lastmod>
+    <lastmod>2017-06-19T17:05:00-06:00</lastmod>
     <priority>0</priority>
   </url>
   

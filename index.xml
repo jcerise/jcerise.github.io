@@ -6,10 +6,33 @@
     <description>Recent content on Jeremy&#39;s Ramblings</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 27 Jul 2017 22:58:00 -0600</lastBuildDate>
+    <lastBuildDate>Mon, 19 Jun 2017 17:05:00 -0600</lastBuildDate>
     
 	<atom:link href="http://jeremyceri.se/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About</title>
+      <link>http://jeremyceri.se/about-me/</link>
+      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/about-me/</guid>
+      <description>I am a software engineer. I program primarily in Python, Javascript, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
+Contact Me
+mail@jeremyceri.se
+Github: jcerise
+Twitter: jcerise</description>
+    </item>
+    
+    <item>
+      <title>Roguelike Development</title>
+      <link>http://jeremyceri.se/roguelikes/</link>
+      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
+      
+      <guid>http://jeremyceri.se/roguelikes/</guid>
+      <description>Update 5/6/2018 Obviously, I never finished this. Maybe at some point I will, but for now, its incomplete. I did however, take what I learned and created a simple Roguelike library in Go, which I call Gogue. It takes most of the concepts from my tutorials here, and puts them in an easy to use library.
+I am currently participating in r/roguelikedev&amp;rsquo;s &amp;lsquo;RoguelikeDev Does the Complete Python Tutorial&amp;rsquo;. The goal of this is to, as a group, run through the entire &amp;lsquo;Complete Roguelike Tutorial in Python&amp;rsquo;, from RogueBasin, written by Jotaf.</description>
+    </item>
     
     <item>
       <title>RoguelikeDev Builds a Roguelike, Part 7</title>
@@ -95,28 +118,6 @@
       <description>&lt;p&gt;So it begins! This is the first in a series of posts following my attempts at making a Roguelike, in Go, using BearLibTerminal. I&amp;rsquo;ll be following along with the &lt;code&gt;RoguelikeDev builds a Roguelike&lt;/code&gt; posts as I progress.&lt;/p&gt;
 
 &lt;p&gt;So, without further ado, lets begin part 0: Setup!`&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>About Me</title>
-      <link>http://jeremyceri.se/about-me/</link>
-      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/about-me/</guid>
-      <description>I am a software engineer. I program primarily in Python, Javascript, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
-Contact Me
-mail@jeremyceri.se
-Github: jcerise
-Twitter: jcerise</description>
-    </item>
-    
-    <item>
-      <title>Roguelike Development</title>
-      <link>http://jeremyceri.se/roguelikes/</link>
-      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/roguelikes/</guid>
-      <description>I am currently participating in r/roguelikedev&amp;rsquo;s &amp;lsquo;RoguelikeDev Does the Complete Python Tutorial&amp;rsquo;. The goal of this is to, as a group, run through the entire &amp;lsquo;Complete Roguelike Tutorial in Python&amp;rsquo;, from RogueBasin, written by Jotaf. This tutorial is a classic, in my opinion (and a few years ago, I took the opportunity to run through it myself, you can find my code on github), and is very well suited to new coders, or those who are looking to get a good overview of how a Roguelike is constructed.</description>
     </item>
     
   </channel>

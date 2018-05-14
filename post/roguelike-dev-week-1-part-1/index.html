@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.25.1" />
+    <meta name="generator" content="Hugo 0.40.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoguelikeDev Builds a Roguelike, Part 2 | Jeremy&#39;s Ramblings</title>
@@ -24,6 +24,7 @@
 
 
 <meta property="article:published_time" content="2017-06-27T22:33:11-06:00"/>
+
 <meta property="article:modified_time" content="2017-06-27T22:33:11-06:00"/>
 
 
@@ -134,11 +135,13 @@ p img {
     
       <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
-    
       <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelikes</span></a>
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+    
+      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
+    
+      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
     
   </nav>
 
@@ -151,6 +154,7 @@ p img {
 <meta itemprop="description" content="Part 2: The Player and Movement">
 
 
+<meta itemprop="datePublished" content="2017-06-27T22:33:11-06:00" />
 <meta itemprop="dateModified" content="2017-06-27T22:33:11-06:00" />
 <meta itemprop="wordCount" content="1629">
 
@@ -190,18 +194,14 @@ p img {
 
 <p>The first thing we&rsquo;re going to need to do is come up with a way to reliably print a character representing the player to the screen. In this case, we will use the classic roguelike standby, the &lsquo;@&rsquo;. We&rsquo;ve already gone over how to print things to the screen last week, using BearLibTerminals Print() method. We could certainly do something like:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&#39;@&#39;</span><span style="color: #f8f8f2">)</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;@&#39;</span>)</code></pre></div>
 
 <p>This would print out player character to the screen at coordinates (1, 1), or the top left corner of the screen. Its easy enough to replace the code that prints &ldquo;Hello, World!&rdquo; with this code, and call it good, but what if we want to move the player around (which we do)? Well, just printing it over and over into the same place certainly won&rsquo;t help us there, so we&rsquo;ll need to store some information about the players location within our game world. Lets add a couple of new variables to our program:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">(</span>
-    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">)</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> (
+    <span style="color:#a6e22e">playerX</span> = <span style="color:#ae81ff">0</span>
+    <span style="color:#a6e22e">playerY</span> = <span style="color:#ae81ff">0</span>
+)</code></pre></div>
 
 <p>We&rsquo;ll use these two variables to keep track of where the player is in the game world. A quick note, these are globally defined, which in my opinion is generally a no-no, so we&rsquo;ll be cleaning them up later, but for now, this is fine.</p>
 
@@ -211,58 +211,52 @@ p img {
 
 <p>To tie this all together, we simply need to handle the key presses from the arrow keys, which, as we&rsquo;ve already seen, can be done in BearLibTerminal using the Read() method. Lets create a new method to handle this, that takes in the value returned by the Read() method:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">switch</span> <span style="color: #a6e22e">key</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_RIGHT</span><span style="color: #f8f8f2">:</span>
-        <span style="color: #a6e22e">playerX</span> <span style="color: #f92672">++</span>
-    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_LEFT</span><span style="color: #f8f8f2">:</span>
-        <span style="color: #a6e22e">playerX</span> <span style="color: #f92672">--</span> 
-    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_UP</span><span style="color: #f8f8f2">:</span>
-        <span style="color: #a6e22e">playerY</span> <span style="color: #f92672">--</span>
-    <span style="color: #66d9ef">case</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_DOWN</span><span style="color: #f8f8f2">:</span>
-        <span style="color: #a6e22e">playerY</span> <span style="color: #f92672">++</span>
-    <span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">int</span>) {
+    <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">key</span> {
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_RIGHT</span>:
+        <span style="color:#a6e22e">playerX</span> <span style="color:#f92672">++</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_LEFT</span>:
+        <span style="color:#a6e22e">playerX</span> <span style="color:#f92672">--</span> 
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_UP</span>:
+        <span style="color:#a6e22e">playerY</span> <span style="color:#f92672">--</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_DOWN</span>:
+        <span style="color:#a6e22e">playerY</span> <span style="color:#f92672">++</span>
+    }
+}</code></pre></div>
 
 <p>The Read() method simply returns an integer, which we can then map back to one of BearLibTerminals key event types. The switch statement simply checks which key was pressed, and following our logic from earlier, adjusts the playerX and playerY values accordingly. Pretty simple!</p>
 
 <p>Now, we&rsquo;ve got a way to update the position of our player, lets add a new function that will draw the player the screen, using the playerX and playerY variables. This is going to be a convenience method, so we can clean up our code a bit. BearLibTerminal has a concept of layers when it draws, which is something that I will go into in more detail in a later post, but suffice it to say, much like setting the color we are printing to the terminal, we can also specify which layer we are working with. There is also a method that will clear everything from a specified area (which in our case, currently, is the entire screen). We will use this to clear the entire screen, and then re-draw our player at the specified position. Don&rsquo;t worry if you don&rsquo;t understand the concepts of layers and drawing, as we&rsquo;ll get more in depth into that at a later time. Lets add a function called drawPlayer:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">x</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">y</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">symbol</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ClearArea</span><span style="color: #f8f8f2">(</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">symbol</span><span style="color: #f8f8f2">)</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">drawPlayer</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">symbol</span> <span style="color:#66d9ef">string</span>) {
+    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Layer</span>(<span style="color:#ae81ff">0</span>)
+    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ClearArea</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
+    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">playerX</span>, <span style="color:#a6e22e">playerY</span>, <span style="color:#a6e22e">symbol</span>)
+}</code></pre></div>
 
 <p>We select the layer (0, in this case, is our only layer), we clear the screen from position (0, 0) to (WindowSizeX, WindowSizeY), which is our entire gameplay area for now, and then we Print() the players character, setting it at the current values of playerX and playerY.</p>
 
 <p>Okay, we&rsquo;ve now got a way to get player input, and adjust the position of the players character, and a way to easily clear the screen, and re-draw the player at the updated position. The final step here is to put it all together in our main game loop:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;white&quot;</span><span style="color: #f8f8f2">)</span>
-    <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;@&quot;</span><span style="color: #f8f8f2">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;white&#34;</span>)
+    <span style="color:#a6e22e">drawPlayer</span>(<span style="color:#a6e22e">playerX</span>, <span style="color:#a6e22e">playerY</span>, <span style="color:#e6db74">&#34;@&#34;</span>)
 
-    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">{</span>
-        <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Refresh</span><span style="color: #f8f8f2">()</span>
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Refresh</span>()
         
-        <span style="color: #a6e22e">key</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Read</span><span style="color: #f8f8f2">()</span>
+        <span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Read</span>()
 
-        <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">key</span> <span style="color: #f92672">!=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_CLOSE</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span><span style="color: #f8f8f2">)</span>
-            <span style="color: #a6e22e">drawPlayer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">playerX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">playerY</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;@&quot;</span><span style="color: #f8f8f2">)</span>
-        <span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-            <span style="color: #66d9ef">break</span>
-        <span style="color: #f8f8f2">}</span>
-    <span style="color: #f8f8f2">}</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_CLOSE</span> {
+            <span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span>)
+            <span style="color:#a6e22e">drawPlayer</span>(<span style="color:#a6e22e">playerX</span>, <span style="color:#a6e22e">playerY</span>, <span style="color:#e6db74">&#34;@&#34;</span>)
+        } <span style="color:#66d9ef">else</span> {
+            <span style="color:#66d9ef">break</span>
+        }
+    }
 
-    <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Close</span><span style="color: #f8f8f2">()</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
+}</code></pre></div>
 
 <p>Our main game loop has changed a bit, so lets walk through it. First up, we&rsquo;re setting the color to print as white, same as we did previously. Then, we&rsquo;re drawing the player to the screen, using the playerX and playerY variables (set to (0, 0)). Then we get into our main loop. Each iteration of the loop, we Refresh() the screen, and then call Read() to see if the player pressed a key. If they did, we check to see if it was TK_CLOSE. If it was, we break out of the loop, and exit the game. If it wasn&rsquo;t, we pass it to handleInput(). handleInput only knows how to handle four different keys (the arrow keys), so it will safely ignore any key press that is not an arrow key. If an arrow key was pressed, we adjust the playerX and playerY variables accordingly. Finally, we print the player to the screen (clearing the contents first in the drawPlayer() method) at the new coordinates provided by playerX and playerY. Whew, quite a few changes there!</p>
 
@@ -270,19 +264,17 @@ p img {
 
 <p>You may notice that as you move your character around, it is possible for it to leave the screen. This is obviously not something we want. Lets go about fixing that. Essentially what we need to do, is if the player would move out of the range of the screen, set it back to the last valid position before it left. To elaborate, if the player is attempting to move to, say, (-1, 0), or just to the left of the edge of the screen, we should set his position back to (0, 0). Likewise, if the player is trying to move to (WindowSizeX + 1, 0), we should probably place the character back at (WindowSizeX, 0). Basically, set the players position to the last valid position they were at before they tried to move. Lets add this code the bottom of our handleInput() function, just below the end of the switch statement:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">WindowSizeX</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
-<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">playerX</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">playerX</span> &gt; <span style="color:#a6e22e">WindowSizeX</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> {
+    <span style="color:#a6e22e">playerX</span> = <span style="color:#a6e22e">WindowSizeX</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">playerX</span> &lt; <span style="color:#ae81ff">0</span> {
+    <span style="color:#a6e22e">playerX</span> = <span style="color:#ae81ff">0</span>
+}
 
-<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">WindowSizeY</span> <span style="color: #f92672">-</span> <span style="color: #ae81ff">1</span>
-<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">{</span>
-    <span style="color: #a6e22e">playerY</span> <span style="color: #f8f8f2">=</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">playerY</span> &gt; <span style="color:#a6e22e">WindowSizeY</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> {
+    <span style="color:#a6e22e">playerY</span> = <span style="color:#a6e22e">WindowSizeY</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">playerY</span> &lt; <span style="color:#ae81ff">0</span> {
+    <span style="color:#a6e22e">playerY</span> = <span style="color:#ae81ff">0</span>
+}</code></pre></div>
 
 <p>This will stop the player from ever moving beyond the bounds of the screen. Go ahead and try it out, you&rsquo;ll find the player bumps into an invisble wall right at each edge of the screen!</p>
 

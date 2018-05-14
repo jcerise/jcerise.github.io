@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.25.1" />
+    <meta name="generator" content="Hugo 0.40.2" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoguelikeDev Builds a Roguelike, Part 7 | Jeremy&#39;s Ramblings</title>
@@ -24,6 +24,7 @@
 
 
 <meta property="article:published_time" content="2017-07-27T22:58:00-06:00"/>
+
 <meta property="article:modified_time" content="2017-07-27T22:58:00-06:00"/>
 
 
@@ -134,11 +135,13 @@ p img {
     
       <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
-    
       <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelikes</span></a>
+      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+    
+      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
+    
+      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
     
   </nav>
 
@@ -151,6 +154,7 @@ p img {
 <meta itemprop="description" content="Part 7: An Entity/Component/System Refactor to make our lives easier">
 
 
+<meta itemprop="datePublished" content="2017-07-27T22:58:00-06:00" />
 <meta itemprop="dateModified" content="2017-07-27T22:58:00-06:00" />
 <meta itemprop="wordCount" content="3508">
 
@@ -199,134 +203,126 @@ p img {
 
 <p>So, now that we have a basic idea of what an ECS is, and generally how they work, lets start looking at how to shoehorn one into our game in progress. We&rsquo;ve got a bit of work to do, as this is a pretty major refactor. We&rsquo;ve already got an Entity struct that we can leverage, but its currently tracking way too much data. That&rsquo;s going to be where we&rsquo;ll start, cutting the fat in our Entity class to better match our goal. Before we get to the code, I&rsquo;m going to refactor our ecs package a bit. It will now have three main files, entity.go, components.go, and systems.go. Hopefully, each of these should be obvious as to their contents. Lets start by looking at our new, skinny entity struct:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">GameEntity</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">gmUUID</span>     <span style="color: #a6e22e">uuid</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">UUID</span>
-	<span style="color: #a6e22e">Components</span> <span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">]</span><span style="color: #a6e22e">Component</span>
-	<span style="color: #a6e22e">mux</span>        <span style="color: #a6e22e">sync</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Mutex</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GameEntity</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">gmUUID</span>     <span style="color:#a6e22e">uuid</span>.<span style="color:#a6e22e">UUID</span>
+	<span style="color:#a6e22e">Components</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Component</span>
+	<span style="color:#a6e22e">mux</span>        <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Mutex</span>
+}</code></pre></div>
 
 <p>As you can see, we&rsquo;ve eliminated all but two fields (plus a mutex field, but thats beyond the scope of this post, and can be safely ignored). gmUUID is a guid that we generate for each new entity we create. Components is a map of components (indexed by the components name). And that&rsquo;s it. I&rsquo;m also going to outline some convenience methods attached to this struct that will make our lives easier later:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">HasComponent</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentName</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Check to see if the entity has the given component</span>
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ok</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">componentName</span><span style="color: #f8f8f2">];</span> <span style="color: #a6e22e">ok</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">true</span>
-	<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">HasComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
+	<span style="color:#75715e">// Check to see if the entity has the given component
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]; <span style="color:#a6e22e">ok</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+	}
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">HasComponents</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentNames</span> <span style="color: #f8f8f2">[]</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Check to see if the entity has the given components</span>
-	<span style="color: #a6e22e">containsAll</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">true</span>
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">!=</span> <span style="color: #66d9ef">nil</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">componentNames</span><span style="color: #f8f8f2">);</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponent</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentNames</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">])</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #a6e22e">containsAll</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">false</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-	<span style="color: #f8f8f2">}</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #a6e22e">containsAll</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">HasComponents</span>(<span style="color:#a6e22e">componentNames</span> []<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
+	<span style="color:#75715e">// Check to see if the entity has the given components
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">containsAll</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">true</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">componentNames</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>]) {
+				<span style="color:#a6e22e">containsAll</span> = <span style="color:#66d9ef">false</span>
+			}
+		}
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">containsAll</span>
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">name</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">component</span> <span style="color: #a6e22e">Component</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Add a single component to the entity</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">name</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">component</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">AddComponent</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">component</span> <span style="color:#a6e22e">Component</span>) {
+	<span style="color:#75715e">// Add a single component to the entity
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">component</span>
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">AddComponents</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">components</span> <span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">]</span><span style="color: #a6e22e">Component</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Add several (or one) components to the entity</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">mux</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Lock</span><span style="color: #f8f8f2">()</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">name</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">component</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">components</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">component</span> <span style="color: #f92672">!=</span> <span style="color: #66d9ef">nil</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #75715e">//fmt.Printf(&quot;Adding component: %s - %v\n&quot;, name, component)</span>
-			<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">name</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">component</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">mux</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Unlock</span><span style="color: #f8f8f2">()</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">AddComponents</span>(<span style="color:#a6e22e">components</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Component</span>) {
+	<span style="color:#75715e">// Add several (or one) components to the entity
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">component</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">components</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">component</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#75715e">//fmt.Printf(&#34;Adding component: %s - %v\n&#34;, name, component)
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">component</span>
+		}
+	}
+	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Unlock</span>()
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">RemoveComponent</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentName</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Remove of a component from the entity</span>
-	<span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ok</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">componentName</span><span style="color: #f8f8f2">]</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#75715e">// Remove of a component from the entity
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]
 
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">ok</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #f8f8f2">delete(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">componentName</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ok</span> {
+		delete(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>, <span style="color:#a6e22e">componentName</span>)
+	}
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">RemoveComponents</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentNames</span> <span style="color: #f8f8f2">[]</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">mux</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Lock</span><span style="color: #f8f8f2">()</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">i</span> <span style="color: #f92672">:=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #a6e22e">i</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">len(</span><span style="color: #a6e22e">componentNames</span><span style="color: #f8f8f2">);</span> <span style="color: #a6e22e">i</span><span style="color: #f92672">++</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ok</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">componentNames</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">]]</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">RemoveComponents</span>(<span style="color:#a6e22e">componentNames</span> []<span style="color:#66d9ef">string</span>) {
+	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Lock</span>()
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">componentNames</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>]]
 
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">ok</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #f8f8f2">delete(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">componentNames</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">i</span><span style="color: #f8f8f2">])</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-	<span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">mux</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Unlock</span><span style="color: #f8f8f2">()</span>
-<span style="color: #f8f8f2">}</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ok</span> {
+			delete(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>, <span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>])
+		}
+	}
+	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Unlock</span>()
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">GetComponent</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">componentName</span> <span style="color: #66d9ef">string</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">Component</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Return the named component from the entity, if present</span>
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ok</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">componentName</span><span style="color: #f8f8f2">];</span> <span style="color: #a6e22e">ok</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">componentName</span><span style="color: #f8f8f2">]</span>
-	<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">nil</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">GetComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">Component</span> {
+	<span style="color:#75715e">// Return the named component from the entity, if present
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]; <span style="color:#a6e22e">ok</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+	}
+}</code></pre></div>
 
 <p>These functions should be pretty self explanatory, so I&rsquo;ll leave their descriptions brief. Basically, these are just ways to check if the entity has a given component (or list of components), add a component to the entity (or a list of components), and removing a component from the entity (or a list of components). All in all, our entity sturct is pretty simple.</p>
 
 <p>Next, we&rsquo;re going to define an interface that will encompass all of our created components. Interfaces in Go work in a very simple fashion. An interface defines function definitions, and any struct that implements all of those definitions is said to be of that interface. The reason we&rsquo;re doing it this way, is because we are going to want a generic (Go doesn&rsquo;t support proper generics) way of putting a component (of many different types) onto an entity. Implementing the interface on all of our components will make them all &ldquo;generic&rdquo; components, in addition to their actual type, making it much easier for us to attach, detach, and check for them on entities. The following code is in components.go:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">type</span> <span style="color: #a6e22e">Component</span> <span style="color: #66d9ef">interface</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Component</span> <span style="color:#66d9ef">interface</span> {
+	<span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span>
+}</code></pre></div>
 
 <p>Very basic. We define one function signature, IsAIComponent(), that will be true if the component is an AI component, and false otherwise. This will make a little more sense in a bit. All of our components will have this function attached, and therefore will be a Component.</p>
 
 <p>We&rsquo;re now going to define a few basic components that most of our entities will have:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">/</span> <span style="color: #a6e22e">Player</span> <span style="color: #a6e22e">Component</span>
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">PlayerComponent</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-<span style="color: #f8f8f2">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">/</span> <span style="color:#a6e22e">Player</span> <span style="color:#a6e22e">Component</span>
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PlayerComponent</span> <span style="color:#66d9ef">struct</span> {
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">pl</span> <span style="color: #a6e22e">PlayerComponent</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pl</span> <span style="color:#a6e22e">PlayerComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+}
 
-<span style="color: #75715e">// Position Component</span>
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">PositionComponent</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">X</span> <span style="color: #66d9ef">int</span>
-	<span style="color: #a6e22e">Y</span> <span style="color: #66d9ef">int</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#75715e">// Position Component
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PositionComponent</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">X</span> <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Y</span> <span style="color:#66d9ef">int</span>
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">pc</span> <span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pc</span> <span style="color:#a6e22e">PositionComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+}
 
-<span style="color: #75715e">// Appearance Component</span>
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">AppearanceComponent</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #a6e22e">Color</span>     <span style="color: #66d9ef">string</span>
-	<span style="color: #a6e22e">Character</span> <span style="color: #66d9ef">string</span>
-	<span style="color: #a6e22e">Layer</span>     <span style="color: #66d9ef">int</span>
-	<span style="color: #a6e22e">Name</span>      <span style="color: #66d9ef">string</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#75715e">// Appearance Component
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AppearanceComponent</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Color</span>     <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Character</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Layer</span>     <span style="color:#66d9ef">int</span>
+	<span style="color:#a6e22e">Name</span>      <span style="color:#66d9ef">string</span>
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">a</span> <span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">a</span> <span style="color:#a6e22e">AppearanceComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+}</code></pre></div>
 
 <p>Lets go through these one by one. First up is the PlayerComponent(). This is what I&rsquo;m going to refer to as a flag component. The PlayerComponent struct doesn&rsquo;t have any data associated with it. This type of component simply indicates a state on the entity it is attached to. In this, it indicates that the entity is the player. Obviously, only one entity in the game will have this component (although their may be states in the future where this is not true, that&rsquo;s the beauty of the flexibility of ECS).</p>
 
@@ -340,207 +336,191 @@ p img {
 
 <p>This is in our init() function, in our main file:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Create a player Entity, and add them to our slice of Entities</span>
-<span style="color: #a6e22e">player</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">{}</span>
-<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;player&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PlayerComponent</span><span style="color: #f8f8f2">{})</span>
-<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">})</span>
-<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;white&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Character</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;@&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Name</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;Player&quot;</span><span style="color: #f8f8f2">})</span>
-<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MovementComponent</span><span style="color: #f8f8f2">{})</span>
-<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;controllable&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ControllableComponent</span><span style="color: #f8f8f2">{})</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Create a player Entity, and add them to our slice of Entities
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">player</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
+<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;player&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PlayerComponent</span>{})
+<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#ae81ff">0</span>})
+<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;appearance&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;white&#34;</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;@&#34;</span>, <span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Player&#34;</span>})
+<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{})
+<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">ControllableComponent</span>{})</code></pre></div>
 
 <p>This is how we&rsquo;re going to define entities from here out. All we&rsquo;re doing is adding a list of components to the newly created entity. Each component has a name, and a component type. You may notice that there are some components here that I have not previously discussed, movement and controllable. You&rsquo;ll notice these are both flag components, as they take no data. These indicate that the player is directly controllable using the keyboard, and that it is capable of movement.</p>
 
 <p>I&rsquo;m setting the players position component to values of X: 0 and Y:0. This is because we generate the starting coordinates for the player from the map, if you recall. Lets see how setting that has changed:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">if</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">_</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">].(</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">playerX</span>
-		<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">playerY</span>
-		<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">RemoveComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">)</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>) {
+		<span style="color:#a6e22e">positionComponent</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>)
+		<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span> = <span style="color:#a6e22e">playerX</span>
+		<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span> = <span style="color:#a6e22e">playerY</span>
+		<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>)
+		<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">positionComponent</span>)
+}</code></pre></div>
 
 <p>First, we check to make sure the player actually has a PositionComponent (this is a pattern we will repeat much in the near future). If it does, we grab the PositionComponent (using a type assertions to ensure Go that are actually pulling a PositionComponent), and then we set it to the x and y value from our map generation code. Then, we remove the existing PositionComponent, and replace it with our updated one (as we are not using pointers for the components). That&rsquo;s it, our player now has an updated PositionComponent, and will be reflected in that position when we draw it to the screen.</p>
 
 <p>Speaking of rendering, our renderEntities() function will need a bit of an overhaul, now that we cannot directly access properties on each entity. In fact, we&rsquo;re going to completely remove renderEntities(), and replace it with our first system. We&rsquo;re going to create a new system, called SystemRender(). This system will take the master list of entities (unchanged through our refactor, we&rsquo;re still keeping track of them the same way), and render those who have a position and appearance component. This system will live in our systems.go file:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">SystemRender</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">[]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">camera</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">camera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameCamera</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">gamemap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Render all renderable entities to the screen</span>
-	<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">!=</span> <span style="color: #66d9ef">nil</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponents</span><span style="color: #f8f8f2">([]</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">})</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">_</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">].(</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #a6e22e">app</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">_</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">].(</span><span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">camera</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">GameCamera</span>, <span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>) {
+	<span style="color:#75715e">// Render all renderable entities to the screen
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#e6db74">&#34;appearance&#34;</span>}) {
+				<span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">PositionComponent</span>)
+				<span style="color:#a6e22e">app</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;appearance&#34;</span>].(<span style="color:#a6e22e">AppearanceComponent</span>)
 
-				<span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">camera</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ToCameraCoordinates</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">)</span>
+				<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">Y</span>)
 
-				<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Tiles</span><span style="color: #f8f8f2">[</span><span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">][</span><span style="color: #a6e22e">pos</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">].</span><span style="color: #a6e22e">Visible</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">app</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">)</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">ColorFromName</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">app</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">))</span>
-					<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Print</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">cameraX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">cameraY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">app</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Character</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">X</span>][<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">Y</span>].<span style="color:#a6e22e">Visible</span> {
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Layer</span>(<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Layer</span>)
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Color</span>))
+					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span>, <span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Character</span>)
+				}
+			}
+		}
+	}
+}</code></pre></div>
 
 <p>This code should look sort of familiar, as at its core, its no different than our previous rendering code. The main difference lies in how we&rsquo;re accessing the appearance and position information. Whereas previously, we would pull that information directly off the entity, we now pull it off of the entities components (if they are present). We first check each entity to make sure it is valid for this system (has a position and appearance), then we grab those components (again, using a type assertion on each). WE then use the information on each to draw the entity to the screen in the same manner we always have.</p>
 
 <p>Now that we&rsquo;ve got that fancy new system sitting there, ready to go, where and how do we call it? The answer is, just like our old renderEntities function, and in roughly the same place. Back in our main game file, in our main() function:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Main game loop</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#75715e">// Main game loop
+</span><span style="color:#75715e"></span>
+	<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">SendMessage</span>(<span style="color:#e6db74">&#34;You find yourself in the caverns of eternal sadness...you start to feel a little more sad.&#34;</span>)
+	<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
+	<span style="color:#a6e22e">renderMap</span>()
+	<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
 
-	<span style="color: #a6e22e">messageLog</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SendMessage</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;You find yourself in the caverns of eternal sadness...you start to feel a little more sad.&quot;</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #a6e22e">messageLog</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PrintMessages</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">ViewAreaY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #a6e22e">renderMap</span><span style="color: #f8f8f2">()</span>
-	<span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SystemRender</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">)</span>
+    <span style="color:#f92672">...</span>
 
-    <span style="color: #f92672">...</span>
+    <span style="color:#a6e22e">renderMap</span>()
+		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
+		<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
+	}
 
-    <span style="color: #a6e22e">renderMap</span><span style="color: #f8f8f2">()</span>
-		<span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SystemRender</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">messageLog</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PrintMessages</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">ViewAreaY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #f8f8f2">}</span>
-
-	<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Close</span><span style="color: #f8f8f2">()</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+	<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
+}</code></pre></div>
 
 <p>That should look pretty familiar. Really, all we&rsquo;ve done is replace the old call to RenderAll() (which called RenderEntities()) with a call to our new system function, passing in the entities, gameCamera, and gameMap. That&rsquo;s all. Nothing crazy here. Every time through our game loop, SystemRender() will be called, it will check each entity for the proper components, and, if present, render the entity to the screen.</p>
 
 <p>One last thing we need to do is replace our monster generation with our ECS setup. This will be in cavern.go, in the gamemap package:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">if</span> <span style="color: #a6e22e">chance</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">25</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #75715e">// Create a Troll</span>
-			<span style="color: #a6e22e">createdEntity</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">{}</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SetupGameEntity</span><span style="color: #f8f8f2">()</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponents</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">]</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">:</span>     <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Character</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;T&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;dark green&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Name</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;Troll&quot;</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;hitpoints&quot;</span><span style="color: #f8f8f2">:</span>      <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HitPointComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Hp</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">20</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">MaxHP</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">20</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">:</span>       <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MovementComponent</span><span style="color: #f8f8f2">{}})</span>
-		<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">chance</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">25</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #a6e22e">chance</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #75715e">// Create an Orc</span>
-			<span style="color: #a6e22e">createdEntity</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">{}</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SetupGameEntity</span><span style="color: #f8f8f2">()</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponents</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">]</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">:</span>     <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Character</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;o&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;darker green&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Name</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;Orc&quot;</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;hitpoints&quot;</span><span style="color: #f8f8f2">:</span>      <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HitPointComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Hp</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">15</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">MaxHP</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">15</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">:</span>       <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MovementComponent</span><span style="color: #f8f8f2">{}})</span>
-		<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #66d9ef">if</span> <span style="color: #a6e22e">chance</span> <span style="color: #f8f8f2">&gt;</span> <span style="color: #ae81ff">50</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #75715e">// Create a Goblin</span>
-			<span style="color: #a6e22e">createdEntity</span> <span style="color: #f8f8f2">=</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">{}</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SetupGameEntity</span><span style="color: #f8f8f2">()</span>
-			<span style="color: #a6e22e">createdEntity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponents</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">map</span><span style="color: #f8f8f2">[</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">]</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Component</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">X</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">x</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Y</span><span style="color: #f8f8f2">:</span> <span style="color: #a6e22e">y</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;appearance&quot;</span><span style="color: #f8f8f2">:</span>     <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AppearanceComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Layer</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Character</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;g&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Color</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;green&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">Name</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&quot;Goblin&quot;</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;hitpoints&quot;</span><span style="color: #f8f8f2">:</span>      <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HitPointComponent</span><span style="color: #f8f8f2">{</span><span style="color: #a6e22e">Hp</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">MaxHP</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">5</span><span style="color: #f8f8f2">},</span>
-				<span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">:</span>       <span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MovementComponent</span><span style="color: #f8f8f2">{}})</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">25</span> {
+			<span style="color:#75715e">// Create a Troll
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
+				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;T&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;dark green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Troll&#34;</span>},
+				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">20</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">20</span>},
+				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> &gt; <span style="color:#ae81ff">25</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">chance</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">50</span> {
+			<span style="color:#75715e">// Create an Orc
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
+				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;o&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;darker green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Orc&#34;</span>},
+				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">15</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">15</span>},
+				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})
+		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> &gt; <span style="color:#ae81ff">50</span> {
+			<span style="color:#75715e">// Create a Goblin
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
+			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
+				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;g&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Goblin&#34;</span>},
+				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">5</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">5</span>},
+				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})</code></pre></div>
 
 <p>We&rsquo;re using the AddComponents() function easily add multiple components at once to our created entities, but other than that, we create these in much the same way as our player. This highlights, I think, how easy it is to compose new entities.</p>
 
 <p>At this point, we should have all of our entities drawing to the screen properly. Lets now tackle movement, before we wrap up. We&rsquo;re going to add a new component (hinted at above) called MovementComponent, and along with that, a new system, SystemMovement. My goal is to make all of our systems as generic as possible, so that we are not handling special cases that are unique to the player (you&rsquo;ll see this our SystemMovement system, as in theory, it will be possible to control any entity in the game; the result of a mind control spell, maybe?).We&rsquo;ll also add a flag component, to indicate if the entity is controllable or not. Lets add our component first:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">// Movement Component</span>
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">MovementComponent</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-<span style="color: #f8f8f2">}</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Movement Component
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MovementComponent</span> <span style="color:#66d9ef">struct</span> {
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">m</span> <span style="color: #a6e22e">MovementComponent</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#a6e22e">MovementComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+}
 
-<span style="color: #75715e">// Controllable Component</span>
-<span style="color: #66d9ef">type</span> <span style="color: #a6e22e">ControllableComponent</span> <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">{</span>
-<span style="color: #f8f8f2">}</span>
+<span style="color:#75715e">// Controllable Component
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ControllableComponent</span> <span style="color:#66d9ef">struct</span> {
+}
 
-<span style="color: #66d9ef">func</span> <span style="color: #f8f8f2">(</span><span style="color: #a6e22e">c</span> <span style="color: #a6e22e">ControllableComponent</span><span style="color: #f8f8f2">)</span> <span style="color: #a6e22e">IsAIComponent</span><span style="color: #f8f8f2">()</span> <span style="color: #66d9ef">bool</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #66d9ef">return</span> <span style="color: #66d9ef">false</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">ControllableComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
+}</code></pre></div>
 
 <p>Nothing new here, its still not an AI component either. Now, lets code up the accompanying system. This will be very similar to how we&rsquo;re currently handling movement, except we&rsquo;re going to do some checks for components beforehand:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">SystemMovement</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entity</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">dy</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">[]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">GameEntity</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">gamemap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Map</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">messageLog</span> <span style="color: #f92672">*</span><span style="color: #a6e22e">ui</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">MessageLog</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-	<span style="color: #75715e">// Allow a moveable and controllable entity to move</span>
-	<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">entity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponents</span><span style="color: #f8f8f2">([]</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;controllable&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">})</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #75715e">// If the current entity is controllable, moveable, and has a position, go ahead and move it</span>
-		<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">_</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">entity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Components</span><span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">].(</span><span style="color: #a6e22e">PositionComponent</span><span style="color: #f8f8f2">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SystemMovement</span>(<span style="color:#a6e22e">entity</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>, <span style="color:#a6e22e">messageLog</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ui</span>.<span style="color:#a6e22e">MessageLog</span>) {
+	<span style="color:#75715e">// Allow a moveable and controllable entity to move
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#e6db74">&#34;position&#34;</span>}) {
+		<span style="color:#75715e">// If the current entity is controllable, moveable, and has a position, go ahead and move it
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">positionComponent</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">PositionComponent</span>)
 
-		<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">IsBlocked</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f92672">+</span><span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f92672">+</span><span style="color: #a6e22e">dy</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #a6e22e">target</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">GetBlockingEntitiesAtLocation</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span><span style="color: #f92672">+</span><span style="color: #a6e22e">dx</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span><span style="color: #f92672">+</span><span style="color: #a6e22e">dy</span><span style="color: #f8f8f2">)</span>
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">target</span> <span style="color: #f92672">!=</span> <span style="color: #66d9ef">nil</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #75715e">// SystemAttack(entity, target, messageLog) - this is our Attack system; next time!</span>
-			<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">X</span> <span style="color: #f92672">+=</span> <span style="color: #a6e22e">dx</span>
-				<span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Y</span> <span style="color: #f92672">+=</span> <span style="color: #a6e22e">dy</span>
+		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">IsBlocked</span>(<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dy</span>) {
+			<span style="color:#a6e22e">target</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">GetBlockingEntitiesAtLocation</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dy</span>)
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">target</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#75715e">// SystemAttack(entity, target, messageLog) - this is our Attack system; next time!
+</span><span style="color:#75715e"></span>			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dx</span>
+				<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dy</span>
 
-				<span style="color: #a6e22e">entity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">RemoveComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #a6e22e">entity</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">AddComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">positionComponent</span><span style="color: #f8f8f2">)</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span>
-	<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #75715e">// Implement an AI component here (later)</span>
-	<span style="color: #f8f8f2">}</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+				<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>)
+				<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">positionComponent</span>)
+			}
+		}
+	} <span style="color:#66d9ef">else</span> {
+		<span style="color:#75715e">// Implement an AI component here (later)
+</span><span style="color:#75715e"></span>	}
+}</code></pre></div>
 
 <p>First, we&rsquo;re checking for the movement, controllable, and position components. If an entity is missing any of these, we&rsquo;ll pass it off to an AI routine (next post), and let it decide what to do. If the entity is controllable, has movement, and has a position though, we need to handle that. We will have a dx and dy value, which will be passed in from our key handling function, and those will get applied as normal to move the controllable entity. Note, this does not apply just to the player, but any entity that happens to have the controllable component. This means that the player may be able to control multiple entities in a turn.</p>
 
 <p>To use this system, we just need to call it. Back in our main game file, in our main() function:</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #66d9ef">func</span> <span style="color: #a6e22e">main</span> <span style="color: #f8f8f2">()</span> <span style="color: #f8f8f2">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span> () {
 
-    <span style="color: #f92672">...</span>
+    <span style="color:#f92672">...</span>
 
-    <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">{</span>
-		<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Refresh</span><span style="color: #f8f8f2">()</span>
+    <span style="color:#66d9ef">for</span> {
+		<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Refresh</span>()
 
-		<span style="color: #a6e22e">key</span> <span style="color: #f92672">:=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Read</span><span style="color: #f8f8f2">()</span>
+		<span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Read</span>()
 
-		<span style="color: #75715e">// Clear each Entity off the screen</span>
-		<span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SystemClear</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">)</span>
+		<span style="color:#75715e">// Clear each Entity off the screen
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemClear</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>)
 
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">key</span> <span style="color: #f92672">!=</span> <span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">TK_CLOSE</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameTurn</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">PlayerTurn</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponents</span><span style="color: #f8f8f2">([]</span><span style="color: #66d9ef">string</span><span style="color: #f8f8f2">{</span><span style="color: #e6db74">&quot;movement&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;controllable&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #e6db74">&quot;position&quot;</span><span style="color: #f8f8f2">})</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #a6e22e">handleInput</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">key</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">player</span><span style="color: #f8f8f2">)</span>
-				<span style="color: #f8f8f2">}</span>
-			<span style="color: #f8f8f2">}</span>
-		<span style="color: #f8f8f2">}</span> <span style="color: #66d9ef">else</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #66d9ef">break</span>
-		<span style="color: #f8f8f2">}</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_CLOSE</span> {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameTurn</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">PlayerTurn</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#e6db74">&#34;position&#34;</span>}) {
+					<span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">player</span>)
+				}
+			}
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#66d9ef">break</span>
+		}
 
-		<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">gameTurn</span> <span style="color: #f92672">==</span> <span style="color: #a6e22e">MobTurn</span> <span style="color: #f8f8f2">{</span>
-			<span style="color: #66d9ef">var</span> <span style="color: #a6e22e">newEntities</span> <span style="color: #f8f8f2">[]</span><span style="color: #f92672">*</span><span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">GameEntity</span>
-			<span style="color: #66d9ef">for</span> <span style="color: #a6e22e">_</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">:=</span> <span style="color: #66d9ef">range</span> <span style="color: #a6e22e">entities</span> <span style="color: #f8f8f2">{</span>
-				<span style="color: #66d9ef">if</span> <span style="color: #a6e22e">e</span> <span style="color: #f92672">!=</span> <span style="color: #66d9ef">nil</span> <span style="color: #f8f8f2">{</span>
-					<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">!</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">HasComponent</span><span style="color: #f8f8f2">(</span><span style="color: #e6db74">&quot;player&quot;</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">{</span>
-						<span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SystemMovement</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">e</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">,</span> <span style="color: #f92672">&amp;</span><span style="color: #a6e22e">messageLog</span><span style="color: #f8f8f2">)</span>
-					<span style="color: #f8f8f2">}</span>
-				<span style="color: #f8f8f2">}</span>
-			<span style="color: #f8f8f2">}</span>
-			<span style="color: #a6e22e">gameTurn</span> <span style="color: #f8f8f2">=</span> <span style="color: #a6e22e">PlayerTurn</span>
-		<span style="color: #f8f8f2">}</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameTurn</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">MobTurn</span> {
+			<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newEntities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>
+			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
+				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+					<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#e6db74">&#34;player&#34;</span>) {
+						<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemMovement</span>(<span style="color:#a6e22e">e</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameMap</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">messageLog</span>)
+					}
+				}
+			}
+			<span style="color:#a6e22e">gameTurn</span> = <span style="color:#a6e22e">PlayerTurn</span>
+		}
 
-		<span style="color: #a6e22e">renderMap</span><span style="color: #f8f8f2">()</span>
-		<span style="color: #a6e22e">ecs</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">SystemRender</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">entities</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameCamera</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">gameMap</span><span style="color: #f8f8f2">)</span>
-		<span style="color: #a6e22e">messageLog</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">PrintMessages</span><span style="color: #f8f8f2">(</span><span style="color: #a6e22e">ViewAreaY</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeX</span><span style="color: #f8f8f2">,</span> <span style="color: #a6e22e">WindowSizeY</span><span style="color: #f8f8f2">)</span>
-	<span style="color: #f8f8f2">}</span>
+		<span style="color:#a6e22e">renderMap</span>()
+		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
+		<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
+	}
 
-	<span style="color: #a6e22e">blt</span><span style="color: #f8f8f2">.</span><span style="color: #a6e22e">Close</span><span style="color: #f8f8f2">()</span>
-<span style="color: #f8f8f2">}</span>
-</pre></div>
-
+	<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
+}</code></pre></div>
 
 <p>We&rsquo;re now calling our new movement system anywhere an entity may move. In particular, on the players turn, we check to make sure he has all the correct components, and then hand off control to the handleKeys function (which calls SystemMovement, once the movement keys have been resolved). For monsters, we&rsquo;re doing the same, but anticipating they will not be controllable, and thus will hand off control to an AI system (in a later post). We are now using a single unified system for every entity in the game that can move.</p>
 
