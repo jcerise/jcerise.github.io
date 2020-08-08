@@ -1,124 +1,74 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
+    <docs>https://blogs.law.harvard.edu/tech/rss</docs>
     <title>Jeremy&#39;s Ramblings</title>
-    <link>http://jeremyceri.se/</link>
+    <link>https://jeremyceri.se/</link>
     <description>Recent content on Jeremy&#39;s Ramblings</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <image>
+      <title>Jeremy&#39;s Ramblings</title>
+      <link>https://jeremyceri.se/</link>
+      <url>https://source.unsplash.com/collection/983219/2000x1322</url>
+    </image>
+    <ttl>1440</ttl>
+    <generator>After Dark 9.2.2 (Hugo 0.68.3)</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 19 Jun 2017 17:05:00 -0600</lastBuildDate>
-    
-	<atom:link href="http://jeremyceri.se/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright &amp;copy; Copyright Jermey Cerise. Licensed under CC-BY-ND-4.0.</copyright>
+    <lastBuildDate>Sat, 08 Aug 2020 05:33:43 UT</lastBuildDate>
+    <atom:link href="https://jeremyceri.se/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>http://jeremyceri.se/about-me/</link>
-      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/about-me/</guid>
-      <description>I am a software engineer. I program primarily in Python, Javascript, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
+      <link>https://jeremyceri.se/about-me/</link>
+      <pubDate>Mon, 19 Jun 2017 23:05:00 UT</pubDate>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/about-me/</guid>
+      <description>I am a software engineer. I program primarily in Python and Go, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm, Javascript, etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
+Contact Me
+mail@jeremyceri.se
+Github: jcerise</description>
+      <content:encoded><![CDATA[I am a software engineer. I program primarily in Python and Go, and whatever other languages strike my fancy (Go, Kotlin, Scala, Rust, Erlang, Elm, Javascript, etc). I also do other things like miniature wargaming, downhill mountain biking, and video games. Sometimes I write about these things here.
 Contact Me
 mail@jeremyceri.se
 Github: jcerise
-Twitter: jcerise</description>
+]]></content:encoded>
     </item>
-    
     <item>
       <title>Roguelike Development</title>
-      <link>http://jeremyceri.se/roguelikes/</link>
-      <pubDate>Mon, 19 Jun 2017 17:05:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/roguelikes/</guid>
-      <description>Update 5/6/2018 Obviously, I never finished this. Maybe at some point I will, but for now, its incomplete. I did however, take what I learned and created a simple Roguelike library in Go, which I call Gogue. It takes most of the concepts from my tutorials here, and puts them in an easy to use library.
-I am currently participating in r/roguelikedev&amp;rsquo;s &amp;lsquo;RoguelikeDev Does the Complete Python Tutorial&amp;rsquo;. The goal of this is to, as a group, run through the entire &amp;lsquo;Complete Roguelike Tutorial in Python&amp;rsquo;, from RogueBasin, written by Jotaf.</description>
+      <link>https://jeremyceri.se/roguelikes/</link>
+      <pubDate>Mon, 19 Jun 2017 23:05:00 UT</pubDate>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/roguelikes/</guid>
+      <description>Update 8/3/2020
+Gogue has come a long ways since my last update. It&amp;rsquo;s a relatively full featured Go Roguelike framework. I also moved my tutorial writing over to the wiki on the Gogue project. There is a (work in progress) tutorial found here, as well as instructions on getting setup. You can also find the source for the tutorial Roguelike created in the above mentioned tutorial here.
+I&amp;rsquo;m leaving this tutorial series up for posterity, but if you&amp;rsquo;re looking for more up to date information, I highly suggest you check out Gogue!</description>
+      <content:encoded><![CDATA[Update 8/3/2020
+Gogue has come a long ways since my last update. It&amp;rsquo;s a relatively full featured Go Roguelike framework. I also moved my tutorial writing over to the wiki on the Gogue project. There is a (work in progress) tutorial found here, as well as instructions on getting setup. You can also find the source for the tutorial Roguelike created in the above mentioned tutorial here.
+I&amp;rsquo;m leaving this tutorial series up for posterity, but if you&amp;rsquo;re looking for more up to date information, I highly suggest you check out Gogue!
+Update 5/6/2018
+ Obviously, I never finished this. Maybe at some point I will, but for now, its incomplete. I did however, take what I learned and created a simple Roguelike library in Go, which I call Gogue. It takes most of the concepts from my tutorials here, and puts them in an easy to use library.
+ I am currently participating in r/roguelikedev&amp;rsquo;s &amp;lsquo;RoguelikeDev Does the Complete Python Tutorial&amp;rsquo;. The goal of this is to, as a group, run through the entire &amp;lsquo;Complete Roguelike Tutorial in Python&amp;rsquo;, from RogueBasin, written by Jotaf. This tutorial is a classic, in my opinion (and a few years ago, I took the opportunity to run through it myself, you can find my code on github), and is very well suited to new coders, or those who are looking to get a good overview of how a Roguelike is constructed.
+For this project, I decided, since I have already run through the tutorial in Python, that I would learn a new language in the process. I chose Go, as I&amp;rsquo;ve been meaning to dive into it for a while. From there, I chose the excellent BearLibTerminal for my terminal display needs, as there is a Go package ready to use. I&amp;rsquo;ll be posting my progress here, as well as a weekly blog post walking through the steps I&amp;rsquo;m taking to follow along (and any interesting Go tidbits I pick up along the way).
+Part 1: Setup - code
+Part 2: Movement - code
+Part 3: Entities and the Map - code
+Part 4: A more interesting Map - code
+Part 5: Field of Vision - code
+Part 6: Preparing for Combat - code
+Part 7: ECS Refactor - code
+[Part 8: Combat] - code
+[Part 9: Basic UI] - code
+======
+Sidenotes:
+Sidenote 1: Cameras - code
+Sidenote 2: Vim Keys and Diagonal Movement
+]]></content:encoded>
     </item>
-    
     <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 7</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-part-7/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-part-7/</guid>
-      <description>The time has finally come where our small game is going to become unmanageable when adding new features. Certainly, we could make it work (and in fact the official tutorial and revamped tutorial come up with some clever ways around this complexity), but I&amp;rsquo;m not a fan of headaches, or unmaintainable code. I&amp;rsquo;ve always wanted to write an entity component system setup from scratch, to better understand how they work, and and ECS can dramatically help us cut down on complexity of new features.</description>
+      <title>Posts</title>
+      <link>https://jeremyceri.se/post/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/post/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
-    <item>
-      <title>RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</title>
-      <link>http://jeremyceri.se/post/sidenote-2-vim-keys/</link>
-      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/sidenote-2-vim-keys/</guid>
-      <description>In this second sidenote to the main RLDBAR tutorial, we&amp;rsquo;re going to make a very small, but very useful change: diagnonal movement, and allowing users to move via VIM keys. The first, diagonal movement, opens up many more tactical options over just being able to move in the cardinal directions (north, south, east, west), and will give the player more flexibility. Adding in support for VIM key movement (h, j, k, l, y, u, b, n) will give our game a bit more reach to users without full keyboards (not that we&amp;rsquo;ve implemented number pad support yet&amp;hellip; :P ).</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 6</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-3-part-2/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-3-part-2/</guid>
-      <description>Welcome back to my series about building a Roguelike in Go (and following along with RoguelikeDev&amp;rsquo;s dev-along)! Last time, we added a field of vision algorithm to our game, putting the player in the dark, except the immediate area surrounding them. In this installment, we&amp;rsquo;re going to start adding the framework for monsters that inhabit the dark corners of the caverns. In particular, our goal will be to randomly place Game Entities, representing things such as Goblins, Troll, and Orcs, around our generated caverns, make sure they get to take actions, and allow the player to interact with them.</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 5</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-3-part-1/</link>
-      <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-3-part-1/</guid>
-      <description>Welcome to part 5 of RoguelikeDev builds a Roguelike! In this weeks installment, we&amp;rsquo;re going to be talking about field of vision (fov for short), and how we can apply that to our game in progress. Field of vision is how far the player can see. If something is beyond the field of vision of the player, it will not be visible. This adds a nice exploration element to our game, as the game map starts completely unexplored.</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 4</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-2/</link>
-      <pubDate>Tue, 11 Jul 2017 13:41:06 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-2/</guid>
-      <description>Welcome to Part 4 of RoguelikeDev builds a Roguelike! This week, we&amp;rsquo;re going to be fleshing out the map that the player will be playing the game on. If you recall, last time, we created an &amp;lsquo;arena&amp;rsquo; sort of map, with a large open space in the middle, surrounded by walls along the outside edges. Not very exciting, but it was something for the player to mover around in. This week, we&amp;rsquo;re going to procedurally generate some (hopefully) realistic looking caverns that the player can explore.</description>
-    </item>
-    
-    <item>
-      <title>RLDBAR Sidenote #1: Cameras</title>
-      <link>http://jeremyceri.se/post/sidenote-1-cameras/</link>
-      <pubDate>Wed, 05 Jul 2017 22:14:21 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/sidenote-1-cameras/</guid>
-      <description>This is the first of what I anticipate to be several sidenotes to the main RoguelikeDev Builds a Roguelike shenanigans. These sidenotes will deal with things that are not covered in the main tutorial, but I still feel add value, either to gameplay, programming knowledge, or both. For the inaugural Sidenote, we&amp;rsquo;ll be discussing adding a camera to our in progress roguelike. A camera will give us a couple of benefits, but the most immediate is that we can support maps larger than the terminal window.</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds A Roguelike, Part 3</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-1-part-2/</link>
-      <pubDate>Sun, 02 Jul 2017 20:25:13 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-1-part-2/</guid>
-      <description>Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is the second part of this weeks posts, the first being concerned with creating a player representation and moving it around using player input. In the second part of this week, we&amp;rsquo;re going to start thinking about the overall structure of our game, as well as get an intial version of the gameplay map, which is the world the player will be interacting with.</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 2</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-1-part-1/</link>
-      <pubDate>Tue, 27 Jun 2017 22:33:11 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-1-part-1/</guid>
-      <description>&lt;p&gt;Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is part 2, and this week, we&amp;rsquo;ve got things split into two parts. The first part, which this post will be concerned with, involves displaying the player and the screen, and implementing basic four direction movement. Part two will consist of creating a generic &amp;lsquo;Object&amp;rsquo; type that will represent things in the game, as well as creating an initial dungeon map.&lt;/p&gt;
-
-&lt;p&gt;Lets dive right in creating our player, and getting it moving!
-&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>RoguelikeDev Builds a Roguelike, Part 1</title>
-      <link>http://jeremyceri.se/post/roguelike-dev-week-0/</link>
-      <pubDate>Wed, 21 Jun 2017 23:54:35 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/post/roguelike-dev-week-0/</guid>
-      <description>&lt;p&gt;So it begins! This is the first in a series of posts following my attempts at making a Roguelike, in Go, using BearLibTerminal. I&amp;rsquo;ll be following along with the &lt;code&gt;RoguelikeDev builds a Roguelike&lt;/code&gt; posts as I progress.&lt;/p&gt;
-
-&lt;p&gt;So, without further ado, lets begin part 0: Setup!`&lt;/p&gt;</description>
-    </item>
-    
   </channel>
 </rss>

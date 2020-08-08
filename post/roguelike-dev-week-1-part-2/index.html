@@ -1,7 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.40.2" />
+    
+
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; connect-src 'self' wss: data:; font-src 'self' https: data:; img-src 'self' https: data:; object-src 'none'">
+
+
+    <meta name="generator" content="After Dark Hugo">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoguelikeDev Builds A Roguelike, Part 3 | Jeremy&#39;s Ramblings</title>
@@ -11,80 +17,134 @@
     
     
     
-    
-
-  <meta name="author" content="Jeremy Cerise">
-
-
     <meta property="og:title" content="RoguelikeDev Builds A Roguelike, Part 3" />
 <meta property="og:description" content="Part 3: Game Entities and the Map" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://jeremyceri.se/post/roguelike-dev-week-1-part-2/" />
+<meta property="og:url" content="https://jeremyceri.se/post/roguelike-dev-week-1-part-2/" />
+<meta property="og:image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
+<meta property="article:published_time" content="2017-07-02T20:25:13-06:00" />
+<meta property="article:modified_time" content="2017-07-02T20:25:13-06:00" />
 
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
 
-
-<meta property="article:published_time" content="2017-07-02T20:25:13-06:00"/>
-
-<meta property="article:modified_time" content="2017-07-02T20:25:13-06:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta name="twitter:title" content="RoguelikeDev Builds A Roguelike, Part 3"/>
+<meta name="twitter:description" content="Part 3: Game Entities and the Map"/>
 
     
 
 
 
-  <meta property="og:image" content="https://source.unsplash.com/category/technology/1600x900">
+  <meta property="og:image" content="https://source.unsplash.com/collection/983219/2000x1322">
 
 
-    <meta name="theme-color" content="#000">
+    
 
     
     
+  <meta name="referrer" content="same-origin">
+
+
     
-    <link rel="canonical" href="http://jeremyceri.se/post/roguelike-dev-week-1-part-2/">
+    
+    <script integrity="sha512-2t0yyNrUdtn9WGIoBVxq5vtoJQYfoDQDbqRPpOb75f1hiL39DGLdJKDrGP60fBhXfrFeKyVhzWJvHvLgln/ElA==">/*! Fetch Inject v2.0.4 | Copyright (C) Josh Habdas <jhabdas@protonmail.com> (https://habd.as) | @license Zlib */
+var fetchInject=function(){"use strict";const e=function(e,t,r,n,o,c,i){c=t.createElement(r),i=t.getElementsByTagName(r)[0],c.appendChild(t.createTextNode(n.text)),c.onload=o(n),i?i.parentNode.insertBefore(c,i):t.head.appendChild(c)};return function(t,r){if(!arguments.length)return Promise.reject(new ReferenceError("Failed to execute 'fetchInject': 1 argument required but only 0 present."));if(arguments[0]&&arguments[0].constructor!==Array)return Promise.reject(new TypeError("Failed to execute 'fetchInject': argument 1 must be of type 'Array'."));if(arguments[1]&&arguments[1].constructor!==Promise)return Promise.reject(new TypeError("Failed to execute 'fetchInject': argument 2 must be of type 'Promise'."));const n=[],o=r?[].concat(r):[],c=[];return t.forEach(e=>o.push(window.fetch(e).then(e=>[e.clone().text(),e.blob()]).then(e=>Promise.all(e).then(e=>{n.push({text:e[0],blob:e[1]})})))),Promise.all(o).then(()=>(n.forEach(t=>{c.push({then:r=>{t.blob.type.includes("text/css")?e(window,document,"style",t,r):e(window,document,"script",t,r)}})}),Promise.all(c)))}}();
+</script>
+    <script integrity="sha512-2XlvnxweZhaHgBdCoOK0PoCUWiSfKibb&#43;RCRZNgqLdvbnx0ZH67FDGKQqmpqCerjMJbZFv6fsXgbmJOOA9K&#43;qA==">/*!
+ * Copyright (C) 2019  Josh Habdas <jhabdas@protonmail.com>
+ *
+ * This file is part of After Dark.
+ *
+ * After Dark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * After Dark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+fetchInject(["/js/lazysizes.min.js"]);
+</script>
+    
+
+
+  
+    
+
+  <meta title="mod:fractal-forest" content="status:enabled">
+  
+    <script async src=/js/bpgdec8a.js integrity=sha384-8PG0go3BW8hLm63KbTxk/hNcehaoSbrAhKzsmy2Jhs/KY8QdiKKkjhdeyHY/Q/0I&#10;></script>
+  
+
+
+  
+  
+  
+  
+
+
+    
+    <link rel="canonical" href="https://jeremyceri.se/post/roguelike-dev-week-1-part-2/">
     
     
     <link rel="icon" sizes="any" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2046%2045'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EAfter%20Dark%3C/title%3E%3Cpath%20d='M.708%2045L23%20.416%2045.292%2045H.708zM35%2038L23%2019%2011%2038h24z'%20fill='%23000'/%3E%3C/svg%3E">
 
-    <style>
-      html{font-size:12px}*{box-sizing:border-box;text-rendering:geometricPrecision}body{font-size:1rem;line-height:1.5rem;margin:0;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;word-wrap:break-word}h1,h2,h3,h4,h5,h6{line-height:1.3em}fieldset{border:none;padding:0;margin:0}pre{padding:2rem;margin:1.75rem 0;background-color:#fff;border:1px solid #ccc;overflow:auto}code[class*=language-],pre[class*=language-],pre code{font-weight:100;text-shadow:none;margin:1.75rem 0}a{cursor:pointer;color:#ff2e88;text-decoration:none;border-bottom:1px solid #ff2e88}a:hover{background-color:#ff2e88;color:#fff}.grid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.grid.\-top{-ms-flex-align:start;-ms-grid-row-align:flex-start;align-items:flex-start}.grid.\-middle{-ms-flex-align:center;-ms-grid-row-align:center;align-items:center}.grid.\-bottom{-ms-flex-align:end;-ms-grid-row-align:flex-end;align-items:flex-end}.grid.\-stretch{-ms-flex-align:stretch;-ms-grid-row-align:stretch;align-items:stretch}.grid.\-baseline{-ms-flex-align:baseline;-ms-grid-row-align:baseline;align-items:baseline}.grid.\-left{-ms-flex-pack:start;justify-content:flex-start}.grid.\-center{-ms-flex-pack:center;justify-content:center}.grid.\-right{-ms-flex-pack:end;justify-content:flex-end}.grid.\-between{-ms-flex-pack:justify;justify-content:space-between}.grid.\-around{-ms-flex-pack:distribute;justify-content:space-around}.cell{-ms-flex:1;flex:1;box-sizing:border-box}@media screen and (min-width:768px){.cell.\-1of12{-ms-flex:0 0 8.33333%;flex:0 0 8.33333%}.cell.\-2of12{-ms-flex:0 0 16.66667%;flex:0 0 16.66667%}.cell.\-3of12{-ms-flex:0 0 25%;flex:0 0 25%}.cell.\-4of12{-ms-flex:0 0 33.33333%;flex:0 0 33.33333%}.cell.\-5of12{-ms-flex:0 0 41.66667%;flex:0 0 41.66667%}.cell.\-6of12{-ms-flex:0 0 50%;flex:0 0 50%}.cell.\-7of12{-ms-flex:0 0 58.33333%;flex:0 0 58.33333%}.cell.\-8of12{-ms-flex:0 0 66.66667%;flex:0 0 66.66667%}.cell.\-9of12{-ms-flex:0 0 75%;flex:0 0 75%}.cell.\-10of12{-ms-flex:0 0 83.33333%;flex:0 0 83.33333%}.cell.\-11of12{-ms-flex:0 0 91.66667%;flex:0 0 91.66667%}}@media screen and (max-width:768px){.grid{-ms-flex-direction:column;flex-direction:column}.cell{-ms-flex:0 0 auto;flex:0 0 auto}}.hack,.hack blockquote,.hack code,.hack em,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack strong{font-size:1rem;font-style:normal;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif}.hack blockquote,.hack code,.hack em,.hack strong{line-height:20px}.hack blockquote,.hack code,.hack footer,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack header,.hack li,.hack ol,.hack p,.hack section,.hack ul{float:none;margin:0;padding:0}.hack blockquote,.hack h1,.hack ol,.hack p,.hack ul{margin-top:20px;margin-bottom:20px}.hack h1{position:relative;display:inline-block;display:table-cell;padding:20px 0 30px;margin:0;overflow:hidden}.hack h1:after{content:"====================================================================================================";position:absolute;bottom:10px;left:0}.hack h1+*{margin-top:0}.hack h2,.hack h3,.hack h4,.hack h5,.hack h6{position:relative;margin-bottom:1.75rem}.hack h2:before,.hack h3:before,.hack h4:before,.hack h5:before,.hack h6:before{display:inline}.hack h2:before{content:"## "}.hack h3:before{content:"### "}.hack h4:before{content:"#### "}.hack h5:before{content:"##### "}.hack h6:before{content:"###### "}.hack li{position:relative;display:block;padding-left:20px}.hack li:after{position:absolute;top:0;left:0}.hack ul>li:after{content:"-"}.hack ol{counter-reset:a}.hack ol>li:after{content:counter(a) ".";counter-increment:a}.hack blockquote{position:relative;padding-left:17px;padding-left:2ch;overflow:hidden}.hack blockquote:after{content:">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";white-space:pre;position:absolute;top:0;left:0;line-height:20px}.hack em:after,.hack em:before{content:"*";display:inline}.hack pre code:after,.hack pre code:before{content:''}.hack code{font-weight:700}.hack code:after,.hack code:before{content:"`";display:inline}.hack hr{position:relative;height:20px;overflow:hidden;border:0;margin:20px 0}.hack hr:after{content:"----------------------------------------------------------------------------------------------------";position:absolute;top:0;left:0;line-height:20px;width:100%;word-wrap:break-word}@-moz-document url-prefix(){.hack h1{display:block}}.hack-ones ol>li:after{content:"1."}p{margin:0 0 1.75rem}.container{max-width:70rem}.container,.container-fluid{margin:0 auto;padding:0 1rem}.inner{padding:1rem}.inner2x{padding:2rem}.pull-left{float:left}.pull-right{float:right}.progress-bar{height:8px;opacity:.8;background-color:#ccc;margin-top:12px}.progress-bar.progress-bar-show-percent{margin-top:38px}.progress-bar-filled{background-color:gray;height:100%;transition:width .3s ease;position:relative;width:0}.progress-bar-filled:before{content:'';border:6px solid transparent;border-top-color:gray;position:absolute;top:-12px;right:-6px}.progress-bar-filled:after{color:gray;content:attr(data-filled);display:block;font-size:12px;white-space:nowrap;position:absolute;border:6px solid transparent;top:-38px;right:0;-ms-transform:translateX(50%);transform:translateX(50%)}table{width:100%;border-collapse:collapse;margin:1.75rem 0;color:#778087}table td,table th{vertical-align:top;border:1px solid #ccc;line-height:15px;padding:10px}table thead th{font-size:10px}table tbody td:first-child{font-weight:700;color:#333}.form{width:30rem}.form-group{margin-bottom:1.75rem;overflow:auto}.form-group label{border-bottom:2px solid #ccc;color:#333;width:10rem;display:inline-block;height:38px;line-height:38px;padding:0;float:left;position:relative}.form-group.form-success label{color:#4caf50!important;border-color:#4caf50!important}.form-group.form-warning label{color:#ff9800!important;border-color:#ff9800!important}.form-group.form-error label{color:#f44336!important;border-color:#f44336!important}.form-control{outline:none;border:none;border-bottom:2px solid #ccc;padding:.5rem 0;width:20rem;height:38px;background-color:transparent}.form-control:focus{border-color:#555}.form-group.form-textarea label:after{position:absolute;content:'';width:2px;background-color:#fff;right:-2px;top:0;bottom:0}textarea.form-control{height:auto;resize:none;padding:1rem 0;border-bottom:2px solid #ccc;border-left:2px solid #ccc;padding:.5rem}select.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}.help-block{color:#999;margin-top:.5rem}.form-actions{margin-bottom:1.75rem}.btn{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;cursor:pointer;outline:none;padding:.65rem 2rem;font-size:1rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;z-index:1}.btn:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}.btn.btn-ghost{border-color:#757575;color:#757575;background-color:transparent}.btn.btn-ghost:focus,.btn.btn-ghost:hover{border-color:#424242;color:#424242;z-index:2}.btn.btn-ghost:hover{background-color:transparent}.btn-block{width:100%;display:-ms-flexbox;display:flex}.btn-default{color:#fff;background-color:#e0e0e0;border:1px solid #e0e0e0;color:#333}.btn-default:focus:not(.btn-ghost),.btn-default:hover{background-color:#dcdcdc;border-color:#dcdcdc}.btn-success{color:#fff;background-color:#4caf50;border:1px solid #4caf50}.btn-success:focus:not(.btn-ghost),.btn-success:hover{background-color:#43a047;border-color:#43a047}.btn-success.btn-ghost{border-color:#4caf50;color:#4caf50}.btn-success.btn-ghost:focus,.btn-success.btn-ghost:hover{border-color:#388e3c;color:#388e3c;z-index:2}.btn-error{color:#fff;background-color:#f44336;border:1px solid #f44336}.btn-error:focus:not(.btn-ghost),.btn-error:hover{background-color:#e53935;border-color:#e53935}.btn-error.btn-ghost{border-color:#f44336;color:#f44336}.btn-error.btn-ghost:focus,.btn-error.btn-ghost:hover{border-color:#d32f2f;color:#d32f2f;z-index:2}.btn-warning{color:#fff;background-color:#ff9800;border:1px solid #ff9800}.btn-warning:focus:not(.btn-ghost),.btn-warning:hover{background-color:#fb8c00;border-color:#fb8c00}.btn-warning.btn-ghost{border-color:#ff9800;color:#ff9800}.btn-warning.btn-ghost:focus,.btn-warning.btn-ghost:hover{border-color:#f57c00;color:#f57c00;z-index:2}.btn-info{color:#fff;background-color:#00bcd4;border:1px solid #00bcd4}.btn-info:focus:not(.btn-ghost),.btn-info:hover{background-color:#00acc1;border-color:#00acc1}.btn-info.btn-ghost{border-color:#00bcd4;color:#00bcd4}.btn-info.btn-ghost:focus,.btn-info.btn-ghost:hover{border-color:#0097a7;color:#0097a7;z-index:2}.btn-primary{color:#fff;background-color:#2196f3;border:1px solid #2196f3}.btn-primary:focus:not(.btn-ghost),.btn-primary:hover{background-color:#1e88e5;border-color:#1e88e5}.btn-primary.btn-ghost{border-color:#2196f3;color:#2196f3}.btn-primary.btn-ghost:focus,.btn-primary.btn-ghost:hover{border-color:#1976d2;color:#1976d2;z-index:2}.btn-group{overflow:auto}.btn-group .btn{float:left}.btn-group .btn-ghost:not(:first-child){margin-left:-1px}.card{border:1px solid #ccc}.card .card-header{color:#333;text-align:center;background-color:#ddd;padding:.5rem 0}.alert{color:#ccc;padding:1rem;border:1px solid #ccc;margin-bottom:1.75rem}.alert-success{color:#4caf50;border-color:#4caf50}.alert-error{color:#f44336;border-color:#f44336}.alert-info{color:#00bcd4;border-color:#00bcd4}.alert-warning{color:#ff9800;border-color:#ff9800}.media:not(:last-child){margin-bottom:1.25rem}.media-left{padding-right:1rem}.media-left,.media-right{display:table-cell;vertical-align:top}.media-right{padding-left:1rem}.media-body{display:table-cell;vertical-align:top}.media-heading{font-size:1.16667rem;font-weight:700}.media-content{margin-top:.3rem}.avatarholder,.placeholder{background-color:#f0f0f0;text-align:center;color:#b9b9b9;font-size:1rem;border:1px solid #f0f0f0}.avatarholder{width:48px;height:48px;line-height:46px;font-size:2rem;background-size:cover;background-position:50%;background-repeat:no-repeat}.avatarholder.rounded{border-radius:33px}.loading{height:20px;width:20px;animation:a .6s infinite linear;border:2px solid #e91e63;border-right-color:transparent;border-radius:50%}.btn .loading{display:inline-block;float:left;margin-right:.5rem;width:14px;height:14px}@keyframes a{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.menu{width:100%}.menu .menu-item{display:block;color:#616161;border-color:#616161}.menu .menu-item.active,.menu .menu-item:hover{color:#000;border-color:#000;background-color:transparent}@media screen and (max-width:768px){.form-group label{display:block;border-bottom:none;width:100%}.form-group.form-textarea label:after{display:none}.form-control{width:100%}textarea.form-control{border-left:none;padding:.5rem 0}pre::-webkit-scrollbar{height:3px}}@media screen and (max-width:480px){.form{width:100%}}
-.dark{color:#ccc}.dark,.dark pre{background-color:#000}.dark pre{padding:0;border:none}.dark pre code{color:#00bcd4}.dark h1 a,.dark h2 a,.dark h3 a,.dark h4 a,.dark h5 a{color:#ccc}.dark code,.dark strong{color:#fff}.dark code{font-weight:100}.dark table{color:#ccc}.dark table td,.dark table th{border-color:#444}.dark table tbody td:first-child{color:#fff}.dark .form-group label{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-group.form-textarea label:after{background-color:#000}.dark .form-control{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-control:focus{border-color:#ccc;color:#ccc}.dark textarea.form-control{color:#ccc}.dark .card{border-color:rgba(95,95,95,.78)}.dark .card .card-header{background-color:transparent;color:#ccc;border-bottom:1px solid rgba(95,95,95,.78)}.dark .btn.btn-ghost.btn-default{border-color:#ababab;color:#ababab}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#9c9c9c;color:#9c9c9c;z-index:1}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#e0e0e0;color:#e0e0e0}.dark .btn.btn-ghost.btn-primary:focus,.dark .btn.btn-ghost.btn-primary:hover{border-color:#64b5f6;color:#64b5f6}.dark .btn.btn-ghost.btn-success:focus,.dark .btn.btn-ghost.btn-success:hover{border-color:#81c784;color:#81c784}.dark .btn.btn-ghost.btn-info:focus,.dark .btn.btn-ghost.btn-info:hover{border-color:#4dd0e1;color:#4dd0e1}.dark .btn.btn-ghost.btn-error:focus,.dark .btn.btn-ghost.btn-error:hover{border-color:#e57373;color:#e57373}.dark .btn.btn-ghost.btn-warning:focus,.dark .btn.btn-ghost.btn-warning:hover{border-color:#ffb74d;color:#ffb74d}.dark .avatarholder,.dark .placeholder{background-color:transparent;border-color:#333}.dark .menu .menu-item{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .menu .menu-item.active,.dark .menu .menu-item:hover{color:#fff;border-color:#ccc}
+    
 
-      @keyframes intro {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-.muted {
-  color: rgba(255, 255, 255, 0.5);
-}
-main, footer {
-  animation: intro 0.3s both;
-  animation-delay: 0.15s;
-}
-:target {
-  color: #fff;
-}
-/* hack.css overrides and enhancements */
-.hack li ul {
-  margin: 0;
-}
-.main {
-  padding: 20px 10px;
+  
+  
+  
+  
+  
+  
+  
+    
+      
+        <style>html{font-size:12px}*{box-sizing:border-box;text-rendering:geometricPrecision}body{font-size:1rem;line-height:1.5rem;margin:0;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;word-wrap:break-word}h1,h2,h3,h4,h5,h6{line-height:1.3em}fieldset{border:none;padding:0;margin:0}pre{padding:2rem;margin:1.75rem 0;background-color:#fff;border:1px solid #ccc;overflow:auto}code[class*=language-],pre[class*=language-],pre code{font-weight:100;text-shadow:none;margin:1.75rem 0}a{cursor:pointer;color:#ff2e88;text-decoration:none;border-bottom:1px solid #ff2e88}a:hover{background-color:#ff2e88;color:#fff}.grid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.grid.\-top{-ms-flex-align:start;align-items:flex-start}.grid.\-middle{-ms-flex-align:center;align-items:center}.grid.\-bottom{-ms-flex-align:end;align-items:flex-end}.grid.\-stretch{-ms-flex-align:stretch;align-items:stretch}.grid.\-baseline{-ms-flex-align:baseline;align-items:baseline}.grid.\-left{-ms-flex-pack:start;justify-content:flex-start}.grid.\-center{-ms-flex-pack:center;justify-content:center}.grid.\-right{-ms-flex-pack:end;justify-content:flex-end}.grid.\-between{-ms-flex-pack:justify;justify-content:space-between}.grid.\-around{-ms-flex-pack:distribute;justify-content:space-around}.cell{-ms-flex:1;flex:1;box-sizing:border-box}@media screen and (min-width:768px){.cell.\-1of12{-ms-flex:0 0 8.33333%;flex:0 0 8.33333%}.cell.\-2of12{-ms-flex:0 0 16.66667%;flex:0 0 16.66667%}.cell.\-3of12{-ms-flex:0 0 25%;flex:0 0 25%}.cell.\-4of12{-ms-flex:0 0 33.33333%;flex:0 0 33.33333%}.cell.\-5of12{-ms-flex:0 0 41.66667%;flex:0 0 41.66667%}.cell.\-6of12{-ms-flex:0 0 50%;flex:0 0 50%}.cell.\-7of12{-ms-flex:0 0 58.33333%;flex:0 0 58.33333%}.cell.\-8of12{-ms-flex:0 0 66.66667%;flex:0 0 66.66667%}.cell.\-9of12{-ms-flex:0 0 75%;flex:0 0 75%}.cell.\-10of12{-ms-flex:0 0 83.33333%;flex:0 0 83.33333%}.cell.\-11of12{-ms-flex:0 0 91.66667%;flex:0 0 91.66667%}}@media screen and (max-width:768px){.grid{-ms-flex-direction:column;flex-direction:column}.cell{-ms-flex:0 0 auto;flex:0 0 auto}}.hack,.hack blockquote,.hack code,.hack em,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack strong{font-size:1rem;font-style:normal;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif}.hack blockquote,.hack code,.hack em,.hack strong{line-height:20px}.hack blockquote,.hack code,.hack footer,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack header,.hack li,.hack ol,.hack p,.hack section,.hack ul{float:none;margin:0;padding:0}.hack blockquote,.hack h1,.hack ol,.hack p,.hack ul{margin-top:20px;margin-bottom:20px}.hack h1{position:relative;display:inline-block;display:table-cell;padding:20px 0 30px;margin:0;overflow:hidden}.hack h1:after{content:"====================================================================================================";position:absolute;bottom:10px;left:0}.hack h1+*{margin-top:0}.hack h2,.hack h3,.hack h4,.hack h5,.hack h6{position:relative;margin-bottom:1.75rem}.hack h2:before,.hack h3:before,.hack h4:before,.hack h5:before,.hack h6:before{display:inline}.hack h2:before{content:"## "}.hack h3:before{content:"### "}.hack h4:before{content:"#### "}.hack h5:before{content:"##### "}.hack h6:before{content:"###### "}.hack li{position:relative;display:block;padding-left:20px}.hack li:after{position:absolute;top:0;left:0}.hack ul>li:after{content:"-"}.hack ol{counter-reset:a}.hack ol>li:after{content:counter(a) ".";counter-increment:a}.hack ol li:nth-child(n+10):after{left:-7px}.hack blockquote{position:relative;padding-left:17px;padding-left:2ch;overflow:hidden}.hack blockquote:after{content:">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";white-space:pre;position:absolute;top:0;left:0;line-height:20px}.hack em:after,.hack em:before{content:"*";display:inline}.hack pre code:after,.hack pre code:before{content:""}.hack code{font-weight:700}.hack code:after,.hack code:before{content:"`";display:inline}.hack hr{position:relative;height:20px;overflow:hidden;border:0;margin:20px 0}.hack hr:after{content:"----------------------------------------------------------------------------------------------------";position:absolute;top:0;left:0;line-height:20px;width:100%;word-wrap:break-word}@-moz-document url-prefix(){.hack h1{display:block}}.hack-ones ol>li:after{content:"1."}p{margin:0 0 1.75rem}.container{max-width:70rem}.container,.container-fluid{margin:0 auto;padding:0 1rem}.inner{padding:1rem}.inner2x{padding:2rem}.pull-left{float:left}.pull-right{float:right}.progress-bar{height:8px;opacity:.8;background-color:#ccc;margin-top:12px}.progress-bar.progress-bar-show-percent{margin-top:38px}.progress-bar-filled{background-color:gray;height:100%;transition:width .3s ease;position:relative;width:0}.progress-bar-filled:before{content:"";border:6px solid transparent;border-top-color:gray;position:absolute;top:-12px;right:-6px}.progress-bar-filled:after{color:gray;content:attr(data-filled);display:block;font-size:12px;white-space:nowrap;position:absolute;border:6px solid transparent;top:-38px;right:0;-ms-transform:translateX(50%);transform:translateX(50%)}table{width:100%;border-collapse:collapse;margin:1.75rem 0;color:#778087}table td,table th{vertical-align:top;border:1px solid #ccc;line-height:15px;padding:10px}table thead th{font-size:10px}table tbody td:first-child{font-weight:700;color:#333}.form{width:30rem}.form-group{margin-bottom:1.75rem;overflow:auto}.form-group label{border-bottom:2px solid #ccc;color:#333;width:10rem;display:inline-block;height:38px;line-height:38px;padding:0;float:left;position:relative}.form-group.form-success label{color:#4caf50!important;border-color:#4caf50!important}.form-group.form-warning label{color:#ff9800!important;border-color:#ff9800!important}.form-group.form-error label{color:#f44336!important;border-color:#f44336!important}.form-control{outline:none;border:none;border-bottom:2px solid #ccc;padding:.5rem 0;width:20rem;height:38px;background-color:transparent}.form-control:focus{border-color:#555}.form-group.form-textarea label:after{position:absolute;content:"";width:2px;background-color:#fff;right:-2px;top:0;bottom:0}textarea.form-control{height:auto;resize:none;padding:1rem 0;border-bottom:2px solid #ccc;border-left:2px solid #ccc;padding:.5rem}select.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}.help-block{color:#999;margin-top:.5rem}.form-actions{margin-bottom:1.75rem}.btn{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;cursor:pointer;outline:none;padding:.65rem 2rem;font-size:1rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;z-index:1}.btn:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}.btn.btn-ghost{border-color:#757575;color:#757575;background-color:transparent}.btn.btn-ghost:focus,.btn.btn-ghost:hover{border-color:#424242;color:#424242;z-index:2}.btn.btn-ghost:hover{background-color:transparent}.btn-block{width:100%;display:-ms-flexbox;display:flex}.btn-default{color:#fff;background-color:#e0e0e0;border:1px solid #e0e0e0;color:#333}.btn-default:focus:not(.btn-ghost),.btn-default:hover{background-color:#dcdcdc;border-color:#dcdcdc}.btn-success{color:#fff;background-color:#4caf50;border:1px solid #4caf50}.btn-success:focus:not(.btn-ghost),.btn-success:hover{background-color:#43a047;border-color:#43a047}.btn-success.btn-ghost{border-color:#4caf50;color:#4caf50}.btn-success.btn-ghost:focus,.btn-success.btn-ghost:hover{border-color:#388e3c;color:#388e3c;z-index:2}.btn-error{color:#fff;background-color:#f44336;border:1px solid #f44336}.btn-error:focus:not(.btn-ghost),.btn-error:hover{background-color:#e53935;border-color:#e53935}.btn-error.btn-ghost{border-color:#f44336;color:#f44336}.btn-error.btn-ghost:focus,.btn-error.btn-ghost:hover{border-color:#d32f2f;color:#d32f2f;z-index:2}.btn-warning{color:#fff;background-color:#ff9800;border:1px solid #ff9800}.btn-warning:focus:not(.btn-ghost),.btn-warning:hover{background-color:#fb8c00;border-color:#fb8c00}.btn-warning.btn-ghost{border-color:#ff9800;color:#ff9800}.btn-warning.btn-ghost:focus,.btn-warning.btn-ghost:hover{border-color:#f57c00;color:#f57c00;z-index:2}.btn-info{color:#fff;background-color:#00bcd4;border:1px solid #00bcd4}.btn-info:focus:not(.btn-ghost),.btn-info:hover{background-color:#00acc1;border-color:#00acc1}.btn-info.btn-ghost{border-color:#00bcd4;color:#00bcd4}.btn-info.btn-ghost:focus,.btn-info.btn-ghost:hover{border-color:#0097a7;color:#0097a7;z-index:2}.btn-primary{color:#fff;background-color:#2196f3;border:1px solid #2196f3}.btn-primary:focus:not(.btn-ghost),.btn-primary:hover{background-color:#1e88e5;border-color:#1e88e5}.btn-primary.btn-ghost{border-color:#2196f3;color:#2196f3}.btn-primary.btn-ghost:focus,.btn-primary.btn-ghost:hover{border-color:#1976d2;color:#1976d2;z-index:2}.btn-group{overflow:auto}.btn-group .btn{float:left}.btn-group .btn-ghost:not(:first-child){margin-left:-1px}.card{border:1px solid #ccc}.card .card-header{color:#333;text-align:center;background-color:#ddd;padding:.5rem 0}.alert{color:#ccc;padding:1rem;border:1px solid #ccc;margin-bottom:1.75rem}.alert-success{color:#4caf50;border-color:#4caf50}.alert-error{color:#f44336;border-color:#f44336}.alert-info{color:#00bcd4;border-color:#00bcd4}.alert-warning{color:#ff9800;border-color:#ff9800}.media:not(:last-child){margin-bottom:1.25rem}.media-left{padding-right:1rem}.media-left,.media-right{display:table-cell;vertical-align:top}.media-right{padding-left:1rem}.media-body{display:table-cell;vertical-align:top}.media-heading{font-size:1.16667rem;font-weight:700}.media-content{margin-top:.3rem}.avatarholder,.placeholder{background-color:#f0f0f0;text-align:center;color:#b9b9b9;font-size:1rem;border:1px solid #f0f0f0}.avatarholder{width:48px;height:48px;line-height:46px;font-size:2rem;background-size:cover;background-position:50%;background-repeat:no-repeat}.avatarholder.rounded{border-radius:33px}.loading{display:inline-block;content:"&nbsp;";height:20px;width:20px;margin:0 .5rem;animation:a .6s infinite linear;border:2px solid #e91e63;border-right-color:transparent;border-radius:50%}.btn .loading{margin-bottom:0;width:14px;height:14px}.btn div.loading{float:left}.alert .loading{margin-bottom:-5px}@keyframes a{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.menu{width:100%}.menu .menu-item{display:block;color:#616161;border-color:#616161}.menu .menu-item.active,.menu .menu-item:hover{color:#000;border-color:#000;background-color:transparent}@media screen and (max-width:768px){.form-group label{display:block;border-bottom:none;width:100%}.form-group.form-textarea label:after{display:none}.form-control{width:100%}textarea.form-control{border-left:none;padding:.5rem 0}pre::-webkit-scrollbar{height:3px}}@media screen and (max-width:480px){.form{width:100%}}.dark{color:#ccc}.dark,.dark pre{background-color:#000}.dark pre{padding:0;border:none}.dark pre code{color:#00bcd4}.dark h1 a,.dark h2 a,.dark h3 a,.dark h4 a,.dark h5 a{color:#ccc}.dark code,.dark strong{color:#fff}.dark code{font-weight:100}.dark table{color:#ccc}.dark table td,.dark table th{border-color:#444}.dark table tbody td:first-child{color:#fff}.dark .form-group label{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-group.form-textarea label:after{background-color:#000}.dark .form-control{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-control:focus{border-color:#ccc;color:#ccc}.dark textarea.form-control{color:#ccc}.dark .card{border-color:rgba(95,95,95,.78)}.dark .card .card-header{background-color:transparent;color:#ccc;border-bottom:1px solid rgba(95,95,95,.78)}.dark .btn.btn-ghost.btn-default{border-color:#ababab;color:#ababab}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#9c9c9c;color:#9c9c9c;z-index:1}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#e0e0e0;color:#e0e0e0}.dark .btn.btn-ghost.btn-primary:focus,.dark .btn.btn-ghost.btn-primary:hover{border-color:#64b5f6;color:#64b5f6}.dark .btn.btn-ghost.btn-success:focus,.dark .btn.btn-ghost.btn-success:hover{border-color:#81c784;color:#81c784}.dark .btn.btn-ghost.btn-info:focus,.dark .btn.btn-ghost.btn-info:hover{border-color:#4dd0e1;color:#4dd0e1}.dark .btn.btn-ghost.btn-error:focus,.dark .btn.btn-ghost.btn-error:hover{border-color:#e57373;color:#e57373}.dark .btn.btn-ghost.btn-warning:focus,.dark .btn.btn-ghost.btn-warning:hover{border-color:#ffb74d;color:#ffb74d}.dark .avatarholder,.dark .placeholder{background-color:transparent;border-color:#333}.dark .menu .menu-item{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .menu .menu-item.active,.dark .menu .menu-item:hover{color:#fff;border-color:#ccc}/*!* Copyright (C) 2019 Josh Habdas <jhabdas@protonmail.com>
+*
+* This file is part of After Dark.
+*
+* After Dark is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* After Dark is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.*/:root{scroll-behavior:smooth;--screen-size-small: 30em}@keyframes intro{0%{opacity:0}100%{opacity:1}}.blur-up.lazyloading{filter:blur(5px);opacity:1;transition:opacity 1s,filter 1.5s}.blur-up.lazyload{opacity:0;filter:blur(10px)}.blur-up.lazyloaded{filter:blur(0);transition:filter 1s}.hack .readmore{margin-bottom:2.2em}.responsive-iframe,.ratio-container{position:relative;padding-bottom:56.25%;padding-top:25px;height:0}.responsive-iframe iframe,.ratio-container>*:not([itemprop=caption]){position:absolute;top:0;left:0;width:100%;height:100%}iframe{border:0}main,footer{animation:intro .3s both;animation-delay:.15s}header:first-of-type+details{margin:20px 0}footer time[datetime$=M]:before{content:"\2013\0020"}body>footer p.muted{margin-bottom:0}@media only screen and (max-width:768px){footer time[datetime$=M]{display:none}}blockquote cite{display:block}blockquote cite::before{content:"\2014\00A0"}:target{filter:brightness(1.2)}:disabled{cursor:not-allowed}.hack li ul{margin:0}.hack ol li{padding-left:27px}.main{padding:20px 10px}input.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}input.form-control,textarea.form-control,select.form-control,.help-block{font-size:initial}@media only screen and (max-width:768px){.help-block{font-size:unset}}html{font-size:13px}.hack .form input,.hack .form textarea,.hack .form button,.hack .form label{font-size:1rem}.hack .alert .highlight:first-of-type .chroma,.hack .card .highlight:first-of-type .chroma,.hack .alert pre:first-of-type,.hack .alert p:first-of-type,.hack .card pre:first-of-type,.hack .card p:first-of-type{margin-top:unset}.hack .alert .highlight:last-of-type .chroma,.hack .card .highlight:last-of-type .chroma,.hack .alert pre:last-of-type,.hack .alert p:last-of-type,.hack .card pre:last-of-type,.hack .card p:last-of-type{margin-bottom:unset}.hack blockquote,.hack blockquote:after{line-height:1.5}.hack figure,.standard figure{margin:unset}.hack figure a{border-bottom:none}.hack figure a:hover{background-color:inherit}article header img{width:100%;border-radius:3px}table td,table th{line-height:inherit}table a{border-bottom:unset}img{max-width:100%}@media only screen and (min-width:768px){html{font-size:16px}.container{max-width:50rem}}@media only screen and (min-width:768px),(-ms-high-contrast:active),(-ms-high-contrast:none){html{margin-left:calc(100vw - 100%)}}/*!
+ * Copyright (C) 2019  Josh Habdas <jhabdas@protonmail.com>
+ *
+ * This file is part of After Dark.
+ *
+ * After Dark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * After Dark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+a[rel*="external"]::after {
+  content: " " url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20class='i-external'%20viewBox='0%200%2032%2032'%20width='14'%20height='14'%20fill='none'%20stroke='%23ff9800'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='9.38%'%3E%3Cpath%20d='M14%209%20L3%209%203%2029%2023%2029%2023%2018%20M18%204%20L28%204%2028%2014%20M28%204%20L14%2018'/%3E%3C/svg%3E");
 }
 nav a.active {
-  background-color: #ff2e88;
+  background-color: inherit;
   color: #fff;
 }
 a[itemprop="url"] {
@@ -93,77 +153,96 @@ a[itemprop="url"] {
 a[itemprop="url"]:hover {
   color: #fff;
 }
-a[href*="//"]::after {
-  /* data uri svg icon. thanks to @Fastidious for the idea */
-  content: " " url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20class='i-external'%20viewBox='0%200%2032%2032'%20width='14'%20height='14'%20fill='none'%20stroke='%23ff9800'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='9.38%'%3E%3Cpath%20d='M14%209%20L3%209%203%2029%2023%2029%2023%2018%20M18%204%20L28%204%2028%2014%20M28%204%20L14%2018'/%3E%3C/svg%3E");
+.muted, .help-block {
+  opacity: 0.70;
 }
-html {
-  font-size: 13px;
+.hack .muted,
+.hack .help-block {
+  color: #e0e0e0;
 }
-.hack pre {
-  font-size: 17px;
-}
-article [itemprop="description"] {
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-@media screen and (min-width: 768px) {
-  html {
-    font-size: 1em;
-  }
-  .container {
-    max-width: 50rem;
-  }
-}
+</style>
+        
 
-      .highlight,pre.highlight{background:#282c34;color:#abb2bf}.highlight pre{background:#282c34}.highlight .ge{font-style:italic}.highlight .gs{font-weight:700}.highlight .ow{font-weight:700}.highlight .n,.highlight .nf,.highlight .nn,.highlight .o,.highlight .p{color:#abb2bf}.highlight .c,.highlight .c1,.highlight .cm,.highlight .cp,.highlight .cs{color:#5c6370;font-style:italic}.highlight .sr,.highlight .ss{color:#56b6c2}.highlight .k,.highlight .kc,.highlight .kd,.highlight .kn,.highlight .kp,.highlight .kr,.highlight .kt{color:#c678dd}.highlight .l,.highlight .ld,.highlight .s,.highlight .s1,.highlight .s2,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .se,.highlight .sh,.highlight .si,.highlight .sx{color:#98c379}.highlight .nt,.highlight .nx,.highlight .vi{color:#e06c75}.highlight .il,.highlight .m,.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo,.highlight .na{color:#d19a66}.highlight .bp,.highlight .nb,.highlight .nc,.highlight .nd,.highlight .ne,.highlight .ni,.highlight .nl,.highlight .no,.highlight .nv,.highlight .py,.highlight .vc,.highlight .vg{color:#e5c07b}.highlight .err{color:#fff;background-color:#e05252}.highlight .gd{color:#e05252}.highlight .gi{color:#43d08a}.highlight .w{color:#f8f8f2}.highlight .cpf{color:navy}.highlight .gu{color:#75715e}.highlight .lineno{color:#636d83;user-select:none}.highlight .hll{color:#abb2bf;background-color:#2c313a}.highlight .language-json .w+.s2{color:#e06c75}.highlight .language-json .kc{color:#56b6c2}
 
-p img {
-    width: 100%;
-}
+  
+    <meta name="theme-color" content=#000>
+  
 
-    </style>
+
+      
     
+  
+
+
+    
+    
+      <script integrity="sha512-ISTAV0GadOIz/NXXHOS+eCM0ysXVVHhQTlvA6LJxz/DeA5yIxm0Vqf5IE+WH0yuuXkayAKtoZkQ326nch5f/fg==">fetchInject(["/css/syntax.css"]);</script>
+      <noscript>
+        <link href="/css/syntax.css" rel="stylesheet">
+      </noscript>
     
   </head>
+  
+  
   
   <body class="hack dark main container">
     <header>
   
-  <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+
+  
     
+      
+      
+  <nav itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <meta itemprop="name" content="Main Menu">
     
-      <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
+      
+      
+        <a itemprop="url" href="/">Home</a>
+      
     
-      <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
+      
+      
+        <a itemprop="url" href="/about-me/">About</a>
+      
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+      
+      
+        <a itemprop="url" class="active" href="/post/">Posts</a>
+      
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
-    
-      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
+      
+      
+        <a itemprop="url" href="/roguelikes/">Roguelike Development</a>
+      
     
   </nav>
 
 
+    
+  
+
+
 </header>
     <main>
-  <article itemscope itemtype="http://schema.org/BlogPosting">
+  
     
-<meta itemprop="name" content="RoguelikeDev Builds A Roguelike, Part 3">
+      <style>{{ -}}.hack header figure[itemtype*=ImageObject]{position:relative}.hack header figure[itemtype*=ImageObject] figcaption{position:absolute;bottom:0;right:0;text-align:right;padding:15px;font-style:oblique;font-size:smaller;mix-blend-mode:soft-light}.hack header figure[itemtype*=ImageObject] [itemprop=headline]{font-weight:700}</style>
+    
+  
+  <article itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="name" content="RoguelikeDev Builds A Roguelike, Part 3">
 <meta itemprop="description" content="Part 3: Game Entities and the Map">
-
-
 <meta itemprop="datePublished" content="2017-07-02T20:25:13-06:00" />
 <meta itemprop="dateModified" content="2017-07-02T20:25:13-06:00" />
 <meta itemprop="wordCount" content="3688">
+<meta itemprop="image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
 
 
 
 <meta itemprop="keywords" content="RLDBAR,go,programming,roguelike," />
-
     <header>
-      <h1 itemprop="headline">RoguelikeDev Builds A Roguelike, Part 3</h1>
+      <h1 itemprop="headline name">RoguelikeDev Builds A Roguelike, Part 3</h1>
       <p class="muted">
         <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
   <circle cx="16" cy="16" r="14" />
@@ -178,348 +257,277 @@ p img {
 
 
       </p>
+      
+        <blockquote itemprop="description">Part 3: Game Entities and the Map</blockquote>
+      
+      
+
+
+
     </header>
-    
-      <blockquote itemprop="description">Part 3: Game Entities and the Map</blockquote>
-    
     
 
     <div itemprop="articleBody">
       <p>Welcome back to my series following along with RoguelikeDev Builds a Roguelike! This is the second part of this weeks posts, the first being concerned with creating a player representation and moving it around using player input. In the second part of this week, we&rsquo;re going to start thinking about the overall structure of our game, as well as get an intial version of the gameplay map, which is the world the player will be interacting with. We&rsquo;ll accomplish this using the idea of an &lsquo;Entity&rsquo;, and applying that to (almost) eveverything in our game.</p>
-
-<p>Lets go!
-<!-- more --></p>
-
+<p>Lets go!</p>
+<!-- more -->
 <p>If you recall from last time, we were creating a set of player coordinates, playerX, and playerY, and the applying those to a function, drawPlayer(), which would, when given the coordinates and a character to represent the player, draw the player to the screen. We could then update those coordinates to move the player around. This worked fine, but lets consider a few things, primarily, how do we go about drawing a large number of different things to the screen? Enemies, items, traps, flora, fauna, etc? Surely, we could (extremely) naively create variables for each of them, and draw them out one by one like we do for the player, but that sounds awful. What we really need is some way to represent a generic &ldquo;thing&rdquo; in our game. Every &ldquo;thing&rdquo; has some common properties, like a location, a character, and a color. So, what we really want to do, is make every thing the player sees and interacts with (including the player!) a &ldquo;thing&rdquo;.</p>
-
 <p>Henceforth, I&rsquo;m going to use the term Entity to refer to anything in our game (with a few exceptions we&rsquo;ll get to later in this post). An Entity will have an (x, y) location, a color, and a character. This will allow us to create as many Entities as we want, to represent anything in our game. The player is a white @, an orc could be a dark green O, a purple dragon could be a purple D, a scroll of fireball a beige |, and so on and so forth. Using the idea of Entities allows us a great deal of flexibility. I could go on about object oriented design here, but these posts are not meant to deal with that, so go read up on it if you&rsquo;re curious.</p>
-
 <p>Okay, so our plan is to create an Entity representation, and make everything in our game an Entity. Lets see how to do that. Before I get into the code and specifics, I would like to say that this is going to be one of many &ldquo;Great Refactors&rdquo; throughout the course of this series. Refactoring your code from time to time is healthy and natural, and the ladies love it. Anyways&hellip;</p>
-
 <p>Go does not have a traditional Class representation that many other object oriented languages have. This was one of the first major differences in Go that I had to wrap my head around. Lacking classes, though, Go does provide us two very powerful things: structs, and interfaces. We&rsquo;ll get into interfaces later, and for now we&rsquo;re going to focus on structs. For all intents and purposes (read: as far as I have found), a struct in Go is more or less parallel to the class keyword you may be familiar with in other languages. It allows you to define fields for the given struct, and then associate methods with that struct. Sounds like a class with a different name. For our purposes, it provides exactly what we need: a way to encapsulate some functionality in a reusable way. Enough talking, lets write some code.</p>
-
 <p>I created a new package at this point, as I like to have tidy code; you are more than welcome to include this in your main game file, either way works. In my new package, entity, I created a file called entity.go. The first thing we&rsquo;ll need to do is create our struct:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GameEntity</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">X</span> <span style="color:#66d9ef">int</span>
-    <span style="color:#a6e22e">Y</span> <span style="color:#66d9ef">int</span>
-    <span style="color:#a6e22e">Layer</span> <span style="color:#66d9ef">int</span>
-    <span style="color:#a6e22e">Char</span> <span style="color:#66d9ef">string</span>
-    <span style="color:#a6e22e">color</span> <span style="color:#66d9ef">string</span>
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">GameEntity</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">X</span> <span class="kt">int</span>
+    <span class="nx">Y</span> <span class="kt">int</span>
+    <span class="nx">Layer</span> <span class="kt">int</span>
+    <span class="nx">Char</span> <span class="kt">string</span>
+    <span class="nx">color</span> <span class="kt">string</span>
+<span class="p">}</span></code></pre></div>
 <p>That&rsquo;s it. Pretty simple. You may notice that each member variable starts with a capital letter. Good eye. In Go, to make something public (accessible outside of the scope where it was defined), you begin the name with a capital letter. To make it private (accessible only within its defining scope), you begin its name with a lowercase letter. I chuckled to myself when I learned this, because its wonderfully simple, and easy to read at a glance. I like Go for small details like this. Anyways, we&rsquo;ll need to access these variables outside of the scope of the struct, so I made them all public (for now). X and Y will represent the location of the Entity, Layer will represent the current rendering layer for BearLibTerminal (more on that later), Char is the character we want to visually represent the Entity, and Color is what color it will be displayed as. Pretty straight forward stuff.</p>
-
 <p>Now that we have our struct representing our Entity, lets make sure it has feature parity with our current player code. To do that, we&rsquo;ll need some way to draw it to the screen, as well as move it around. For good measure, we should also have a method to clear it from the screen (in case it dies, is destroyed, turns invisible, or we just need to re-draw the screen). We&rsquo;re going to create three functions, and associate them with our Entity struct:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">Move</span><span class="p">(</span><span class="nx">dx</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">dy</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Move the Entity by the amount (dx, dy)
+</span><span class="c1"></span>    <span class="nx">e</span><span class="p">.</span><span class="nx">X</span> <span class="o">+=</span> <span class="nx">dx</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">Y</span> <span class="o">+=</span> <span class="nx">dy</span>
+<span class="p">}</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">Move</span>(<span style="color:#a6e22e">dx</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">dy</span> <span style="color:#66d9ef">int</span>) {
-    <span style="color:#75715e">// Move the Entity by the amount (dx, dy)
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dx</span>
-    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dy</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">Draw</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Draw the Entity to the screen
+</span><span class="c1"></span>    <span class="nx">blt</span><span class="p">.</span><span class="nf">layer</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Layer</span><span class="p">)</span>
+    <span class="nx">blt</span><span class="p">.</span><span class="nf">Color</span><span class="p">(</span><span class="nx">blt</span><span class="p">.</span><span class="nf">ColorFromName</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Color</span><span class="p">))</span>
+    <span class="nx">blt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">X</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Char</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">Draw</span>() {
-    <span style="color:#75715e">// Draw the Entity to the screen
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">layer</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Layer</span>)
-    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Color</span>))
-    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Char</span>)
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">Clear</span>() {
-    <span style="color:#75715e">// Remove the entity from the screen
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Layer</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Layer</span>)
-    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Y</span>, <span style="color:#e6db74">&#34; &#34;</span>)
-}</code></pre></div>
-
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">Clear</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Remove the entity from the screen
+</span><span class="c1"></span>    <span class="nx">blt</span><span class="p">.</span><span class="nf">Layer</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Layer</span><span class="p">)</span>
+    <span class="nx">blt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">X</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Y</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
 <p>Lets start with Move() (again, notice the uppercase first letter, meaning its a public method). Our function declaration looks a little different than others we&rsquo;ve seen in the past, mainly due to the</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">(<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span></code></pre></div>
 <p>bit that&rsquo;s hanging out in the signature. This is how we &ldquo;associate&rdquo; a function with a struct. We&rsquo;re basically saying that the function expects to have access to a variable named &ldquo;e&rdquo;, which is of type GameEntity. The closest comparison I can draw to this is Pythons &lsquo;self&rsquo;, if you&rsquo;re familiar with how that works. It says, this method is to be used on the struct type I specify. This method can then be called using dot notation, with the object calling being passed in as &ldquo;e&rdquo;. Not too deviant. Anyways, on to the Move() function.</p>
-
 <p>Move() takes two arguments, dx, and dy. These represent the change in X and Y, respectively (deltaX, and deltaY is another way to think of it). We take these deltas, and apply them to the Entities X and Y, thus altering its position. If we pass in dx: 0, dy: -1, we&rsquo;re moving the Entity up the screen by one (Since our coordinate system has (0,0) in the top left corner). If we pass in dx: 1, dy: 0, we&rsquo;re moving the Entity to the right by one, etc. This is a simple and effective way to move our Entity around the screen.</p>
-
 <p>Next up is Draw(). This code should look familiar from our drawPlayer() function last time; its the same code, with a few minor changes. We&rsquo;re using our struct (&ldquo;e&rdquo;) instead of hardcoding values. It sets the Layer (there&rsquo;s that pesky Layer thing again, I&rsquo;m going to have explain it at some point&hellip;but that&rsquo;s a problem for future me), then sets the color, both from the structs values, and finally, calls Print() to print the whole thing to screen.</p>
-
 <p>Finally, Clear(). Again, it sets the Layer, and then simply replaces the character on the terminal with an empty space. This effectively &ldquo;erases&rdquo; the Entity from the screen. We&rsquo;ll see in a bit how this will be handy.</p>
-
 <p>Alright, that does it for our GameEntity struct! Now, lets see how we can use it.</p>
-
 <p>The first thing we need to do is import our new package (skip this if you didn&rsquo;t create a new package for our Entity struct):</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> (
-    <span style="color:#a6e22e">blt</span> <span style="color:#e6db74">&#34;bearlibterminal&#34;</span>
-    <span style="color:#e6db74">&#34;strconv&#34;</span>
-    <span style="color:#e6db74">&#34;entity&#34;</span>
-)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="p">(</span>
+    <span class="nx">blt</span> <span class="s">&#34;bearlibterminal&#34;</span>
+    <span class="s">&#34;strconv&#34;</span>
+    <span class="s">&#34;entity&#34;</span>
+<span class="p">)</span></code></pre></div>
 <p>Next, lets define a couple of handy variables:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> (
-    <span style="color:#a6e22e">player</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>
-    <span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>
-)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="p">(</span>
+    <span class="nx">player</span> <span class="o">*</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span>
+    <span class="nx">entities</span> <span class="p">[]</span><span class="o">*</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span>
+<span class="p">)</span></code></pre></div>
 <p>We&rsquo;re defining two variables, player and entities. Player will, predictably, keep track of our player Entity. Entities will be a slice (Go for ArrayList) of type GameEntity (Entity, since I can&rsquo;t keep my references in this blog post straight, sorry about that). You may also notice a &lsquo;*&rsquo; in front of the struct type. In Go, that denotes that we are making these as pointers to the type, in this case entity.GameEntity. Pointers are beyond the scope of this series, but I&rsquo;ll do my best to explain why we&rsquo;re doing this as I go.</p>
-
 <p>Now, lets modify our init() function to create a couple of entities:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
-    <span style="color:#f92672">...</span>
-
-    <span style="color:#75715e">// Create a player Entity, and an NPC Entity, and add them to our slice of Entities
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">player</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>{<span style="color:#a6e22e">X</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Char</span>: <span style="color:#e6db74">&#34;@&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;white&#34;</span>}
-    <span style="color:#a6e22e">npc</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>{<span style="color:#a6e22e">X</span>: <span style="color:#ae81ff">10</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#ae81ff">10</span>, <span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">Char</span>: <span style="color:#e6db74">&#34;N&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;red&#34;</span>}
-    <span style="color:#a6e22e">entities</span> = append(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">player</span>, <span style="color:#a6e22e">npc</span>)
-}</code></pre></div>
-
+    <span class="c1">// Create a player Entity, and an NPC Entity, and add them to our slice of Entities
+</span><span class="c1"></span>    <span class="nx">player</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Layer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Char</span><span class="p">:</span> <span class="s">&#34;@&#34;</span><span class="p">,</span> <span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;white&#34;</span><span class="p">}</span>
+    <span class="nx">npc</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">Layer</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">Char</span><span class="p">:</span> <span class="s">&#34;N&#34;</span><span class="p">,</span> <span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;red&#34;</span><span class="p">}</span>
+    <span class="nx">entities</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">player</span><span class="p">,</span> <span class="nx">npc</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
 <p>The player variable gets assigned to an Entity, and we create a new variable called NPC to represent a second entity. Again, there&rsquo;s a bit of new notation in these variable assignments, the &lsquo;&amp;&rsquo; in front of the name. This denotes that we are going to use the value assigned by reference, rather than by value. Basically, a pointer at the object created. The upshot of this is that, later in the code, when we modify something on the player Entity, it will be updated on the original player, in the way we expect. If we had created this variable by value, we would have gotten a copy assigned, and trying to modify it later would modify the copy, rather than the original, not what we want. Pointers 101 dismissed.</p>
-
 <p>The last step here is to append both the player and NPC Entities to our entities slice, so we can keep track of them. Because we created them by reference, the variables in the slice will point to our original objects.</p>
-
 <p>Three steps left: create a function to draw all our of entities to the screen at once, update our movement controls to use our new Entity struct, and update our game loop to in the same manner. Lets start by creating a function to draw all our entities to the screen:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderEntities</span>() {
-    <span style="color:#75715e">// Draw every Entity present in the game. This gets called on each iteration of the game loop.
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
-        <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Draw</span>()
-    }
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">renderEntities</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Draw every Entity present in the game. This gets called on each iteration of the game loop.
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">entities</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nf">Draw</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>Because we have a central Draw() method with our struct, we can simply iterate over the entities slice, and call Draw() on each one. This will draw the Entity to the screen at its current (X, Y) position. Nice! As a side note, this is Go&rsquo;s version of a for each loop. We&rsquo;re saying use a blank placeholder (_) for the index, since we don&rsquo;t care about that, and assign each Entity in entities to e.</p>
-
 <p>Next, lets update our movement controls to use our Entity struct:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">handleInput</span><span class="p">(</span><span class="nx">key</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle basic character movement in the four main directions
+</span><span class="c1"></span>
+    <span class="kd">var</span> <span class="p">(</span>
+        <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="kt">int</span>
+    <span class="p">)</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">int</span>) {
-    <span style="color:#75715e">// Handle basic character movement in the four main directions
-</span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">var</span> (
-        <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> <span style="color:#66d9ef">int</span>
-    )
+    <span class="k">switch</span> <span class="nx">key</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_RIGHT</span><span class="p">:</span>
+        <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_LEFT</span><span class="p">:</span>
+        <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="p">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">case</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_UP</span><span class="p">:</span>
+        <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">case</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_DOWN</span><span class="p">:</span>
+        <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">key</span> {
-    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_RIGHT</span>:
-        <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> = <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_LEFT</span>:
-        <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> = <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_UP</span>:
-        <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> = <span style="color:#ae81ff">0</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
-    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_DOWN</span>:
-        <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> = <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>
-    }
-
-    <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">Move</span>(<span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span>)
-}</code></pre></div>
-
+    <span class="nx">player</span><span class="p">.</span><span class="nf">Move</span><span class="p">(</span><span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
 <p>We set a couple of ints, dx and dy, which should look familiar from our Move() method on our struct, and then we assign what they should be based on the key input (the logic is more or less the same as before). Finally, we call player.Move(), with the new values. Done.</p>
-
 <p>Finally, lets tweak our main game loop to put all of this together:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Main game loop
+</span><span class="c1"></span>
+    <span class="nf">renderEntities</span><span class="p">()</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">// Main game loop
-</span><span style="color:#75715e"></span>
-    <span style="color:#a6e22e">renderEntities</span>()
+    <span class="k">for</span> <span class="p">{</span>
+        <span class="nx">blt</span><span class="p">.</span><span class="nf">Refresh</span><span class="p">()</span>
 
-    <span style="color:#66d9ef">for</span> {
-        <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Refresh</span>()
+        <span class="nx">key</span> <span class="o">:=</span> <span class="nx">blt</span><span class="p">.</span><span class="nf">Read</span><span class="p">()</span>
 
-        <span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Read</span>()
+        <span class="c1">// Clear each entity off the screen, so we can re-draw them
+</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">entities</span> <span class="p">{</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
+        <span class="p">}</span>
 
-        <span style="color:#75715e">// Clear each entity off the screen, so we can re-draw them
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
-            <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Clear</span>()
-        }
+        <span class="k">if</span> <span class="nx">key</span> <span class="o">!=</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_CLOSE</span> <span class="p">{</span>
+            <span class="nf">handleInput</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_CLOSE</span> {
-            <span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span>)
-        } <span style="color:#66d9ef">else</span> {
-            <span style="color:#66d9ef">break</span>
-        }
+        <span class="c1">// Re-draw all of our Entities, since they may have moved
+</span><span class="c1"></span>        <span class="nf">renderEntities</span><span class="p">()</span>
+    <span class="p">}</span>
 
-        <span style="color:#75715e">// Re-draw all of our Entities, since they may have moved
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">renderEntities</span>()
-    }
-
-    <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
-}</code></pre></div>
-
+    <span class="nx">blt</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
 <p>First up, we draw every Entity to the screen (this will initialize our game screen when the game first starts). Then we go into our main game loop, which refreshes the screen, and checks if any input was used. Then, we clear all the Entities, since they may be about to move. Finally, we handle any input, and then re-draw everything in its new (maybe) positions.</p>
-
 <p>Whew! That was a lot of work, but at this point, we have a working generic implementation that will allow us to create as many Entities as we want, and draw them all to the screen. Pat yourself on the back, that was no mean feat.</p>
-
 <p>Now, lets create a world for these Entities to reside in.</p>
-
 <p>The first thing I&rsquo;m going to do is create a new package (yes, I like packages) called &lsquo;gamemap&rsquo;. This is going to contain our world building logic. Inside this package, lets create a file called gamemap.go. In this file, lets define a new struct, called Tile:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Tile</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Blocked</span> <span style="color:#66d9ef">bool</span>
-    <span style="color:#a6e22e">BlocksSight</span> <span style="color:#66d9ef">bool</span>
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Tile</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Blocked</span> <span class="kt">bool</span>
+    <span class="nx">BlocksSight</span> <span class="kt">bool</span>
+<span class="p">}</span></code></pre></div>
 <p>This struct will represent a single tile in our map (which, if you haven&rsquo;t guessed yet, is a grid of tiles). It has two properties we care about for a map tile: whether the Tile blocks movement, and whether the Tile blocks sight. A floor Tile should block neither sight nor movement, as Entities should be able to move about on them. A wall Tile should block both sight and movement, as you can&rsquo;t more, nor see, through walls. A chasm Tile might block movement, but not sight, and a cloud of smoke might block sight but not movement.</p>
-
 <p>Next, lets create another struct, called GameMap:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GameMap</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Width</span> <span style="color:#66d9ef">int</span>
-    <span style="color:#a6e22e">Height</span> <span style="color:#66d9ef">int</span>
-    <span style="color:#a6e22e">Tiles</span> [][]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tile</span>
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">GameMap</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Width</span> <span class="kt">int</span>
+    <span class="nx">Height</span> <span class="kt">int</span>
+    <span class="nx">Tiles</span> <span class="p">[][]</span><span class="o">*</span><span class="nx">Tile</span>
+<span class="p">}</span></code></pre></div>
 <p>Our GameMap will keep track of how wide and tall it is, as well as containing a 2D array of Tiles. Since we are working on a 2D grid, a 2D array makes perfect sense for storing our map data. The outer array will represent the x coordinates, and the inner, the y. It will be easy to access a given Tile inside the map array like map[x][y].</p>
-
 <p>We&rsquo;re going to define two functions to attach to the GameMap struct, one to initialize it, and one to check if a tile blocks movement or not. The first, initialization, will be a temporary bit of logic, to make sure everything is working, and give us something quick to play with. We&rsquo;re going to outline the screen with wall Tiles, and fill in the interior with floor Tiles. This will make a large, screen sized room for the player to roam around in, and will nicely exemplify our movement blocking mechanics.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">GameMap</span><span class="p">)</span> <span class="nf">InitializeMap</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Set up a map where all the border (edge) Tiles are walls (block movement, and sight)
+</span><span class="c1"></span>	<span class="c1">// This is just a test method, we will build maps more dynamically in the future.
+</span><span class="c1"></span>	<span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([][]</span><span class="o">*</span><span class="nx">Tile</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Width</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span> <span class="p">{</span>
+		<span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">Tile</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Height</span><span class="p">)</span>
+	<span class="p">}</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameMap</span>) <span style="color:#a6e22e">InitializeMap</span>() {
-    <span style="color:#75715e">// Set up a map where all the border (edge) Tiles are walls (block movement, and sight)
-</span><span style="color:#75715e"></span>	<span style="color:#75715e">// This is just a test method, we will build maps more dynamically in the future.
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span> = make([][]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tile</span>, <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Width</span>)
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span> {
-		<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">i</span>] = make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Tile</span>, <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Height</span>)
-	}
-
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">x</span> &lt; <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Width</span>; <span style="color:#a6e22e">x</span><span style="color:#f92672">++</span> {
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">y</span> &lt; <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Height</span>; <span style="color:#a6e22e">y</span><span style="color:#f92672">++</span> {
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Width</span><span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Height</span><span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> {
-				<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">x</span>][<span style="color:#a6e22e">y</span>] = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Tile</span>{<span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">true</span>}
-			} <span style="color:#66d9ef">else</span> {
-				<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">x</span>][<span style="color:#a6e22e">y</span>] = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Tile</span>{<span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">false</span>}
-			}
-		}
-	}
-}</code></pre></div>
-
+	<span class="k">for</span> <span class="nx">x</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Width</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="nx">y</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="p">&lt;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Height</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">x</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">==</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Width</span><span class="o">-</span> <span class="mi">1</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">y</span> <span class="o">==</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Height</span><span class="o">-</span> <span class="mi">1</span> <span class="p">{</span>
+				<span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Tile</span><span class="p">{</span><span class="kc">true</span><span class="p">,</span> <span class="kc">true</span><span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Tile</span><span class="p">{</span><span class="kc">false</span><span class="p">,</span> <span class="kc">false</span><span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>We&rsquo;re using Go&rsquo;s built in Make to initialize our Tile array, with an outer length of the Width of the map. Then, we begin to iterate over each outer cell. In each X cell, we create a new array of length Height. This gives us a fully initialized 2D array of size (Width x Height). We then iterate over each cell in the 2D array, and check two things: Is x or y equal to zero, or is x equal to the width of the map - 1 or y equal to the height of the map -1. If it is, we know we are on an edge (either the right or left edge, or the top or bottom). If this is true, we want this Tile to be a wall Tile, so we create a new Tile that both blocks sight and movement. If this check fails, we create a floor Tile (does not block sight nor movement).</p>
-
 <p>At the end of this method, we should have a (Width x Height) 2D array that is filled with wall and floor Tiles.</p>
-
 <p>Next, lets write a function to check if a given Tile is blocked:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Map</span>) <span style="color:#a6e22e">IsBlocked</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">y</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
-	<span style="color:#75715e">// Check to see if the provided coordinates contain a blocked tile
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">x</span>][<span style="color:#a6e22e">y</span>].<span style="color:#a6e22e">Blocked</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
-	} <span style="color:#66d9ef">else</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-	}
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Map</span><span class="p">)</span> <span class="nf">IsBlocked</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">y</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="c1">// Check to see if the provided coordinates contain a blocked tile
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">].</span><span class="nx">Blocked</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">true</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">false</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>This function simply takes an (x ,y) coordinate pair, and returns if the Tile, at that coordinate in the GameMap, has the Blocked property set to true. We&rsquo;ll use this a little later to determine where the player can and can&rsquo;t move.</p>
-
 <p>Alright, that should do it for our gamemap package! Now lets go implement what we have in the rest of our program.</p>
-
 <p>In our main file, we need to: import our gamemap package (skip if you did not create a package), create a new variable to represent and track our GameMap, initialize our map, and finally, draw our map to the screen. Sounds like a lot of work, lets get to it.</p>
-
 <p>First, import our package:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> (
-	<span style="color:#a6e22e">blt</span> <span style="color:#e6db74">&#34;bearlibterminal&#34;</span>
-	<span style="color:#e6db74">&#34;strconv&#34;</span>
-	<span style="color:#e6db74">&#34;entity&#34;</span>
-	<span style="color:#e6db74">&#34;gamemap&#34;</span>
-)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="p">(</span>
+	<span class="nx">blt</span> <span class="s">&#34;bearlibterminal&#34;</span>
+	<span class="s">&#34;strconv&#34;</span>
+	<span class="s">&#34;entity&#34;</span>
+	<span class="s">&#34;gamemap&#34;</span>
+<span class="p">)</span></code></pre></div>
 <p>We also need to add a couple of constants to set our map width and height. For now we&rsquo;ll just use the window width and height, but in the future, our maps will be much larger than the window:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">const</span> (
-	<span style="color:#a6e22e">WindowSizeX</span> = <span style="color:#ae81ff">100</span>
-	<span style="color:#a6e22e">WindowSizeY</span> = <span style="color:#ae81ff">35</span>
-	<span style="color:#a6e22e">MapWidth</span> = <span style="color:#a6e22e">WindowSizeX</span>
-	<span style="color:#a6e22e">MapHeight</span> = <span style="color:#a6e22e">WindowSizeY</span>
-	<span style="color:#a6e22e">Title</span> = <span style="color:#e6db74">&#34;BearRogue&#34;</span>
-	<span style="color:#a6e22e">Font</span> = <span style="color:#e6db74">&#34;fonts/UbuntuMono.ttf&#34;</span>
-	<span style="color:#a6e22e">FontSize</span> = <span style="color:#ae81ff">24</span>
-)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="p">(</span>
+	<span class="nx">WindowSizeX</span> <span class="p">=</span> <span class="mi">100</span>
+	<span class="nx">WindowSizeY</span> <span class="p">=</span> <span class="mi">35</span>
+	<span class="nx">MapWidth</span> <span class="p">=</span> <span class="nx">WindowSizeX</span>
+	<span class="nx">MapHeight</span> <span class="p">=</span> <span class="nx">WindowSizeY</span>
+	<span class="nx">Title</span> <span class="p">=</span> <span class="s">&#34;BearRogue&#34;</span>
+	<span class="nx">Font</span> <span class="p">=</span> <span class="s">&#34;fonts/UbuntuMono.ttf&#34;</span>
+	<span class="nx">FontSize</span> <span class="p">=</span> <span class="mi">24</span>
+<span class="p">)</span></code></pre></div>
 <p>Next, we need to add a new var that will store our GameMap:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> (
-	<span style="color:#a6e22e">player</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>
-	<span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">GameEntity</span>
-	<span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>
-)</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="p">(</span>
+	<span class="nx">player</span> <span class="o">*</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span>
+	<span class="nx">entities</span> <span class="p">[]</span><span class="o">*</span><span class="nx">entity</span><span class="p">.</span><span class="nx">GameEntity</span>
+	<span class="nx">gameMap</span> <span class="o">*</span><span class="nx">gamemap</span><span class="p">.</span><span class="nx">Map</span>
+<span class="p">)</span></code></pre></div>
 <p>Then, we need to set and initialize our new gameMap variable in our init() function:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
-    <span style="color:#f92672">...</span>
-    <span style="color:#75715e">// Create a GameMap, and initialize it
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">gameMap</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>{<span style="color:#a6e22e">Width</span>: <span style="color:#a6e22e">MapWidth</span>, <span style="color:#a6e22e">Height</span>: <span style="color:#a6e22e">MapHeight</span>}
-    <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">InitializeMap</span>()
-}</code></pre></div>
-
-<p>Now that we have that done, we need a way to actually draw our map to the screen. We&rsquo;re going to create a new function, renderMap, that will iterate over each Tile in our GameMap, and Print it to the screen. This will happen before we render our Entities, so the entities are rendered on top of the map. This is where we actually assign characters to the wall (&ldquo;#&rdquo;) and floor (&ldquo;.&rdquo;) Tiles. I will also be setting a color for each one:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderMap</span>() {
-    <span style="color:#75715e">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// sight, draw a &#39;.&#39;
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">x</span> &lt; <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Width</span>; <span style="color:#a6e22e">x</span><span style="color:#f92672">++</span> {
-    	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">y</span> &lt; <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Height</span>; <span style="color:#a6e22e">y</span><span style="color:#f92672">++</span> {
-    		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">x</span>][<span style="color:#a6e22e">y</span>].<span style="color:#a6e22e">Blocked</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
-    			<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;gray&#34;</span>))
-    			<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;#&#34;</span>)
-    		} <span style="color:#66d9ef">else</span> {
-    			<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#e6db74">&#34;brown&#34;</span>))
-    			<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>, <span style="color:#e6db74">&#34;.&#34;</span>)
-    		}
-    	}
-    }
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="c1">// Create a GameMap, and initialize it
+</span><span class="c1"></span>    <span class="nx">gameMap</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">gamemap</span><span class="p">.</span><span class="nx">Map</span><span class="p">{</span><span class="nx">Width</span><span class="p">:</span> <span class="nx">MapWidth</span><span class="p">,</span> <span class="nx">Height</span><span class="p">:</span> <span class="nx">MapHeight</span><span class="p">}</span>
+    <span class="nx">gameMap</span><span class="p">.</span><span class="nf">InitializeMap</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<p>Now that we have that done, we need a way to actually draw our map to the screen. We&rsquo;re going to create a new function, renderMap, that will iterate over each Tile in our GameMap, and Print it to the screen. This will happen before we render our Entities, so the entities are rendered on top of the map. This is where we actually assign characters to the wall (&quot;#&quot;) and floor (&quot;.&quot;) Tiles. I will also be setting a color for each one:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">renderMap</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Render the game map. If a tile is blocked and blocks sight, draw a &#39;#&#39;, if it is not blocked, and does not block
+</span><span class="c1"></span>    <span class="c1">// sight, draw a &#39;.&#39;
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">x</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="p">&lt;</span> <span class="nx">gameMap</span><span class="p">.</span><span class="nx">Width</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span> <span class="p">{</span>
+    	<span class="k">for</span> <span class="nx">y</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="p">&lt;</span> <span class="nx">gameMap</span><span class="p">.</span><span class="nx">Height</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span> <span class="p">{</span>
+    		<span class="k">if</span> <span class="nx">gameMap</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">].</span><span class="nx">Blocked</span> <span class="o">==</span> <span class="kc">true</span> <span class="p">{</span>
+    			<span class="nx">blt</span><span class="p">.</span><span class="nf">Color</span><span class="p">(</span><span class="nx">blt</span><span class="p">.</span><span class="nf">ColorFromName</span><span class="p">(</span><span class="s">&#34;gray&#34;</span><span class="p">))</span>
+    			<span class="nx">blt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s">&#34;#&#34;</span><span class="p">)</span>
+    		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    			<span class="nx">blt</span><span class="p">.</span><span class="nf">Color</span><span class="p">(</span><span class="nx">blt</span><span class="p">.</span><span class="nf">ColorFromName</span><span class="p">(</span><span class="s">&#34;brown&#34;</span><span class="p">))</span>
+    			<span class="nx">blt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s">&#34;.&#34;</span><span class="p">)</span>
+    		<span class="p">}</span>
+    	<span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>This function is pretty simple. All it does is loop over each Tile in the 2D array, and check the Blocked method from the GameMap struct to see if the Tile is a floor or Wall. It then prints the appropriate symbol and color.</p>
-
 <p>Great, so now we have initialized our map, and can draw it. Whats left? Well, actually drawing the map! I&rsquo;m going to create a new, simple convenience method to render everything (GameMap and Entities) at once, so we only have to call one function in our game loop, instead of two. Clean code is happy code.</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">renderAll</span>() {
-	<span style="color:#75715e">// Convenience function to render all entities, followed by rendering the game map
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">renderMap</span>()
-	<span style="color:#a6e22e">renderEntities</span>()
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">renderAll</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Convenience function to render all entities, followed by rendering the game map
+</span><span class="c1"></span>	<span class="nf">renderMap</span><span class="p">()</span>
+	<span class="nf">renderEntities</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
 <p>As discussed above, renderAll() calls renderMap() first, followed by renderEntities(), as we want the Entities rendered on top of the map. Now, we just modify our game loop to include this method:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Main game loop
+</span><span class="c1"></span>
+	<span class="nf">renderAll</span><span class="p">()</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#75715e">// Main game loop
-</span><span style="color:#75715e"></span>
-	<span style="color:#a6e22e">renderAll</span>()
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="nx">blt</span><span class="p">.</span><span class="nf">Refresh</span><span class="p">()</span>
 
-	<span style="color:#66d9ef">for</span> {
-		<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Refresh</span>()
+		<span class="nx">key</span> <span class="o">:=</span> <span class="nx">blt</span><span class="p">.</span><span class="nf">Read</span><span class="p">()</span>
 
-		<span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Read</span>()
+		<span class="c1">// Clear each Entity off the screen
+</span><span class="c1"></span>		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">entities</span> <span class="p">{</span>
+			<span class="nx">e</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
+		<span class="p">}</span>
 
-		<span style="color:#75715e">// Clear each Entity off the screen
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
-			<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Clear</span>()
-		}
+		<span class="k">if</span> <span class="nx">key</span> <span class="o">!=</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_CLOSE</span> <span class="p">{</span>
+			<span class="nf">handleInput</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">player</span><span class="p">)</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="nf">renderAll</span><span class="p">()</span>
+	<span class="p">}</span>
 
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_CLOSE</span> {
-			<span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">player</span>)
-		} <span style="color:#66d9ef">else</span> {
-			<span style="color:#66d9ef">break</span>
-		}
-		<span style="color:#a6e22e">renderAll</span>()
-	}
-
-	<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
-}</code></pre></div>
-
+	<span class="nx">blt</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
 <p>Notice that all we changed was swapping out the renderEntities() calls for renderAll() calls. This means that we re-draw the entire map and Entity list every time through the game loop.</p>
-
 <p>Done and done! If you run this now, you should see what resembles a large room, with our &lsquo;@&rsquo; player (movable, of course), and an (for now) immobile NPC. You should be able to bump into the walls, but not move through, and move freely across the floor.</p>
-
 <p>We accomplished quite a bit in this post, and our &ldquo;game&rdquo; is starting to actually resemble something playable at this point. To recap, we added an Entity struct to represent every object in the game (except map objects, which are represented by a Tile struct). We refactored our main game code to use this new struct by making our player, plus a new NPC,  as Entities. Finally, we created a GameMap struct which stores information about the map the player moves around on, and initialized it to an empty room, making sure that the player cannot pull a magic act and move through walls (yet&hellip;). As usual, you can find all the code for this post under the v0.0.3 release on my github <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial/releases/tag/v0.0.3">repo</a>.</p>
-
 <p>Join me next week when we&rsquo;ll talk about fleshing out our map to make it more&hellip;dungeony. Until then, happy developing!</p>
-
 <p><a href="/post/roguelike-dev-week-2/">This way to Part 4</a></p>
-
 <p>=====</p>
-
 <p>Sidenote for this post: <a href="/post/sidenote-1-cameras/">Sidenote 1: Cameras</a></p>
 
     </div>
-    
     <footer>
       <hr>
       <p>
@@ -529,59 +537,57 @@ p img {
       by <span itemprop="author">Jeremy Cerise</span>
     
   
-  <time datetime="2017-07-02T20:25:13-06:00">
+  <time itemprop="datePublished" datetime="2017-07-02T20:25:13-06:00">
     2 Jul, 2017
   </time>
   
     in <span itemprop="articleSection"><a href="/categories/technology/">technology</a></span>
   
   
-    and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a> and <a href="/tags/roguelike/">roguelike</a>
+    and tagged <a rel="tag" href="/tags/go/">go</a>, <a rel="tag" href="/tags/programming/">programming</a>, <a rel="tag" href="/tags/rldbar/">RLDBAR</a> and <a rel="tag" href="/tags/roguelike/">roguelike</a>
   
   using <span itemprop="wordCount">3688</span> words.
 </p>
 
       
+
+
+
   
-
-
-
-  <aside>
-    <header>Related Content</header>
-    <ul>
+    <aside>
+      <header>Related Content</header>
       
+        <ul>
+          
+            <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Part 2</a>
+            <time class="muted" datetime="8M">8 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-0/">RoguelikeDev Builds a Roguelike, Part 1</a>
+            <time class="muted" datetime="7M">7 minutes</time>
+          
+        </ul>
       
-        <li><a href="/post/roguelike-dev-part-7/">RoguelikeDev Builds a Roguelike, Part 7</a> &ndash; 17 minutes
-      
-        <li><a href="/post/sidenote-2-vim-keys/">RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</a> &ndash; 2 minutes
-      
-        <li><a href="/post/roguelike-dev-week-3-part-2/">RoguelikeDev Builds a Roguelike, Part 6</a> &ndash; 13 minutes
-      
-        <li><a href="/post/roguelike-dev-week-3-part-1/">RoguelikeDev Builds a Roguelike, Part 5</a> &ndash; 12 minutes
-      
-        <li><a href="/post/roguelike-dev-week-2/">RoguelikeDev Builds a Roguelike, Part 4</a> &ndash; 18 minutes
-      
-        <li><a href="/post/sidenote-1-cameras/">RLDBAR Sidenote #1: Cameras</a> &ndash; 9 minutes
-      
-        <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Part 2</a> &ndash; 8 minutes
-      
-    </ul>
-  </aside>
+    </aside>
+  
 
 
     </footer>
   </article>
 </main>
     <footer>
+  <small class="muted">
+    
   
-  <p class="muted">
-    This page was generated using
-    <a target="_blank" rel="noopener" href="https://comfusion.github.io/after-dark/">After Dark</a>
-    for
-    <a target="_blank" rel="noopener" href="https://gohugo.io/">Hugo</a>.
-  </p>
+    Copyright &copy; Copyright Jermey Cerise. Licensed under <a target="_blank" rel="external noopener license" href="https://creativecommons.org/licenses/by-nd/4.0/">CC-BY-ND-4.0</a>.
+  
 
 
+  </small>
 </footer>
+    
+    
+    
+      
+    
   </body>
 </html>
