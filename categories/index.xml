@@ -1,23 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
+    <docs>https://blogs.law.harvard.edu/tech/rss</docs>
     <title>Categories on Jeremy&#39;s Ramblings</title>
-    <link>http://jeremyceri.se/categories/</link>
+    <link>https://jeremyceri.se/categories/</link>
     <description>Recent content in Categories on Jeremy&#39;s Ramblings</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <image>
+      <title>Categories on Jeremy&#39;s Ramblings</title>
+      <link>https://jeremyceri.se/categories/</link>
+      <url>https://source.unsplash.com/collection/983219/2000x1322</url>
+    </image>
+    <ttl>1440</ttl>
+    <generator>After Dark 9.2.2 (Hugo 0.68.3)</generator>
     <language>en-US</language>
-    
-	<atom:link href="http://jeremyceri.se/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright &amp;copy; Copyright Jermey Cerise. Licensed under CC-BY-ND-4.0.</copyright>
+    <lastBuildDate>Sat, 08 Aug 2020 05:33:43 UT</lastBuildDate>
+    <atom:link href="https://jeremyceri.se/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Technology</title>
-      <link>http://jeremyceri.se/categories/technology/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/categories/technology/</guid>
+      <title>technology</title>
+      <link>https://jeremyceri.se/categories/technology/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/categories/technology/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
   </channel>
 </rss>

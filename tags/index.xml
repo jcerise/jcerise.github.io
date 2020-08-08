@@ -1,105 +1,123 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
+    <docs>https://blogs.law.harvard.edu/tech/rss</docs>
     <title>Tags on Jeremy&#39;s Ramblings</title>
-    <link>http://jeremyceri.se/tags/</link>
+    <link>https://jeremyceri.se/tags/</link>
     <description>Recent content in Tags on Jeremy&#39;s Ramblings</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <image>
+      <title>Tags on Jeremy&#39;s Ramblings</title>
+      <link>https://jeremyceri.se/tags/</link>
+      <url>https://source.unsplash.com/collection/983219/2000x1322</url>
+    </image>
+    <ttl>1440</ttl>
+    <generator>After Dark 9.2.2 (Hugo 0.68.3)</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 11 Jul 2017 13:41:06 -0600</lastBuildDate>
-    
-	<atom:link href="http://jeremyceri.se/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright &amp;copy; Copyright Jermey Cerise. Licensed under CC-BY-ND-4.0.</copyright>
+    <lastBuildDate>Sat, 08 Aug 2020 05:33:43 UT</lastBuildDate>
+    <atom:link href="https://jeremyceri.se/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Cellular Automata</title>
-      <link>http://jeremyceri.se/tags/cellular-automata/</link>
-      <pubDate>Tue, 11 Jul 2017 13:41:06 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/cellular-automata/</guid>
+      <title>development</title>
+      <link>https://jeremyceri.se/tags/development/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/development/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Combat</title>
-      <link>http://jeremyceri.se/tags/combat/</link>
-      <pubDate>Sun, 23 Jul 2017 22:20:22 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/combat/</guid>
+      <title>python</title>
+      <link>https://jeremyceri.se/tags/python/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/python/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Entity Component</title>
-      <link>http://jeremyceri.se/tags/entity-component/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/entity-component/</guid>
+      <title>WSL</title>
+      <link>https://jeremyceri.se/tags/wsl/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/wsl/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Entity Component System</title>
-      <link>http://jeremyceri.se/tags/entity-component-system/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/entity-component-system/</guid>
+      <title>entity component</title>
+      <link>https://jeremyceri.se/tags/entity-component/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/entity-component/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Field of Vision</title>
-      <link>http://jeremyceri.se/tags/field-of-vision/</link>
-      <pubDate>Thu, 13 Jul 2017 22:30:50 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/field-of-vision/</guid>
+      <title>entity component system</title>
+      <link>https://jeremyceri.se/tags/entity-component-system/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/entity-component-system/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Go</title>
-      <link>http://jeremyceri.se/tags/go/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/go/</guid>
+      <title>go</title>
+      <link>https://jeremyceri.se/tags/go/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/go/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Programming</title>
-      <link>http://jeremyceri.se/tags/programming/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/programming/</guid>
+      <title>programming</title>
+      <link>https://jeremyceri.se/tags/programming/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/programming/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Rldbar</title>
-      <link>http://jeremyceri.se/tags/rldbar/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/rldbar/</guid>
+      <title>RLDBAR</title>
+      <link>https://jeremyceri.se/tags/rldbar/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/rldbar/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Roguelike</title>
-      <link>http://jeremyceri.se/tags/roguelike/</link>
-      <pubDate>Thu, 27 Jul 2017 22:58:00 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/roguelike/</guid>
+      <title>roguelike</title>
+      <link>https://jeremyceri.se/tags/roguelike/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/roguelike/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
     <item>
-      <title>Roguelike Movement</title>
-      <link>http://jeremyceri.se/tags/roguelike-movement/</link>
-      <pubDate>Thu, 27 Jul 2017 22:10:20 -0600</pubDate>
-      
-      <guid>http://jeremyceri.se/tags/roguelike-movement/</guid>
+      <title>roguelike movement</title>
+      <link>https://jeremyceri.se/tags/roguelike-movement/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/roguelike-movement/</guid>
       <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
     </item>
-    
+    <item>
+      <title>combat</title>
+      <link>https://jeremyceri.se/tags/combat/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/combat/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>field of vision</title>
+      <link>https://jeremyceri.se/tags/field-of-vision/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/field-of-vision/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>cellular automata</title>
+      <link>https://jeremyceri.se/tags/cellular-automata/</link>
+      <dc:creator>Jeremy Cerise</dc:creator>
+      <guid>https://jeremyceri.se/tags/cellular-automata/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
   </channel>
 </rss>

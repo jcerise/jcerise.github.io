@@ -1,7 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   <head>
-    <meta name="generator" content="Hugo 0.40.2" />
+    
+
+
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; connect-src 'self' wss: data:; font-src 'self' https: data:; img-src 'self' https: data:; object-src 'none'">
+
+
+    <meta name="generator" content="After Dark Hugo">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoguelikeDev Builds a Roguelike, Part 7 | Jeremy&#39;s Ramblings</title>
@@ -11,80 +17,134 @@
     
     
     
-    
-
-  <meta name="author" content="Jeremy Cerise">
-
-
     <meta property="og:title" content="RoguelikeDev Builds a Roguelike, Part 7" />
 <meta property="og:description" content="Part 7: An Entity/Component/System Refactor to make our lives easier" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://jeremyceri.se/post/roguelike-dev-part-7/" />
+<meta property="og:url" content="https://jeremyceri.se/post/roguelike-dev-part-7/" />
+<meta property="og:image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
+<meta property="article:published_time" content="2017-07-27T22:58:00-06:00" />
+<meta property="article:modified_time" content="2017-07-27T22:58:00-06:00" />
 
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
 
-
-<meta property="article:published_time" content="2017-07-27T22:58:00-06:00"/>
-
-<meta property="article:modified_time" content="2017-07-27T22:58:00-06:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta name="twitter:title" content="RoguelikeDev Builds a Roguelike, Part 7"/>
+<meta name="twitter:description" content="Part 7: An Entity/Component/System Refactor to make our lives easier"/>
 
     
 
 
 
-  <meta property="og:image" content="https://source.unsplash.com/category/technology/1600x900">
+  <meta property="og:image" content="https://source.unsplash.com/collection/983219/2000x1322">
 
 
-    <meta name="theme-color" content="#000">
+    
 
     
     
+  <meta name="referrer" content="same-origin">
+
+
     
-    <link rel="canonical" href="http://jeremyceri.se/post/roguelike-dev-part-7/">
+    
+    <script integrity="sha512-2t0yyNrUdtn9WGIoBVxq5vtoJQYfoDQDbqRPpOb75f1hiL39DGLdJKDrGP60fBhXfrFeKyVhzWJvHvLgln/ElA==">/*! Fetch Inject v2.0.4 | Copyright (C) Josh Habdas <jhabdas@protonmail.com> (https://habd.as) | @license Zlib */
+var fetchInject=function(){"use strict";const e=function(e,t,r,n,o,c,i){c=t.createElement(r),i=t.getElementsByTagName(r)[0],c.appendChild(t.createTextNode(n.text)),c.onload=o(n),i?i.parentNode.insertBefore(c,i):t.head.appendChild(c)};return function(t,r){if(!arguments.length)return Promise.reject(new ReferenceError("Failed to execute 'fetchInject': 1 argument required but only 0 present."));if(arguments[0]&&arguments[0].constructor!==Array)return Promise.reject(new TypeError("Failed to execute 'fetchInject': argument 1 must be of type 'Array'."));if(arguments[1]&&arguments[1].constructor!==Promise)return Promise.reject(new TypeError("Failed to execute 'fetchInject': argument 2 must be of type 'Promise'."));const n=[],o=r?[].concat(r):[],c=[];return t.forEach(e=>o.push(window.fetch(e).then(e=>[e.clone().text(),e.blob()]).then(e=>Promise.all(e).then(e=>{n.push({text:e[0],blob:e[1]})})))),Promise.all(o).then(()=>(n.forEach(t=>{c.push({then:r=>{t.blob.type.includes("text/css")?e(window,document,"style",t,r):e(window,document,"script",t,r)}})}),Promise.all(c)))}}();
+</script>
+    <script integrity="sha512-2XlvnxweZhaHgBdCoOK0PoCUWiSfKibb&#43;RCRZNgqLdvbnx0ZH67FDGKQqmpqCerjMJbZFv6fsXgbmJOOA9K&#43;qA==">/*!
+ * Copyright (C) 2019  Josh Habdas <jhabdas@protonmail.com>
+ *
+ * This file is part of After Dark.
+ *
+ * After Dark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * After Dark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+fetchInject(["/js/lazysizes.min.js"]);
+</script>
+    
+
+
+  
+    
+
+  <meta title="mod:fractal-forest" content="status:enabled">
+  
+    <script async src=/js/bpgdec8a.js integrity=sha384-8PG0go3BW8hLm63KbTxk/hNcehaoSbrAhKzsmy2Jhs/KY8QdiKKkjhdeyHY/Q/0I&#10;></script>
+  
+
+
+  
+  
+  
+  
+
+
+    
+    <link rel="canonical" href="https://jeremyceri.se/post/roguelike-dev-part-7/">
     
     
     <link rel="icon" sizes="any" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2046%2045'%20xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EAfter%20Dark%3C/title%3E%3Cpath%20d='M.708%2045L23%20.416%2045.292%2045H.708zM35%2038L23%2019%2011%2038h24z'%20fill='%23000'/%3E%3C/svg%3E">
 
-    <style>
-      html{font-size:12px}*{box-sizing:border-box;text-rendering:geometricPrecision}body{font-size:1rem;line-height:1.5rem;margin:0;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;word-wrap:break-word}h1,h2,h3,h4,h5,h6{line-height:1.3em}fieldset{border:none;padding:0;margin:0}pre{padding:2rem;margin:1.75rem 0;background-color:#fff;border:1px solid #ccc;overflow:auto}code[class*=language-],pre[class*=language-],pre code{font-weight:100;text-shadow:none;margin:1.75rem 0}a{cursor:pointer;color:#ff2e88;text-decoration:none;border-bottom:1px solid #ff2e88}a:hover{background-color:#ff2e88;color:#fff}.grid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.grid.\-top{-ms-flex-align:start;-ms-grid-row-align:flex-start;align-items:flex-start}.grid.\-middle{-ms-flex-align:center;-ms-grid-row-align:center;align-items:center}.grid.\-bottom{-ms-flex-align:end;-ms-grid-row-align:flex-end;align-items:flex-end}.grid.\-stretch{-ms-flex-align:stretch;-ms-grid-row-align:stretch;align-items:stretch}.grid.\-baseline{-ms-flex-align:baseline;-ms-grid-row-align:baseline;align-items:baseline}.grid.\-left{-ms-flex-pack:start;justify-content:flex-start}.grid.\-center{-ms-flex-pack:center;justify-content:center}.grid.\-right{-ms-flex-pack:end;justify-content:flex-end}.grid.\-between{-ms-flex-pack:justify;justify-content:space-between}.grid.\-around{-ms-flex-pack:distribute;justify-content:space-around}.cell{-ms-flex:1;flex:1;box-sizing:border-box}@media screen and (min-width:768px){.cell.\-1of12{-ms-flex:0 0 8.33333%;flex:0 0 8.33333%}.cell.\-2of12{-ms-flex:0 0 16.66667%;flex:0 0 16.66667%}.cell.\-3of12{-ms-flex:0 0 25%;flex:0 0 25%}.cell.\-4of12{-ms-flex:0 0 33.33333%;flex:0 0 33.33333%}.cell.\-5of12{-ms-flex:0 0 41.66667%;flex:0 0 41.66667%}.cell.\-6of12{-ms-flex:0 0 50%;flex:0 0 50%}.cell.\-7of12{-ms-flex:0 0 58.33333%;flex:0 0 58.33333%}.cell.\-8of12{-ms-flex:0 0 66.66667%;flex:0 0 66.66667%}.cell.\-9of12{-ms-flex:0 0 75%;flex:0 0 75%}.cell.\-10of12{-ms-flex:0 0 83.33333%;flex:0 0 83.33333%}.cell.\-11of12{-ms-flex:0 0 91.66667%;flex:0 0 91.66667%}}@media screen and (max-width:768px){.grid{-ms-flex-direction:column;flex-direction:column}.cell{-ms-flex:0 0 auto;flex:0 0 auto}}.hack,.hack blockquote,.hack code,.hack em,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack strong{font-size:1rem;font-style:normal;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif}.hack blockquote,.hack code,.hack em,.hack strong{line-height:20px}.hack blockquote,.hack code,.hack footer,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack header,.hack li,.hack ol,.hack p,.hack section,.hack ul{float:none;margin:0;padding:0}.hack blockquote,.hack h1,.hack ol,.hack p,.hack ul{margin-top:20px;margin-bottom:20px}.hack h1{position:relative;display:inline-block;display:table-cell;padding:20px 0 30px;margin:0;overflow:hidden}.hack h1:after{content:"====================================================================================================";position:absolute;bottom:10px;left:0}.hack h1+*{margin-top:0}.hack h2,.hack h3,.hack h4,.hack h5,.hack h6{position:relative;margin-bottom:1.75rem}.hack h2:before,.hack h3:before,.hack h4:before,.hack h5:before,.hack h6:before{display:inline}.hack h2:before{content:"## "}.hack h3:before{content:"### "}.hack h4:before{content:"#### "}.hack h5:before{content:"##### "}.hack h6:before{content:"###### "}.hack li{position:relative;display:block;padding-left:20px}.hack li:after{position:absolute;top:0;left:0}.hack ul>li:after{content:"-"}.hack ol{counter-reset:a}.hack ol>li:after{content:counter(a) ".";counter-increment:a}.hack blockquote{position:relative;padding-left:17px;padding-left:2ch;overflow:hidden}.hack blockquote:after{content:">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";white-space:pre;position:absolute;top:0;left:0;line-height:20px}.hack em:after,.hack em:before{content:"*";display:inline}.hack pre code:after,.hack pre code:before{content:''}.hack code{font-weight:700}.hack code:after,.hack code:before{content:"`";display:inline}.hack hr{position:relative;height:20px;overflow:hidden;border:0;margin:20px 0}.hack hr:after{content:"----------------------------------------------------------------------------------------------------";position:absolute;top:0;left:0;line-height:20px;width:100%;word-wrap:break-word}@-moz-document url-prefix(){.hack h1{display:block}}.hack-ones ol>li:after{content:"1."}p{margin:0 0 1.75rem}.container{max-width:70rem}.container,.container-fluid{margin:0 auto;padding:0 1rem}.inner{padding:1rem}.inner2x{padding:2rem}.pull-left{float:left}.pull-right{float:right}.progress-bar{height:8px;opacity:.8;background-color:#ccc;margin-top:12px}.progress-bar.progress-bar-show-percent{margin-top:38px}.progress-bar-filled{background-color:gray;height:100%;transition:width .3s ease;position:relative;width:0}.progress-bar-filled:before{content:'';border:6px solid transparent;border-top-color:gray;position:absolute;top:-12px;right:-6px}.progress-bar-filled:after{color:gray;content:attr(data-filled);display:block;font-size:12px;white-space:nowrap;position:absolute;border:6px solid transparent;top:-38px;right:0;-ms-transform:translateX(50%);transform:translateX(50%)}table{width:100%;border-collapse:collapse;margin:1.75rem 0;color:#778087}table td,table th{vertical-align:top;border:1px solid #ccc;line-height:15px;padding:10px}table thead th{font-size:10px}table tbody td:first-child{font-weight:700;color:#333}.form{width:30rem}.form-group{margin-bottom:1.75rem;overflow:auto}.form-group label{border-bottom:2px solid #ccc;color:#333;width:10rem;display:inline-block;height:38px;line-height:38px;padding:0;float:left;position:relative}.form-group.form-success label{color:#4caf50!important;border-color:#4caf50!important}.form-group.form-warning label{color:#ff9800!important;border-color:#ff9800!important}.form-group.form-error label{color:#f44336!important;border-color:#f44336!important}.form-control{outline:none;border:none;border-bottom:2px solid #ccc;padding:.5rem 0;width:20rem;height:38px;background-color:transparent}.form-control:focus{border-color:#555}.form-group.form-textarea label:after{position:absolute;content:'';width:2px;background-color:#fff;right:-2px;top:0;bottom:0}textarea.form-control{height:auto;resize:none;padding:1rem 0;border-bottom:2px solid #ccc;border-left:2px solid #ccc;padding:.5rem}select.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}.help-block{color:#999;margin-top:.5rem}.form-actions{margin-bottom:1.75rem}.btn{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;cursor:pointer;outline:none;padding:.65rem 2rem;font-size:1rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;z-index:1}.btn:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}.btn.btn-ghost{border-color:#757575;color:#757575;background-color:transparent}.btn.btn-ghost:focus,.btn.btn-ghost:hover{border-color:#424242;color:#424242;z-index:2}.btn.btn-ghost:hover{background-color:transparent}.btn-block{width:100%;display:-ms-flexbox;display:flex}.btn-default{color:#fff;background-color:#e0e0e0;border:1px solid #e0e0e0;color:#333}.btn-default:focus:not(.btn-ghost),.btn-default:hover{background-color:#dcdcdc;border-color:#dcdcdc}.btn-success{color:#fff;background-color:#4caf50;border:1px solid #4caf50}.btn-success:focus:not(.btn-ghost),.btn-success:hover{background-color:#43a047;border-color:#43a047}.btn-success.btn-ghost{border-color:#4caf50;color:#4caf50}.btn-success.btn-ghost:focus,.btn-success.btn-ghost:hover{border-color:#388e3c;color:#388e3c;z-index:2}.btn-error{color:#fff;background-color:#f44336;border:1px solid #f44336}.btn-error:focus:not(.btn-ghost),.btn-error:hover{background-color:#e53935;border-color:#e53935}.btn-error.btn-ghost{border-color:#f44336;color:#f44336}.btn-error.btn-ghost:focus,.btn-error.btn-ghost:hover{border-color:#d32f2f;color:#d32f2f;z-index:2}.btn-warning{color:#fff;background-color:#ff9800;border:1px solid #ff9800}.btn-warning:focus:not(.btn-ghost),.btn-warning:hover{background-color:#fb8c00;border-color:#fb8c00}.btn-warning.btn-ghost{border-color:#ff9800;color:#ff9800}.btn-warning.btn-ghost:focus,.btn-warning.btn-ghost:hover{border-color:#f57c00;color:#f57c00;z-index:2}.btn-info{color:#fff;background-color:#00bcd4;border:1px solid #00bcd4}.btn-info:focus:not(.btn-ghost),.btn-info:hover{background-color:#00acc1;border-color:#00acc1}.btn-info.btn-ghost{border-color:#00bcd4;color:#00bcd4}.btn-info.btn-ghost:focus,.btn-info.btn-ghost:hover{border-color:#0097a7;color:#0097a7;z-index:2}.btn-primary{color:#fff;background-color:#2196f3;border:1px solid #2196f3}.btn-primary:focus:not(.btn-ghost),.btn-primary:hover{background-color:#1e88e5;border-color:#1e88e5}.btn-primary.btn-ghost{border-color:#2196f3;color:#2196f3}.btn-primary.btn-ghost:focus,.btn-primary.btn-ghost:hover{border-color:#1976d2;color:#1976d2;z-index:2}.btn-group{overflow:auto}.btn-group .btn{float:left}.btn-group .btn-ghost:not(:first-child){margin-left:-1px}.card{border:1px solid #ccc}.card .card-header{color:#333;text-align:center;background-color:#ddd;padding:.5rem 0}.alert{color:#ccc;padding:1rem;border:1px solid #ccc;margin-bottom:1.75rem}.alert-success{color:#4caf50;border-color:#4caf50}.alert-error{color:#f44336;border-color:#f44336}.alert-info{color:#00bcd4;border-color:#00bcd4}.alert-warning{color:#ff9800;border-color:#ff9800}.media:not(:last-child){margin-bottom:1.25rem}.media-left{padding-right:1rem}.media-left,.media-right{display:table-cell;vertical-align:top}.media-right{padding-left:1rem}.media-body{display:table-cell;vertical-align:top}.media-heading{font-size:1.16667rem;font-weight:700}.media-content{margin-top:.3rem}.avatarholder,.placeholder{background-color:#f0f0f0;text-align:center;color:#b9b9b9;font-size:1rem;border:1px solid #f0f0f0}.avatarholder{width:48px;height:48px;line-height:46px;font-size:2rem;background-size:cover;background-position:50%;background-repeat:no-repeat}.avatarholder.rounded{border-radius:33px}.loading{height:20px;width:20px;animation:a .6s infinite linear;border:2px solid #e91e63;border-right-color:transparent;border-radius:50%}.btn .loading{display:inline-block;float:left;margin-right:.5rem;width:14px;height:14px}@keyframes a{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.menu{width:100%}.menu .menu-item{display:block;color:#616161;border-color:#616161}.menu .menu-item.active,.menu .menu-item:hover{color:#000;border-color:#000;background-color:transparent}@media screen and (max-width:768px){.form-group label{display:block;border-bottom:none;width:100%}.form-group.form-textarea label:after{display:none}.form-control{width:100%}textarea.form-control{border-left:none;padding:.5rem 0}pre::-webkit-scrollbar{height:3px}}@media screen and (max-width:480px){.form{width:100%}}
-.dark{color:#ccc}.dark,.dark pre{background-color:#000}.dark pre{padding:0;border:none}.dark pre code{color:#00bcd4}.dark h1 a,.dark h2 a,.dark h3 a,.dark h4 a,.dark h5 a{color:#ccc}.dark code,.dark strong{color:#fff}.dark code{font-weight:100}.dark table{color:#ccc}.dark table td,.dark table th{border-color:#444}.dark table tbody td:first-child{color:#fff}.dark .form-group label{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-group.form-textarea label:after{background-color:#000}.dark .form-control{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-control:focus{border-color:#ccc;color:#ccc}.dark textarea.form-control{color:#ccc}.dark .card{border-color:rgba(95,95,95,.78)}.dark .card .card-header{background-color:transparent;color:#ccc;border-bottom:1px solid rgba(95,95,95,.78)}.dark .btn.btn-ghost.btn-default{border-color:#ababab;color:#ababab}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#9c9c9c;color:#9c9c9c;z-index:1}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#e0e0e0;color:#e0e0e0}.dark .btn.btn-ghost.btn-primary:focus,.dark .btn.btn-ghost.btn-primary:hover{border-color:#64b5f6;color:#64b5f6}.dark .btn.btn-ghost.btn-success:focus,.dark .btn.btn-ghost.btn-success:hover{border-color:#81c784;color:#81c784}.dark .btn.btn-ghost.btn-info:focus,.dark .btn.btn-ghost.btn-info:hover{border-color:#4dd0e1;color:#4dd0e1}.dark .btn.btn-ghost.btn-error:focus,.dark .btn.btn-ghost.btn-error:hover{border-color:#e57373;color:#e57373}.dark .btn.btn-ghost.btn-warning:focus,.dark .btn.btn-ghost.btn-warning:hover{border-color:#ffb74d;color:#ffb74d}.dark .avatarholder,.dark .placeholder{background-color:transparent;border-color:#333}.dark .menu .menu-item{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .menu .menu-item.active,.dark .menu .menu-item:hover{color:#fff;border-color:#ccc}
+    
 
-      @keyframes intro {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-.muted {
-  color: rgba(255, 255, 255, 0.5);
-}
-main, footer {
-  animation: intro 0.3s both;
-  animation-delay: 0.15s;
-}
-:target {
-  color: #fff;
-}
-/* hack.css overrides and enhancements */
-.hack li ul {
-  margin: 0;
-}
-.main {
-  padding: 20px 10px;
+  
+  
+  
+  
+  
+  
+  
+    
+      
+        <style>html{font-size:12px}*{box-sizing:border-box;text-rendering:geometricPrecision}body{font-size:1rem;line-height:1.5rem;margin:0;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;word-wrap:break-word}h1,h2,h3,h4,h5,h6{line-height:1.3em}fieldset{border:none;padding:0;margin:0}pre{padding:2rem;margin:1.75rem 0;background-color:#fff;border:1px solid #ccc;overflow:auto}code[class*=language-],pre[class*=language-],pre code{font-weight:100;text-shadow:none;margin:1.75rem 0}a{cursor:pointer;color:#ff2e88;text-decoration:none;border-bottom:1px solid #ff2e88}a:hover{background-color:#ff2e88;color:#fff}.grid{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap}.grid.\-top{-ms-flex-align:start;align-items:flex-start}.grid.\-middle{-ms-flex-align:center;align-items:center}.grid.\-bottom{-ms-flex-align:end;align-items:flex-end}.grid.\-stretch{-ms-flex-align:stretch;align-items:stretch}.grid.\-baseline{-ms-flex-align:baseline;align-items:baseline}.grid.\-left{-ms-flex-pack:start;justify-content:flex-start}.grid.\-center{-ms-flex-pack:center;justify-content:center}.grid.\-right{-ms-flex-pack:end;justify-content:flex-end}.grid.\-between{-ms-flex-pack:justify;justify-content:space-between}.grid.\-around{-ms-flex-pack:distribute;justify-content:space-around}.cell{-ms-flex:1;flex:1;box-sizing:border-box}@media screen and (min-width:768px){.cell.\-1of12{-ms-flex:0 0 8.33333%;flex:0 0 8.33333%}.cell.\-2of12{-ms-flex:0 0 16.66667%;flex:0 0 16.66667%}.cell.\-3of12{-ms-flex:0 0 25%;flex:0 0 25%}.cell.\-4of12{-ms-flex:0 0 33.33333%;flex:0 0 33.33333%}.cell.\-5of12{-ms-flex:0 0 41.66667%;flex:0 0 41.66667%}.cell.\-6of12{-ms-flex:0 0 50%;flex:0 0 50%}.cell.\-7of12{-ms-flex:0 0 58.33333%;flex:0 0 58.33333%}.cell.\-8of12{-ms-flex:0 0 66.66667%;flex:0 0 66.66667%}.cell.\-9of12{-ms-flex:0 0 75%;flex:0 0 75%}.cell.\-10of12{-ms-flex:0 0 83.33333%;flex:0 0 83.33333%}.cell.\-11of12{-ms-flex:0 0 91.66667%;flex:0 0 91.66667%}}@media screen and (max-width:768px){.grid{-ms-flex-direction:column;flex-direction:column}.cell{-ms-flex:0 0 auto;flex:0 0 auto}}.hack,.hack blockquote,.hack code,.hack em,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack strong{font-size:1rem;font-style:normal;font-family:Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif}.hack blockquote,.hack code,.hack em,.hack strong{line-height:20px}.hack blockquote,.hack code,.hack footer,.hack h1,.hack h2,.hack h3,.hack h4,.hack h5,.hack h6,.hack header,.hack li,.hack ol,.hack p,.hack section,.hack ul{float:none;margin:0;padding:0}.hack blockquote,.hack h1,.hack ol,.hack p,.hack ul{margin-top:20px;margin-bottom:20px}.hack h1{position:relative;display:inline-block;display:table-cell;padding:20px 0 30px;margin:0;overflow:hidden}.hack h1:after{content:"====================================================================================================";position:absolute;bottom:10px;left:0}.hack h1+*{margin-top:0}.hack h2,.hack h3,.hack h4,.hack h5,.hack h6{position:relative;margin-bottom:1.75rem}.hack h2:before,.hack h3:before,.hack h4:before,.hack h5:before,.hack h6:before{display:inline}.hack h2:before{content:"## "}.hack h3:before{content:"### "}.hack h4:before{content:"#### "}.hack h5:before{content:"##### "}.hack h6:before{content:"###### "}.hack li{position:relative;display:block;padding-left:20px}.hack li:after{position:absolute;top:0;left:0}.hack ul>li:after{content:"-"}.hack ol{counter-reset:a}.hack ol>li:after{content:counter(a) ".";counter-increment:a}.hack ol li:nth-child(n+10):after{left:-7px}.hack blockquote{position:relative;padding-left:17px;padding-left:2ch;overflow:hidden}.hack blockquote:after{content:">\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>\A>";white-space:pre;position:absolute;top:0;left:0;line-height:20px}.hack em:after,.hack em:before{content:"*";display:inline}.hack pre code:after,.hack pre code:before{content:""}.hack code{font-weight:700}.hack code:after,.hack code:before{content:"`";display:inline}.hack hr{position:relative;height:20px;overflow:hidden;border:0;margin:20px 0}.hack hr:after{content:"----------------------------------------------------------------------------------------------------";position:absolute;top:0;left:0;line-height:20px;width:100%;word-wrap:break-word}@-moz-document url-prefix(){.hack h1{display:block}}.hack-ones ol>li:after{content:"1."}p{margin:0 0 1.75rem}.container{max-width:70rem}.container,.container-fluid{margin:0 auto;padding:0 1rem}.inner{padding:1rem}.inner2x{padding:2rem}.pull-left{float:left}.pull-right{float:right}.progress-bar{height:8px;opacity:.8;background-color:#ccc;margin-top:12px}.progress-bar.progress-bar-show-percent{margin-top:38px}.progress-bar-filled{background-color:gray;height:100%;transition:width .3s ease;position:relative;width:0}.progress-bar-filled:before{content:"";border:6px solid transparent;border-top-color:gray;position:absolute;top:-12px;right:-6px}.progress-bar-filled:after{color:gray;content:attr(data-filled);display:block;font-size:12px;white-space:nowrap;position:absolute;border:6px solid transparent;top:-38px;right:0;-ms-transform:translateX(50%);transform:translateX(50%)}table{width:100%;border-collapse:collapse;margin:1.75rem 0;color:#778087}table td,table th{vertical-align:top;border:1px solid #ccc;line-height:15px;padding:10px}table thead th{font-size:10px}table tbody td:first-child{font-weight:700;color:#333}.form{width:30rem}.form-group{margin-bottom:1.75rem;overflow:auto}.form-group label{border-bottom:2px solid #ccc;color:#333;width:10rem;display:inline-block;height:38px;line-height:38px;padding:0;float:left;position:relative}.form-group.form-success label{color:#4caf50!important;border-color:#4caf50!important}.form-group.form-warning label{color:#ff9800!important;border-color:#ff9800!important}.form-group.form-error label{color:#f44336!important;border-color:#f44336!important}.form-control{outline:none;border:none;border-bottom:2px solid #ccc;padding:.5rem 0;width:20rem;height:38px;background-color:transparent}.form-control:focus{border-color:#555}.form-group.form-textarea label:after{position:absolute;content:"";width:2px;background-color:#fff;right:-2px;top:0;bottom:0}textarea.form-control{height:auto;resize:none;padding:1rem 0;border-bottom:2px solid #ccc;border-left:2px solid #ccc;padding:.5rem}select.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}.help-block{color:#999;margin-top:.5rem}.form-actions{margin-bottom:1.75rem}.btn{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;cursor:pointer;outline:none;padding:.65rem 2rem;font-size:1rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;z-index:1}.btn:active{box-shadow:inset 0 1px 3px rgba(0,0,0,.12)}.btn.btn-ghost{border-color:#757575;color:#757575;background-color:transparent}.btn.btn-ghost:focus,.btn.btn-ghost:hover{border-color:#424242;color:#424242;z-index:2}.btn.btn-ghost:hover{background-color:transparent}.btn-block{width:100%;display:-ms-flexbox;display:flex}.btn-default{color:#fff;background-color:#e0e0e0;border:1px solid #e0e0e0;color:#333}.btn-default:focus:not(.btn-ghost),.btn-default:hover{background-color:#dcdcdc;border-color:#dcdcdc}.btn-success{color:#fff;background-color:#4caf50;border:1px solid #4caf50}.btn-success:focus:not(.btn-ghost),.btn-success:hover{background-color:#43a047;border-color:#43a047}.btn-success.btn-ghost{border-color:#4caf50;color:#4caf50}.btn-success.btn-ghost:focus,.btn-success.btn-ghost:hover{border-color:#388e3c;color:#388e3c;z-index:2}.btn-error{color:#fff;background-color:#f44336;border:1px solid #f44336}.btn-error:focus:not(.btn-ghost),.btn-error:hover{background-color:#e53935;border-color:#e53935}.btn-error.btn-ghost{border-color:#f44336;color:#f44336}.btn-error.btn-ghost:focus,.btn-error.btn-ghost:hover{border-color:#d32f2f;color:#d32f2f;z-index:2}.btn-warning{color:#fff;background-color:#ff9800;border:1px solid #ff9800}.btn-warning:focus:not(.btn-ghost),.btn-warning:hover{background-color:#fb8c00;border-color:#fb8c00}.btn-warning.btn-ghost{border-color:#ff9800;color:#ff9800}.btn-warning.btn-ghost:focus,.btn-warning.btn-ghost:hover{border-color:#f57c00;color:#f57c00;z-index:2}.btn-info{color:#fff;background-color:#00bcd4;border:1px solid #00bcd4}.btn-info:focus:not(.btn-ghost),.btn-info:hover{background-color:#00acc1;border-color:#00acc1}.btn-info.btn-ghost{border-color:#00bcd4;color:#00bcd4}.btn-info.btn-ghost:focus,.btn-info.btn-ghost:hover{border-color:#0097a7;color:#0097a7;z-index:2}.btn-primary{color:#fff;background-color:#2196f3;border:1px solid #2196f3}.btn-primary:focus:not(.btn-ghost),.btn-primary:hover{background-color:#1e88e5;border-color:#1e88e5}.btn-primary.btn-ghost{border-color:#2196f3;color:#2196f3}.btn-primary.btn-ghost:focus,.btn-primary.btn-ghost:hover{border-color:#1976d2;color:#1976d2;z-index:2}.btn-group{overflow:auto}.btn-group .btn{float:left}.btn-group .btn-ghost:not(:first-child){margin-left:-1px}.card{border:1px solid #ccc}.card .card-header{color:#333;text-align:center;background-color:#ddd;padding:.5rem 0}.alert{color:#ccc;padding:1rem;border:1px solid #ccc;margin-bottom:1.75rem}.alert-success{color:#4caf50;border-color:#4caf50}.alert-error{color:#f44336;border-color:#f44336}.alert-info{color:#00bcd4;border-color:#00bcd4}.alert-warning{color:#ff9800;border-color:#ff9800}.media:not(:last-child){margin-bottom:1.25rem}.media-left{padding-right:1rem}.media-left,.media-right{display:table-cell;vertical-align:top}.media-right{padding-left:1rem}.media-body{display:table-cell;vertical-align:top}.media-heading{font-size:1.16667rem;font-weight:700}.media-content{margin-top:.3rem}.avatarholder,.placeholder{background-color:#f0f0f0;text-align:center;color:#b9b9b9;font-size:1rem;border:1px solid #f0f0f0}.avatarholder{width:48px;height:48px;line-height:46px;font-size:2rem;background-size:cover;background-position:50%;background-repeat:no-repeat}.avatarholder.rounded{border-radius:33px}.loading{display:inline-block;content:"&nbsp;";height:20px;width:20px;margin:0 .5rem;animation:a .6s infinite linear;border:2px solid #e91e63;border-right-color:transparent;border-radius:50%}.btn .loading{margin-bottom:0;width:14px;height:14px}.btn div.loading{float:left}.alert .loading{margin-bottom:-5px}@keyframes a{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.menu{width:100%}.menu .menu-item{display:block;color:#616161;border-color:#616161}.menu .menu-item.active,.menu .menu-item:hover{color:#000;border-color:#000;background-color:transparent}@media screen and (max-width:768px){.form-group label{display:block;border-bottom:none;width:100%}.form-group.form-textarea label:after{display:none}.form-control{width:100%}textarea.form-control{border-left:none;padding:.5rem 0}pre::-webkit-scrollbar{height:3px}}@media screen and (max-width:480px){.form{width:100%}}.dark{color:#ccc}.dark,.dark pre{background-color:#000}.dark pre{padding:0;border:none}.dark pre code{color:#00bcd4}.dark h1 a,.dark h2 a,.dark h3 a,.dark h4 a,.dark h5 a{color:#ccc}.dark code,.dark strong{color:#fff}.dark code{font-weight:100}.dark table{color:#ccc}.dark table td,.dark table th{border-color:#444}.dark table tbody td:first-child{color:#fff}.dark .form-group label{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-group.form-textarea label:after{background-color:#000}.dark .form-control{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .form-control:focus{border-color:#ccc;color:#ccc}.dark textarea.form-control{color:#ccc}.dark .card{border-color:rgba(95,95,95,.78)}.dark .card .card-header{background-color:transparent;color:#ccc;border-bottom:1px solid rgba(95,95,95,.78)}.dark .btn.btn-ghost.btn-default{border-color:#ababab;color:#ababab}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#9c9c9c;color:#9c9c9c;z-index:1}.dark .btn.btn-ghost.btn-default:focus,.dark .btn.btn-ghost.btn-default:hover{border-color:#e0e0e0;color:#e0e0e0}.dark .btn.btn-ghost.btn-primary:focus,.dark .btn.btn-ghost.btn-primary:hover{border-color:#64b5f6;color:#64b5f6}.dark .btn.btn-ghost.btn-success:focus,.dark .btn.btn-ghost.btn-success:hover{border-color:#81c784;color:#81c784}.dark .btn.btn-ghost.btn-info:focus,.dark .btn.btn-ghost.btn-info:hover{border-color:#4dd0e1;color:#4dd0e1}.dark .btn.btn-ghost.btn-error:focus,.dark .btn.btn-ghost.btn-error:hover{border-color:#e57373;color:#e57373}.dark .btn.btn-ghost.btn-warning:focus,.dark .btn.btn-ghost.btn-warning:hover{border-color:#ffb74d;color:#ffb74d}.dark .avatarholder,.dark .placeholder{background-color:transparent;border-color:#333}.dark .menu .menu-item{color:#ccc;border-color:rgba(95,95,95,.78)}.dark .menu .menu-item.active,.dark .menu .menu-item:hover{color:#fff;border-color:#ccc}/*!* Copyright (C) 2019 Josh Habdas <jhabdas@protonmail.com>
+*
+* This file is part of After Dark.
+*
+* After Dark is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* After Dark is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <https://www.gnu.org/licenses/>.*/:root{scroll-behavior:smooth;--screen-size-small: 30em}@keyframes intro{0%{opacity:0}100%{opacity:1}}.blur-up.lazyloading{filter:blur(5px);opacity:1;transition:opacity 1s,filter 1.5s}.blur-up.lazyload{opacity:0;filter:blur(10px)}.blur-up.lazyloaded{filter:blur(0);transition:filter 1s}.hack .readmore{margin-bottom:2.2em}.responsive-iframe,.ratio-container{position:relative;padding-bottom:56.25%;padding-top:25px;height:0}.responsive-iframe iframe,.ratio-container>*:not([itemprop=caption]){position:absolute;top:0;left:0;width:100%;height:100%}iframe{border:0}main,footer{animation:intro .3s both;animation-delay:.15s}header:first-of-type+details{margin:20px 0}footer time[datetime$=M]:before{content:"\2013\0020"}body>footer p.muted{margin-bottom:0}@media only screen and (max-width:768px){footer time[datetime$=M]{display:none}}blockquote cite{display:block}blockquote cite::before{content:"\2014\00A0"}:target{filter:brightness(1.2)}:disabled{cursor:not-allowed}.hack li ul{margin:0}.hack ol li{padding-left:27px}.main{padding:20px 10px}input.form-control{border-radius:0;background-color:transparent;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none}input.form-control,textarea.form-control,select.form-control,.help-block{font-size:initial}@media only screen and (max-width:768px){.help-block{font-size:unset}}html{font-size:13px}.hack .form input,.hack .form textarea,.hack .form button,.hack .form label{font-size:1rem}.hack .alert .highlight:first-of-type .chroma,.hack .card .highlight:first-of-type .chroma,.hack .alert pre:first-of-type,.hack .alert p:first-of-type,.hack .card pre:first-of-type,.hack .card p:first-of-type{margin-top:unset}.hack .alert .highlight:last-of-type .chroma,.hack .card .highlight:last-of-type .chroma,.hack .alert pre:last-of-type,.hack .alert p:last-of-type,.hack .card pre:last-of-type,.hack .card p:last-of-type{margin-bottom:unset}.hack blockquote,.hack blockquote:after{line-height:1.5}.hack figure,.standard figure{margin:unset}.hack figure a{border-bottom:none}.hack figure a:hover{background-color:inherit}article header img{width:100%;border-radius:3px}table td,table th{line-height:inherit}table a{border-bottom:unset}img{max-width:100%}@media only screen and (min-width:768px){html{font-size:16px}.container{max-width:50rem}}@media only screen and (min-width:768px),(-ms-high-contrast:active),(-ms-high-contrast:none){html{margin-left:calc(100vw - 100%)}}/*!
+ * Copyright (C) 2019  Josh Habdas <jhabdas@protonmail.com>
+ *
+ * This file is part of After Dark.
+ *
+ * After Dark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * After Dark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+a[rel*="external"]::after {
+  content: " " url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20class='i-external'%20viewBox='0%200%2032%2032'%20width='14'%20height='14'%20fill='none'%20stroke='%23ff9800'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='9.38%'%3E%3Cpath%20d='M14%209%20L3%209%203%2029%2023%2029%2023%2018%20M18%204%20L28%204%2028%2014%20M28%204%20L14%2018'/%3E%3C/svg%3E");
 }
 nav a.active {
-  background-color: #ff2e88;
+  background-color: inherit;
   color: #fff;
 }
 a[itemprop="url"] {
@@ -93,77 +153,96 @@ a[itemprop="url"] {
 a[itemprop="url"]:hover {
   color: #fff;
 }
-a[href*="//"]::after {
-  /* data uri svg icon. thanks to @Fastidious for the idea */
-  content: " " url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20class='i-external'%20viewBox='0%200%2032%2032'%20width='14'%20height='14'%20fill='none'%20stroke='%23ff9800'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='9.38%'%3E%3Cpath%20d='M14%209%20L3%209%203%2029%2023%2029%2023%2018%20M18%204%20L28%204%2028%2014%20M28%204%20L14%2018'/%3E%3C/svg%3E");
+.muted, .help-block {
+  opacity: 0.70;
 }
-html {
-  font-size: 13px;
+.hack .muted,
+.hack .help-block {
+  color: #e0e0e0;
 }
-.hack pre {
-  font-size: 17px;
-}
-article [itemprop="description"] {
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-@media screen and (min-width: 768px) {
-  html {
-    font-size: 1em;
-  }
-  .container {
-    max-width: 50rem;
-  }
-}
+</style>
+        
 
-      .highlight,pre.highlight{background:#282c34;color:#abb2bf}.highlight pre{background:#282c34}.highlight .ge{font-style:italic}.highlight .gs{font-weight:700}.highlight .ow{font-weight:700}.highlight .n,.highlight .nf,.highlight .nn,.highlight .o,.highlight .p{color:#abb2bf}.highlight .c,.highlight .c1,.highlight .cm,.highlight .cp,.highlight .cs{color:#5c6370;font-style:italic}.highlight .sr,.highlight .ss{color:#56b6c2}.highlight .k,.highlight .kc,.highlight .kd,.highlight .kn,.highlight .kp,.highlight .kr,.highlight .kt{color:#c678dd}.highlight .l,.highlight .ld,.highlight .s,.highlight .s1,.highlight .s2,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .se,.highlight .sh,.highlight .si,.highlight .sx{color:#98c379}.highlight .nt,.highlight .nx,.highlight .vi{color:#e06c75}.highlight .il,.highlight .m,.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo,.highlight .na{color:#d19a66}.highlight .bp,.highlight .nb,.highlight .nc,.highlight .nd,.highlight .ne,.highlight .ni,.highlight .nl,.highlight .no,.highlight .nv,.highlight .py,.highlight .vc,.highlight .vg{color:#e5c07b}.highlight .err{color:#fff;background-color:#e05252}.highlight .gd{color:#e05252}.highlight .gi{color:#43d08a}.highlight .w{color:#f8f8f2}.highlight .cpf{color:navy}.highlight .gu{color:#75715e}.highlight .lineno{color:#636d83;user-select:none}.highlight .hll{color:#abb2bf;background-color:#2c313a}.highlight .language-json .w+.s2{color:#e06c75}.highlight .language-json .kc{color:#56b6c2}
 
-p img {
-    width: 100%;
-}
+  
+    <meta name="theme-color" content=#000>
+  
 
-    </style>
+
+      
     
+  
+
+
+    
+    
+      <script integrity="sha512-ISTAV0GadOIz/NXXHOS+eCM0ysXVVHhQTlvA6LJxz/DeA5yIxm0Vqf5IE+WH0yuuXkayAKtoZkQ326nch5f/fg==">fetchInject(["/css/syntax.css"]);</script>
+      <noscript>
+        <link href="/css/syntax.css" rel="stylesheet">
+      </noscript>
     
   </head>
+  
+  
   
   <body class="hack dark main container">
     <header>
   
-  <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+
+  
     
+      
+      
+  <nav itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <meta itemprop="name" content="Main Menu">
     
-      <a itemprop="url" class="" href="/"><span itemprop="name">Home</span></a>
+      
+      
+        <a itemprop="url" href="/">Home</a>
+      
     
-      <a itemprop="url" class="" href="/about-me/"><span itemprop="name">About</span></a>
+      
+      
+        <a itemprop="url" href="/about-me/">About</a>
+      
     
-      <a itemprop="url" class="active" href="/post/"><span itemprop="name">Posts</span></a>
+      
+      
+        <a itemprop="url" class="active" href="/post/">Posts</a>
+      
     
-      <a itemprop="url" class="" href="/roguelikes/"><span itemprop="name">Roguelike Development</span></a>
-    
-      <a itemprop="url" class="" href="http://source.jeremyceri.se"><span itemprop="name">Source</span></a>
+      
+      
+        <a itemprop="url" href="/roguelikes/">Roguelike Development</a>
+      
     
   </nav>
 
 
+    
+  
+
+
 </header>
     <main>
-  <article itemscope itemtype="http://schema.org/BlogPosting">
+  
     
-<meta itemprop="name" content="RoguelikeDev Builds a Roguelike, Part 7">
+      <style>{{ -}}.hack header figure[itemtype*=ImageObject]{position:relative}.hack header figure[itemtype*=ImageObject] figcaption{position:absolute;bottom:0;right:0;text-align:right;padding:15px;font-style:oblique;font-size:smaller;mix-blend-mode:soft-light}.hack header figure[itemtype*=ImageObject] [itemprop=headline]{font-weight:700}</style>
+    
+  
+  <article itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="name" content="RoguelikeDev Builds a Roguelike, Part 7">
 <meta itemprop="description" content="Part 7: An Entity/Component/System Refactor to make our lives easier">
-
-
 <meta itemprop="datePublished" content="2017-07-27T22:58:00-06:00" />
 <meta itemprop="dateModified" content="2017-07-27T22:58:00-06:00" />
 <meta itemprop="wordCount" content="3508">
+<meta itemprop="image" content="https://source.unsplash.com/collection/983219/2000x1322"/>
 
 
 
 <meta itemprop="keywords" content="RLDBAR,go,programming,roguelike,entity component,entity component system," />
-
     <header>
-      <h1 itemprop="headline">RoguelikeDev Builds a Roguelike, Part 7</h1>
+      <h1 itemprop="headline name">RoguelikeDev Builds a Roguelike, Part 7</h1>
       <p class="muted">
         <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
   <circle cx="16" cy="16" r="14" />
@@ -178,358 +257,314 @@ p img {
 
 
       </p>
+      
+        <blockquote itemprop="description">Part 7: An Entity/Component/System Refactor to make our lives easier</blockquote>
+      
+      
+
+
+
     </header>
-    
-      <blockquote itemprop="description">Part 7: An Entity/Component/System Refactor to make our lives easier</blockquote>
-    
     
 
     <div itemprop="articleBody">
       <p>The time has finally come where our small game is going to become unmanageable when adding new features. Certainly, we could make it work (and in fact the official tutorial and revamped tutorial come up with some clever ways around this complexity), but I&rsquo;m not a fan of headaches, or unmaintainable code. I&rsquo;ve always wanted to write an entity component system setup from scratch, to better understand how they work, and and ECS can dramatically help us cut down on complexity of new features. So, that&rsquo;s the route we&rsquo;re going to take. A bit of warning in advance, I have no experience with ECS whatsoever, so this should be exciting! Lets get to it!</p>
-
 <!-- more -->
-
 <p>A bit of background first. At this point in our development cycle, we are about to start adding some more complex features to our game. Namely, actual combat, and monsters etc that the player will be fighting. Beyond that, we&rsquo;re also going to be soon adding support for items (consumable, equip-able, and otherwise). These two features on their own warrant a large amount of thought into how we are going to implement them. At this point, the official tutorial that RLDBAR is following takes the most obvious, and probably easiest to understand route of classic inheritance. Using this model, we could create a base Entity class (which we have already done), that contains a few common attributes that every entity in the game should have, things like name, character, color, HP, position, etc. Then, from this base entity class, we could create more specialized entity types, to say represent a Goblin. The Goblin entity would have all the base entity attributes, alongside some specific to a Goblin. From there, we could create an even more specific version of a Goblin, say a Goblin Chief, which would inherit all the base attributes of an entity, along with the attributes of a Goblin. Eventually, you can see how this would lead to quite a complex chain of inheritance, and a large number of classes. In some cases, we might even be tempted to use multiple inheritance (if the language supports it), which can lead to all sorts of problems, the least of which is confusing code.</p>
-
 <p>Inheritance is certainly one way to solve this problem, but there must be a better way. The old idiom &ldquo;composition over inheritance&rdquo; immediately comes to mind. Rather than have an inheritance based system, what if we could use composition to create out entities? Basically, writing a bunch of smaller components that we can then attach to an entity, to describe how it should behave at any given time; sounds like a good approach. Turns out, this is a pretty common game design pattern, called Entity Component System. Using Entity Component System (henceforth known as ECS), we can define a base entity, which will be as simple as possible (literally just an ID, and a list of components), and then attach components to it (which themselves are just a collection of attributes). We will then write a series of systems that act upon the various components for each entity.</p>
-
 <p>Using this setup, we can create any combination of entity imaginable. Say we want to create the Goblin from earlier. Previously, this involved creating a new class that inherited from Entity. Now, we can just create a new entity, and attach the appropriate components to it (appearance, position, movement, hitpoints, attacker, killable, and a basic AI component). If we wanted to make a Goblin Chief, we would simply create a new entity with the same components attached as the base goblin, but with maybe a more advanced AI, to represent the greater threat it poses. Similarly, we could also use this system to create items (an entity with an equip-able component, and an attackStats component, along with an appearance and position, could represent an axe found on the floor. A chest could be an entity with openable, inventory, and breakable components). Hopefully these examples aren&rsquo;t too contrived, and you can understand the power of a system like this.</p>
-
 <p>We&rsquo;ll use a series of systems to tie this all together. Our systems will be small chunks of logic that check if the appropriate components are present on an entity, and if so, will act upon them accordingly. A movement system might check for the movement component, alongside position and appearance, and if those are present, adjust the x and y coordinates in the position component to represent the entity moving around the map.</p>
-
 <p>To summarize, an entity is a small container with an ID, and a list of components. A component contains no logic, just data, and can optionally just be a flag (contains no data, it will simply be present or not). A system contains the logic for a specific component or set of components.</p>
-
 <p>A quick note, there are a number of implementations of ECS out there (most notably, at least to me, is <a href="http://entity-systems.wikidot.com/artemis-entity-system-framework">Artemis</a>). I&rsquo;ve decided to roll my own, both to help me understand how they work, and also simply because I didn&rsquo;t find a good pre-built solution for Go :p</p>
-
 <p>So, now that we have a basic idea of what an ECS is, and generally how they work, lets start looking at how to shoehorn one into our game in progress. We&rsquo;ve got a bit of work to do, as this is a pretty major refactor. We&rsquo;ve already got an Entity struct that we can leverage, but its currently tracking way too much data. That&rsquo;s going to be where we&rsquo;ll start, cutting the fat in our Entity class to better match our goal. Before we get to the code, I&rsquo;m going to refactor our ecs package a bit. It will now have three main files, entity.go, components.go, and systems.go. Hopefully, each of these should be obvious as to their contents. Lets start by looking at our new, skinny entity struct:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">GameEntity</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">gmUUID</span>     <span style="color:#a6e22e">uuid</span>.<span style="color:#a6e22e">UUID</span>
-	<span style="color:#a6e22e">Components</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Component</span>
-	<span style="color:#a6e22e">mux</span>        <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Mutex</span>
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">GameEntity</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">gmUUID</span>     <span class="nx">uuid</span><span class="p">.</span><span class="nx">UUID</span>
+	<span class="nx">Components</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Component</span>
+	<span class="nx">mux</span>        <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+<span class="p">}</span></code></pre></div>
 <p>As you can see, we&rsquo;ve eliminated all but two fields (plus a mutex field, but thats beyond the scope of this post, and can be safely ignored). gmUUID is a guid that we generate for each new entity we create. Components is a map of components (indexed by the components name). And that&rsquo;s it. I&rsquo;m also going to outline some convenience methods attached to this struct that will make our lives easier later:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">HasComponent</span><span class="p">(</span><span class="nx">componentName</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="c1">// Check to see if the entity has the given component
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">componentName</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">true</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">false</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">HasComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
-	<span style="color:#75715e">// Check to see if the entity has the given component
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]; <span style="color:#a6e22e">ok</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
-	} <span style="color:#66d9ef">else</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-	}
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">HasComponents</span><span class="p">(</span><span class="nx">componentNames</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="c1">// Check to see if the entity has the given components
+</span><span class="c1"></span>	<span class="nx">containsAll</span> <span class="o">:=</span> <span class="kc">true</span>
+	<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">componentNames</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">!</span><span class="nx">e</span><span class="p">.</span><span class="nf">HasComponent</span><span class="p">(</span><span class="nx">componentNames</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+				<span class="nx">containsAll</span> <span class="p">=</span> <span class="kc">false</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">false</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">containsAll</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">HasComponents</span>(<span style="color:#a6e22e">componentNames</span> []<span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
-	<span style="color:#75715e">// Check to see if the entity has the given components
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">containsAll</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">true</span>
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">componentNames</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-			<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>]) {
-				<span style="color:#a6e22e">containsAll</span> = <span style="color:#66d9ef">false</span>
-			}
-		}
-	} <span style="color:#66d9ef">else</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-	}
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">containsAll</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">AddComponent</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">component</span> <span class="nx">Component</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Add a single component to the entity
+</span><span class="c1"></span>	<span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">component</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">AddComponent</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">component</span> <span style="color:#a6e22e">Component</span>) {
-	<span style="color:#75715e">// Add a single component to the entity
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">component</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">AddComponents</span><span class="p">(</span><span class="nx">components</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Component</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Add several (or one) components to the entity
+</span><span class="c1"></span>	<span class="nx">e</span><span class="p">.</span><span class="nx">mux</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">for</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">component</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">components</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">component</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="c1">//fmt.Printf(&#34;Adding component: %s - %v\n&#34;, name, component)
+</span><span class="c1"></span>			<span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">component</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">e</span><span class="p">.</span><span class="nx">mux</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">AddComponents</span>(<span style="color:#a6e22e">components</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Component</span>) {
-	<span style="color:#75715e">// Add several (or one) components to the entity
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Lock</span>()
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">component</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">components</span> {
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">component</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#75715e">//fmt.Printf(&#34;Adding component: %s - %v\n&#34;, name, component)
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">name</span>] = <span style="color:#a6e22e">component</span>
-		}
-	}
-	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Unlock</span>()
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">RemoveComponent</span><span class="p">(</span><span class="nx">componentName</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Remove of a component from the entity
+</span><span class="c1"></span>	<span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">componentName</span><span class="p">]</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) {
-	<span style="color:#75715e">// Remove of a component from the entity
-</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]
+	<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
+		<span class="nb">delete</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">,</span> <span class="nx">componentName</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
 
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ok</span> {
-		delete(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>, <span style="color:#a6e22e">componentName</span>)
-	}
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">RemoveComponents</span><span class="p">(</span><span class="nx">componentNames</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">e</span><span class="p">.</span><span class="nx">mux</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">componentNames</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">componentNames</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">RemoveComponents</span>(<span style="color:#a6e22e">componentNames</span> []<span style="color:#66d9ef">string</span>) {
-	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Lock</span>()
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">componentNames</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>]]
+		<span class="k">if</span> <span class="nx">ok</span> <span class="p">{</span>
+			<span class="nb">delete</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">,</span> <span class="nx">componentNames</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="nx">e</span><span class="p">.</span><span class="nx">mux</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+<span class="p">}</span>
 
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ok</span> {
-			delete(<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>, <span style="color:#a6e22e">componentNames</span>[<span style="color:#a6e22e">i</span>])
-		}
-	}
-	<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Unlock</span>()
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>) <span style="color:#a6e22e">GetComponent</span>(<span style="color:#a6e22e">componentName</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">Component</span> {
-	<span style="color:#75715e">// Return the named component from the entity, if present
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]; <span style="color:#a6e22e">ok</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#a6e22e">componentName</span>]
-	} <span style="color:#66d9ef">else</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-	}
-}</code></pre></div>
-
+<span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">)</span> <span class="nf">GetComponent</span><span class="p">(</span><span class="nx">componentName</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">Component</span> <span class="p">{</span>
+	<span class="c1">// Return the named component from the entity, if present
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">componentName</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="nx">componentName</span><span class="p">]</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>These functions should be pretty self explanatory, so I&rsquo;ll leave their descriptions brief. Basically, these are just ways to check if the entity has a given component (or list of components), add a component to the entity (or a list of components), and removing a component from the entity (or a list of components). All in all, our entity sturct is pretty simple.</p>
-
 <p>Next, we&rsquo;re going to define an interface that will encompass all of our created components. Interfaces in Go work in a very simple fashion. An interface defines function definitions, and any struct that implements all of those definitions is said to be of that interface. The reason we&rsquo;re doing it this way, is because we are going to want a generic (Go doesn&rsquo;t support proper generics) way of putting a component (of many different types) onto an entity. Implementing the interface on all of our components will make them all &ldquo;generic&rdquo; components, in addition to their actual type, making it much easier for us to attach, detach, and check for them on entities. The following code is in components.go:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Component</span> <span style="color:#66d9ef">interface</span> {
-	<span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span>
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Component</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span>
+<span class="p">}</span></code></pre></div>
 <p>Very basic. We define one function signature, IsAIComponent(), that will be true if the component is an AI component, and false otherwise. This will make a little more sense in a bit. All of our components will have this function attached, and therefore will be a Component.</p>
-
 <p>We&rsquo;re now going to define a few basic components that most of our entities will have:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="o">/</span> <span class="nx">Player</span> <span class="nx">Component</span>
+<span class="kd">type</span> <span class="nx">PlayerComponent</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">/</span> <span style="color:#a6e22e">Player</span> <span style="color:#a6e22e">Component</span>
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PlayerComponent</span> <span style="color:#66d9ef">struct</span> {
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">pl</span> <span class="nx">PlayerComponent</span><span class="p">)</span> <span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pl</span> <span style="color:#a6e22e">PlayerComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}
+<span class="c1">// Position Component
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">PositionComponent</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">X</span> <span class="kt">int</span>
+	<span class="nx">Y</span> <span class="kt">int</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Position Component
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PositionComponent</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">X</span> <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">Y</span> <span style="color:#66d9ef">int</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">pc</span> <span class="nx">PositionComponent</span><span class="p">)</span> <span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pc</span> <span style="color:#a6e22e">PositionComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}
+<span class="c1">// Appearance Component
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">AppearanceComponent</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Color</span>     <span class="kt">string</span>
+	<span class="nx">Character</span> <span class="kt">string</span>
+	<span class="nx">Layer</span>     <span class="kt">int</span>
+	<span class="nx">Name</span>      <span class="kt">string</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Appearance Component
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AppearanceComponent</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">Color</span>     <span style="color:#66d9ef">string</span>
-	<span style="color:#a6e22e">Character</span> <span style="color:#66d9ef">string</span>
-	<span style="color:#a6e22e">Layer</span>     <span style="color:#66d9ef">int</span>
-	<span style="color:#a6e22e">Name</span>      <span style="color:#66d9ef">string</span>
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">a</span> <span style="color:#a6e22e">AppearanceComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}</code></pre></div>
-
+<span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="nx">AppearanceComponent</span><span class="p">)</span> <span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span></code></pre></div>
 <p>Lets go through these one by one. First up is the PlayerComponent(). This is what I&rsquo;m going to refer to as a flag component. The PlayerComponent struct doesn&rsquo;t have any data associated with it. This type of component simply indicates a state on the entity it is attached to. In this, it indicates that the entity is the player. Obviously, only one entity in the game will have this component (although their may be states in the future where this is not true, that&rsquo;s the beauty of the flexibility of ECS).</p>
-
 <p>Next, we have a PositionComponent. This component has an x and a y field. This will, unsurprisingly, represent where an entity is in the game world. Any entity that is active on the map will have this component.</p>
-
 <p>AppearanceComponent means that an entity has a physical representation on the map. It has a color, character, layer, and name, all things that allow us to display it the player. If an entity doesn&rsquo;t have an AppearanceComponent, it won&rsquo;t be shown at all (we&rsquo;ll be altering the state of this component when an entity is killed, to represent their newly corpse like appearance).</p>
-
 <p>This should give a good overview of what components are, and the general idea of how I am defining them. Keeping this simple is the name of the game.</p>
-
 <p>Now that we&rsquo;ve got our new entity and component definitions all squared away, lets see how we can actually use them. The first thing I&rsquo;m going to do is re-define our player entity. You may remember, previously, we have been creating our player entity by defining a list of values for various attributes on the entity itself. Now that we have our new system in place, this will look a bit different.</p>
-
 <p>This is in our init() function, in our main file:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Create a player Entity, and add them to our slice of Entities
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">player</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
-<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;player&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PlayerComponent</span>{})
-<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#ae81ff">0</span>})
-<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;appearance&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;white&#34;</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;@&#34;</span>, <span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Player&#34;</span>})
-<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{})
-<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">ControllableComponent</span>{})</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Create a player Entity, and add them to our slice of Entities
+</span><span class="c1"></span><span class="nx">player</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{}</span>
+<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;player&#34;</span><span class="p">,</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">PlayerComponent</span><span class="p">{})</span>
+<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">,</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">PositionComponent</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;appearance&#34;</span><span class="p">,</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">AppearanceComponent</span><span class="p">{</span><span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;white&#34;</span><span class="p">,</span> <span class="nx">Character</span><span class="p">:</span> <span class="s">&#34;@&#34;</span><span class="p">,</span> <span class="nx">Layer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Player&#34;</span><span class="p">})</span>
+<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;movement&#34;</span><span class="p">,</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">MovementComponent</span><span class="p">{})</span>
+<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;controllable&#34;</span><span class="p">,</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">ControllableComponent</span><span class="p">{})</span></code></pre></div>
 <p>This is how we&rsquo;re going to define entities from here out. All we&rsquo;re doing is adding a list of components to the newly created entity. Each component has a name, and a component type. You may notice that there are some components here that I have not previously discussed, movement and controllable. You&rsquo;ll notice these are both flag components, as they take no data. These indicate that the player is directly controllable using the keyboard, and that it is capable of movement.</p>
-
 <p>I&rsquo;m setting the players position component to values of X: 0 and Y:0. This is because we generate the starting coordinates for the player from the map, if you recall. Lets see how setting that has changed:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>) {
-		<span style="color:#a6e22e">positionComponent</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>)
-		<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span> = <span style="color:#a6e22e">playerX</span>
-		<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span> = <span style="color:#a6e22e">playerY</span>
-		<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>)
-		<span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">positionComponent</span>)
-}</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">player</span><span class="p">.</span><span class="nf">HasComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">positionComponent</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">player</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="s">&#34;position&#34;</span><span class="p">].(</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">PositionComponent</span><span class="p">)</span>
+		<span class="nx">positionComponent</span><span class="p">.</span><span class="nx">X</span> <span class="p">=</span> <span class="nx">playerX</span>
+		<span class="nx">positionComponent</span><span class="p">.</span><span class="nx">Y</span> <span class="p">=</span> <span class="nx">playerY</span>
+		<span class="nx">player</span><span class="p">.</span><span class="nf">RemoveComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">)</span>
+		<span class="nx">player</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">,</span> <span class="nx">positionComponent</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
 <p>First, we check to make sure the player actually has a PositionComponent (this is a pattern we will repeat much in the near future). If it does, we grab the PositionComponent (using a type assertions to ensure Go that are actually pulling a PositionComponent), and then we set it to the x and y value from our map generation code. Then, we remove the existing PositionComponent, and replace it with our updated one (as we are not using pointers for the components). That&rsquo;s it, our player now has an updated PositionComponent, and will be reflected in that position when we draw it to the screen.</p>
-
 <p>Speaking of rendering, our renderEntities() function will need a bit of an overhaul, now that we cannot directly access properties on each entity. In fact, we&rsquo;re going to completely remove renderEntities(), and replace it with our first system. We&rsquo;re going to create a new system, called SystemRender(). This system will take the master list of entities (unchanged through our refactor, we&rsquo;re still keeping track of them the same way), and render those who have a position and appearance component. This system will live in our systems.go file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">SystemRender</span><span class="p">(</span><span class="nx">entities</span> <span class="p">[]</span><span class="o">*</span><span class="nx">GameEntity</span><span class="p">,</span> <span class="nx">camera</span> <span class="o">*</span><span class="nx">camera</span><span class="p">.</span><span class="nx">GameCamera</span><span class="p">,</span> <span class="nx">gameMap</span> <span class="o">*</span><span class="nx">gamemap</span><span class="p">.</span><span class="nx">Map</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Render all renderable entities to the screen
+</span><span class="c1"></span>	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">entities</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">e</span><span class="p">.</span><span class="nf">HasComponents</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;position&#34;</span><span class="p">,</span> <span class="s">&#34;appearance&#34;</span><span class="p">})</span> <span class="p">{</span>
+				<span class="nx">pos</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="s">&#34;position&#34;</span><span class="p">].(</span><span class="nx">PositionComponent</span><span class="p">)</span>
+				<span class="nx">app</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="s">&#34;appearance&#34;</span><span class="p">].(</span><span class="nx">AppearanceComponent</span><span class="p">)</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">camera</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">GameCamera</span>, <span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>) {
-	<span style="color:#75715e">// Render all renderable entities to the screen
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#e6db74">&#34;appearance&#34;</span>}) {
-				<span style="color:#a6e22e">pos</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">PositionComponent</span>)
-				<span style="color:#a6e22e">app</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;appearance&#34;</span>].(<span style="color:#a6e22e">AppearanceComponent</span>)
+				<span class="nx">cameraX</span><span class="p">,</span> <span class="nx">cameraY</span> <span class="o">:=</span> <span class="nx">camera</span><span class="p">.</span><span class="nf">ToCameraCoordinates</span><span class="p">(</span><span class="nx">pos</span><span class="p">.</span><span class="nx">X</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">Y</span><span class="p">)</span>
 
-				<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">camera</span>.<span style="color:#a6e22e">ToCameraCoordinates</span>(<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">X</span>, <span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">Y</span>)
-
-				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">Tiles</span>[<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">X</span>][<span style="color:#a6e22e">pos</span>.<span style="color:#a6e22e">Y</span>].<span style="color:#a6e22e">Visible</span> {
-					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Layer</span>(<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Layer</span>)
-					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Color</span>(<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">ColorFromName</span>(<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Color</span>))
-					<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#a6e22e">cameraX</span>, <span style="color:#a6e22e">cameraY</span>, <span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">Character</span>)
-				}
-			}
-		}
-	}
-}</code></pre></div>
-
+				<span class="k">if</span> <span class="nx">gameMap</span><span class="p">.</span><span class="nx">Tiles</span><span class="p">[</span><span class="nx">pos</span><span class="p">.</span><span class="nx">X</span><span class="p">][</span><span class="nx">pos</span><span class="p">.</span><span class="nx">Y</span><span class="p">].</span><span class="nx">Visible</span> <span class="p">{</span>
+					<span class="nx">blt</span><span class="p">.</span><span class="nf">Layer</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">Layer</span><span class="p">)</span>
+					<span class="nx">blt</span><span class="p">.</span><span class="nf">Color</span><span class="p">(</span><span class="nx">blt</span><span class="p">.</span><span class="nf">ColorFromName</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">Color</span><span class="p">))</span>
+					<span class="nx">blt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nx">cameraX</span><span class="p">,</span> <span class="nx">cameraY</span><span class="p">,</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Character</span><span class="p">)</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>This code should look sort of familiar, as at its core, its no different than our previous rendering code. The main difference lies in how we&rsquo;re accessing the appearance and position information. Whereas previously, we would pull that information directly off the entity, we now pull it off of the entities components (if they are present). We first check each entity to make sure it is valid for this system (has a position and appearance), then we grab those components (again, using a type assertion on each). WE then use the information on each to draw the entity to the screen in the same manner we always have.</p>
-
 <p>Now that we&rsquo;ve got that fancy new system sitting there, ready to go, where and how do we call it? The answer is, just like our old renderEntities function, and in roughly the same place. Back in our main game file, in our main() function:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// Main game loop
+</span><span class="c1"></span>
+	<span class="nx">messageLog</span><span class="p">.</span><span class="nf">SendMessage</span><span class="p">(</span><span class="s">&#34;You find yourself in the caverns of eternal sadness...you start to feel a little more sad.&#34;</span><span class="p">)</span>
+	<span class="nx">messageLog</span><span class="p">.</span><span class="nf">PrintMessages</span><span class="p">(</span><span class="nx">ViewAreaY</span><span class="p">,</span> <span class="nx">WindowSizeX</span><span class="p">,</span> <span class="nx">WindowSizeY</span><span class="p">)</span>
+	<span class="nf">renderMap</span><span class="p">()</span>
+	<span class="nx">ecs</span><span class="p">.</span><span class="nf">SystemRender</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">gameCamera</span><span class="p">,</span> <span class="nx">gameMap</span><span class="p">)</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#75715e">// Main game loop
-</span><span style="color:#75715e"></span>
-	<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">SendMessage</span>(<span style="color:#e6db74">&#34;You find yourself in the caverns of eternal sadness...you start to feel a little more sad.&#34;</span>)
-	<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
-	<span style="color:#a6e22e">renderMap</span>()
-	<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
+    <span class="o">...</span>
 
-    <span style="color:#f92672">...</span>
+    <span class="nf">renderMap</span><span class="p">()</span>
+		<span class="nx">ecs</span><span class="p">.</span><span class="nf">SystemRender</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">gameCamera</span><span class="p">,</span> <span class="nx">gameMap</span><span class="p">)</span>
+		<span class="nx">messageLog</span><span class="p">.</span><span class="nf">PrintMessages</span><span class="p">(</span><span class="nx">ViewAreaY</span><span class="p">,</span> <span class="nx">WindowSizeX</span><span class="p">,</span> <span class="nx">WindowSizeY</span><span class="p">)</span>
+	<span class="p">}</span>
 
-    <span style="color:#a6e22e">renderMap</span>()
-		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
-		<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
-	}
-
-	<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
-}</code></pre></div>
-
+	<span class="nx">blt</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
 <p>That should look pretty familiar. Really, all we&rsquo;ve done is replace the old call to RenderAll() (which called RenderEntities()) with a call to our new system function, passing in the entities, gameCamera, and gameMap. That&rsquo;s all. Nothing crazy here. Every time through our game loop, SystemRender() will be called, it will check each entity for the proper components, and, if present, render the entity to the screen.</p>
-
 <p>One last thing we need to do is replace our monster generation with our ECS setup. This will be in cavern.go, in the gamemap package:</p>
-
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">25</span> {
-			<span style="color:#75715e">// Create a Troll
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
-				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;T&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;dark green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Troll&#34;</span>},
-				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">20</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">20</span>},
-				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})
-		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> &gt; <span style="color:#ae81ff">25</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">chance</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">50</span> {
-			<span style="color:#75715e">// Create an Orc
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
-				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;o&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;darker green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Orc&#34;</span>},
-				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">15</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">15</span>},
-				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})
-		} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">chance</span> &gt; <span style="color:#ae81ff">50</span> {
-			<span style="color:#75715e">// Create a Goblin
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">createdEntity</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>{}
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">SetupGameEntity</span>()
-			<span style="color:#a6e22e">createdEntity</span>.<span style="color:#a6e22e">AddComponents</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">Component</span>{<span style="color:#e6db74">&#34;position&#34;</span>: <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">PositionComponent</span>{<span style="color:#a6e22e">X</span>: <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">Y</span>: <span style="color:#a6e22e">y</span>},
-				<span style="color:#e6db74">&#34;appearance&#34;</span>:     <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">AppearanceComponent</span>{<span style="color:#a6e22e">Layer</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Character</span>: <span style="color:#e6db74">&#34;g&#34;</span>, <span style="color:#a6e22e">Color</span>: <span style="color:#e6db74">&#34;green&#34;</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Goblin&#34;</span>},
-				<span style="color:#e6db74">&#34;hitpoints&#34;</span>:      <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">HitPointComponent</span>{<span style="color:#a6e22e">Hp</span>: <span style="color:#ae81ff">5</span>, <span style="color:#a6e22e">MaxHP</span>: <span style="color:#ae81ff">5</span>},
-				<span style="color:#e6db74">&#34;movement&#34;</span>:       <span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">MovementComponent</span>{}})</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">chance</span> <span class="o">&lt;=</span> <span class="mi">25</span> <span class="p">{</span>
+			<span class="c1">// Create a Troll
+</span><span class="c1"></span>			<span class="nx">createdEntity</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{}</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">SetupGameEntity</span><span class="p">()</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">AddComponents</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span><span class="s">&#34;position&#34;</span><span class="p">:</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">PositionComponent</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="nx">y</span><span class="p">},</span>
+				<span class="s">&#34;appearance&#34;</span><span class="p">:</span>     <span class="nx">ecs</span><span class="p">.</span><span class="nx">AppearanceComponent</span><span class="p">{</span><span class="nx">Layer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Character</span><span class="p">:</span> <span class="s">&#34;T&#34;</span><span class="p">,</span> <span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;dark green&#34;</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Troll&#34;</span><span class="p">},</span>
+				<span class="s">&#34;hitpoints&#34;</span><span class="p">:</span>      <span class="nx">ecs</span><span class="p">.</span><span class="nx">HitPointComponent</span><span class="p">{</span><span class="nx">Hp</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">MaxHP</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+				<span class="s">&#34;movement&#34;</span><span class="p">:</span>       <span class="nx">ecs</span><span class="p">.</span><span class="nx">MovementComponent</span><span class="p">{}})</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">chance</span> <span class="p">&gt;</span> <span class="mi">25</span> <span class="o">&amp;&amp;</span> <span class="nx">chance</span> <span class="o">&lt;=</span> <span class="mi">50</span> <span class="p">{</span>
+			<span class="c1">// Create an Orc
+</span><span class="c1"></span>			<span class="nx">createdEntity</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{}</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">SetupGameEntity</span><span class="p">()</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">AddComponents</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span><span class="s">&#34;position&#34;</span><span class="p">:</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">PositionComponent</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="nx">y</span><span class="p">},</span>
+				<span class="s">&#34;appearance&#34;</span><span class="p">:</span>     <span class="nx">ecs</span><span class="p">.</span><span class="nx">AppearanceComponent</span><span class="p">{</span><span class="nx">Layer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Character</span><span class="p">:</span> <span class="s">&#34;o&#34;</span><span class="p">,</span> <span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;darker green&#34;</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Orc&#34;</span><span class="p">},</span>
+				<span class="s">&#34;hitpoints&#34;</span><span class="p">:</span>      <span class="nx">ecs</span><span class="p">.</span><span class="nx">HitPointComponent</span><span class="p">{</span><span class="nx">Hp</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="nx">MaxHP</span><span class="p">:</span> <span class="mi">15</span><span class="p">},</span>
+				<span class="s">&#34;movement&#34;</span><span class="p">:</span>       <span class="nx">ecs</span><span class="p">.</span><span class="nx">MovementComponent</span><span class="p">{}})</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">chance</span> <span class="p">&gt;</span> <span class="mi">50</span> <span class="p">{</span>
+			<span class="c1">// Create a Goblin
+</span><span class="c1"></span>			<span class="nx">createdEntity</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">GameEntity</span><span class="p">{}</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">SetupGameEntity</span><span class="p">()</span>
+			<span class="nx">createdEntity</span><span class="p">.</span><span class="nf">AddComponents</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">Component</span><span class="p">{</span><span class="s">&#34;position&#34;</span><span class="p">:</span> <span class="nx">ecs</span><span class="p">.</span><span class="nx">PositionComponent</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="nx">y</span><span class="p">},</span>
+				<span class="s">&#34;appearance&#34;</span><span class="p">:</span>     <span class="nx">ecs</span><span class="p">.</span><span class="nx">AppearanceComponent</span><span class="p">{</span><span class="nx">Layer</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">Character</span><span class="p">:</span> <span class="s">&#34;g&#34;</span><span class="p">,</span> <span class="nx">Color</span><span class="p">:</span> <span class="s">&#34;green&#34;</span><span class="p">,</span> <span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Goblin&#34;</span><span class="p">},</span>
+				<span class="s">&#34;hitpoints&#34;</span><span class="p">:</span>      <span class="nx">ecs</span><span class="p">.</span><span class="nx">HitPointComponent</span><span class="p">{</span><span class="nx">Hp</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">MaxHP</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+				<span class="s">&#34;movement&#34;</span><span class="p">:</span>       <span class="nx">ecs</span><span class="p">.</span><span class="nx">MovementComponent</span><span class="p">{}})</span></code></pre></div>
 <p>We&rsquo;re using the AddComponents() function easily add multiple components at once to our created entities, but other than that, we create these in much the same way as our player. This highlights, I think, how easy it is to compose new entities.</p>
-
 <p>At this point, we should have all of our entities drawing to the screen properly. Lets now tackle movement, before we wrap up. We&rsquo;re going to add a new component (hinted at above) called MovementComponent, and along with that, a new system, SystemMovement. My goal is to make all of our systems as generic as possible, so that we are not handling special cases that are unique to the player (you&rsquo;ll see this our SystemMovement system, as in theory, it will be possible to control any entity in the game; the result of a mind control spell, maybe?).We&rsquo;ll also add a flag component, to indicate if the entity is controllable or not. Lets add our component first:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Movement Component
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">MovementComponent</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Movement Component
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MovementComponent</span> <span style="color:#66d9ef">struct</span> {
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="nx">MovementComponent</span><span class="p">)</span> <span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#a6e22e">MovementComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}
+<span class="c1">// Controllable Component
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">ControllableComponent</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Controllable Component
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ControllableComponent</span> <span style="color:#66d9ef">struct</span> {
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">ControllableComponent</span>) <span style="color:#a6e22e">IsAIComponent</span>() <span style="color:#66d9ef">bool</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}</code></pre></div>
-
+<span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">ControllableComponent</span><span class="p">)</span> <span class="nf">IsAIComponent</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span></code></pre></div>
 <p>Nothing new here, its still not an AI component either. Now, lets code up the accompanying system. This will be very similar to how we&rsquo;re currently handling movement, except we&rsquo;re going to do some checks for components beforehand:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">SystemMovement</span><span class="p">(</span><span class="nx">entity</span> <span class="o">*</span><span class="nx">GameEntity</span><span class="p">,</span> <span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">entities</span> <span class="p">[]</span><span class="o">*</span><span class="nx">GameEntity</span><span class="p">,</span> <span class="nx">gameMap</span> <span class="o">*</span><span class="nx">gamemap</span><span class="p">.</span><span class="nx">Map</span><span class="p">,</span> <span class="nx">messageLog</span> <span class="o">*</span><span class="nx">ui</span><span class="p">.</span><span class="nx">MessageLog</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Allow a moveable and controllable entity to move
+</span><span class="c1"></span>	<span class="k">if</span> <span class="nx">entity</span><span class="p">.</span><span class="nf">HasComponents</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;movement&#34;</span><span class="p">,</span> <span class="s">&#34;controllable&#34;</span><span class="p">,</span> <span class="s">&#34;position&#34;</span><span class="p">})</span> <span class="p">{</span>
+		<span class="c1">// If the current entity is controllable, moveable, and has a position, go ahead and move it
+</span><span class="c1"></span>		<span class="nx">positionComponent</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">Components</span><span class="p">[</span><span class="s">&#34;position&#34;</span><span class="p">].(</span><span class="nx">PositionComponent</span><span class="p">)</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SystemMovement</span>(<span style="color:#a6e22e">entity</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">dy</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">entities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">GameEntity</span>, <span style="color:#a6e22e">gameMap</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gamemap</span>.<span style="color:#a6e22e">Map</span>, <span style="color:#a6e22e">messageLog</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ui</span>.<span style="color:#a6e22e">MessageLog</span>) {
-	<span style="color:#75715e">// Allow a moveable and controllable entity to move
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#e6db74">&#34;position&#34;</span>}) {
-		<span style="color:#75715e">// If the current entity is controllable, moveable, and has a position, go ahead and move it
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">positionComponent</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">Components</span>[<span style="color:#e6db74">&#34;position&#34;</span>].(<span style="color:#a6e22e">PositionComponent</span>)
+		<span class="k">if</span> <span class="p">!</span><span class="nx">gameMap</span><span class="p">.</span><span class="nf">IsBlocked</span><span class="p">(</span><span class="nx">positionComponent</span><span class="p">.</span><span class="nx">X</span><span class="o">+</span><span class="nx">dx</span><span class="p">,</span> <span class="nx">positionComponent</span><span class="p">.</span><span class="nx">Y</span><span class="o">+</span><span class="nx">dy</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">target</span> <span class="o">:=</span> <span class="nf">GetBlockingEntitiesAtLocation</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">positionComponent</span><span class="p">.</span><span class="nx">X</span><span class="o">+</span><span class="nx">dx</span><span class="p">,</span> <span class="nx">positionComponent</span><span class="p">.</span><span class="nx">Y</span><span class="o">+</span><span class="nx">dy</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nx">target</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="c1">// SystemAttack(entity, target, messageLog) - this is our Attack system; next time!
+</span><span class="c1"></span>			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">positionComponent</span><span class="p">.</span><span class="nx">X</span> <span class="o">+=</span> <span class="nx">dx</span>
+				<span class="nx">positionComponent</span><span class="p">.</span><span class="nx">Y</span> <span class="o">+=</span> <span class="nx">dy</span>
 
-		<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">gameMap</span>.<span style="color:#a6e22e">IsBlocked</span>(<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dy</span>) {
-			<span style="color:#a6e22e">target</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">GetBlockingEntitiesAtLocation</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dx</span>, <span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span><span style="color:#f92672">+</span><span style="color:#a6e22e">dy</span>)
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">target</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-				<span style="color:#75715e">// SystemAttack(entity, target, messageLog) - this is our Attack system; next time!
-</span><span style="color:#75715e"></span>			} <span style="color:#66d9ef">else</span> {
-				<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">X</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dx</span>
-				<span style="color:#a6e22e">positionComponent</span>.<span style="color:#a6e22e">Y</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">dy</span>
-
-				<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">RemoveComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>)
-				<span style="color:#a6e22e">entity</span>.<span style="color:#a6e22e">AddComponent</span>(<span style="color:#e6db74">&#34;position&#34;</span>, <span style="color:#a6e22e">positionComponent</span>)
-			}
-		}
-	} <span style="color:#66d9ef">else</span> {
-		<span style="color:#75715e">// Implement an AI component here (later)
-</span><span style="color:#75715e"></span>	}
-}</code></pre></div>
-
+				<span class="nx">entity</span><span class="p">.</span><span class="nf">RemoveComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">)</span>
+				<span class="nx">entity</span><span class="p">.</span><span class="nf">AddComponent</span><span class="p">(</span><span class="s">&#34;position&#34;</span><span class="p">,</span> <span class="nx">positionComponent</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="c1">// Implement an AI component here (later)
+</span><span class="c1"></span>	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 <p>First, we&rsquo;re checking for the movement, controllable, and position components. If an entity is missing any of these, we&rsquo;ll pass it off to an AI routine (next post), and let it decide what to do. If the entity is controllable, has movement, and has a position though, we need to handle that. We will have a dx and dy value, which will be passed in from our key handling function, and those will get applied as normal to move the controllable entity. Note, this does not apply just to the player, but any entity that happens to have the controllable component. This means that the player may be able to control multiple entities in a turn.</p>
-
 <p>To use this system, we just need to call it. Back in our main game file, in our main() function:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span> () {
+    <span class="o">...</span>
 
-    <span style="color:#f92672">...</span>
+    <span class="k">for</span> <span class="p">{</span>
+		<span class="nx">blt</span><span class="p">.</span><span class="nf">Refresh</span><span class="p">()</span>
 
-    <span style="color:#66d9ef">for</span> {
-		<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Refresh</span>()
+		<span class="nx">key</span> <span class="o">:=</span> <span class="nx">blt</span><span class="p">.</span><span class="nf">Read</span><span class="p">()</span>
 
-		<span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Read</span>()
+		<span class="c1">// Clear each Entity off the screen
+</span><span class="c1"></span>		<span class="nx">ecs</span><span class="p">.</span><span class="nf">SystemClear</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">gameCamera</span><span class="p">)</span>
 
-		<span style="color:#75715e">// Clear each Entity off the screen
-</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemClear</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>)
+		<span class="k">if</span> <span class="nx">key</span> <span class="o">!=</span> <span class="nx">blt</span><span class="p">.</span><span class="nx">TK_CLOSE</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">gameTurn</span> <span class="o">==</span> <span class="nx">PlayerTurn</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="nx">player</span><span class="p">.</span><span class="nf">HasComponents</span><span class="p">([]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;movement&#34;</span><span class="p">,</span> <span class="s">&#34;controllable&#34;</span><span class="p">,</span> <span class="s">&#34;position&#34;</span><span class="p">})</span> <span class="p">{</span>
+					<span class="nf">handleInput</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">player</span><span class="p">)</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
 
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">key</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">TK_CLOSE</span> {
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameTurn</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">PlayerTurn</span> {
-				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">player</span>.<span style="color:#a6e22e">HasComponents</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;movement&#34;</span>, <span style="color:#e6db74">&#34;controllable&#34;</span>, <span style="color:#e6db74">&#34;position&#34;</span>}) {
-					<span style="color:#a6e22e">handleInput</span>(<span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">player</span>)
-				}
-			}
-		} <span style="color:#66d9ef">else</span> {
-			<span style="color:#66d9ef">break</span>
-		}
+		<span class="k">if</span> <span class="nx">gameTurn</span> <span class="o">==</span> <span class="nx">MobTurn</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">newEntities</span> <span class="p">[]</span><span class="o">*</span><span class="nx">ecs</span><span class="p">.</span><span class="nx">GameEntity</span>
+			<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">entities</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">!</span><span class="nx">e</span><span class="p">.</span><span class="nf">HasComponent</span><span class="p">(</span><span class="s">&#34;player&#34;</span><span class="p">)</span> <span class="p">{</span>
+						<span class="nx">ecs</span><span class="p">.</span><span class="nf">SystemMovement</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">entities</span><span class="p">,</span> <span class="nx">gameMap</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">messageLog</span><span class="p">)</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="nx">gameTurn</span> <span class="p">=</span> <span class="nx">PlayerTurn</span>
+		<span class="p">}</span>
 
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">gameTurn</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">MobTurn</span> {
-			<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">newEntities</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">GameEntity</span>
-			<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">entities</span> {
-				<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-					<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">HasComponent</span>(<span style="color:#e6db74">&#34;player&#34;</span>) {
-						<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemMovement</span>(<span style="color:#a6e22e">e</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameMap</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">messageLog</span>)
-					}
-				}
-			}
-			<span style="color:#a6e22e">gameTurn</span> = <span style="color:#a6e22e">PlayerTurn</span>
-		}
+		<span class="nf">renderMap</span><span class="p">()</span>
+		<span class="nx">ecs</span><span class="p">.</span><span class="nf">SystemRender</span><span class="p">(</span><span class="nx">entities</span><span class="p">,</span> <span class="nx">gameCamera</span><span class="p">,</span> <span class="nx">gameMap</span><span class="p">)</span>
+		<span class="nx">messageLog</span><span class="p">.</span><span class="nf">PrintMessages</span><span class="p">(</span><span class="nx">ViewAreaY</span><span class="p">,</span> <span class="nx">WindowSizeX</span><span class="p">,</span> <span class="nx">WindowSizeY</span><span class="p">)</span>
+	<span class="p">}</span>
 
-		<span style="color:#a6e22e">renderMap</span>()
-		<span style="color:#a6e22e">ecs</span>.<span style="color:#a6e22e">SystemRender</span>(<span style="color:#a6e22e">entities</span>, <span style="color:#a6e22e">gameCamera</span>, <span style="color:#a6e22e">gameMap</span>)
-		<span style="color:#a6e22e">messageLog</span>.<span style="color:#a6e22e">PrintMessages</span>(<span style="color:#a6e22e">ViewAreaY</span>, <span style="color:#a6e22e">WindowSizeX</span>, <span style="color:#a6e22e">WindowSizeY</span>)
-	}
-
-	<span style="color:#a6e22e">blt</span>.<span style="color:#a6e22e">Close</span>()
-}</code></pre></div>
-
+	<span class="nx">blt</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
 <p>We&rsquo;re now calling our new movement system anywhere an entity may move. In particular, on the players turn, we check to make sure he has all the correct components, and then hand off control to the handleKeys function (which calls SystemMovement, once the movement keys have been resolved). For monsters, we&rsquo;re doing the same, but anticipating they will not be controllable, and thus will hand off control to an AI system (in a later post). We are now using a single unified system for every entity in the game that can move.</p>
-
 <p>And with that, we should have a functional game again (except enemies will not move). The player and all other entities get drawn to the screen, and the player can move around as normal. And the best part, we now have a flexible system for extending our game in the future. This will be a huge asset to us as we continue to add more and more complex features down the road. As usual, you can check out the code for this post in the repo <a href="https://github.com/jcerise/roguelikedev-does-the-complete-roguelike-tutorial/releases/tag/v0.0.8">here</a>.</p>
-
 <p>Next time, we&rsquo;re finally going to get to some combat, and give our monsters some proper AI, so that they will seek and out (possibly) destroy the player. Stay tuned, and until then, happy developing!</p>
 
     </div>
-    
     <footer>
       <hr>
       <p>
@@ -539,59 +574,72 @@ p img {
       by <span itemprop="author">Jeremy Cerise</span>
     
   
-  <time datetime="2017-07-27T22:58:00-06:00">
+  <time itemprop="datePublished" datetime="2017-07-27T22:58:00-06:00">
     27 Jul, 2017
   </time>
   
     in <span itemprop="articleSection"><a href="/categories/technology/">technology</a></span>
   
   
-    and tagged <a href="/tags/rldbar/">RLDBAR</a>, <a href="/tags/entity-component/">entity component</a>, <a href="/tags/entity-component-system/">entity component system</a>, <a href="/tags/go/">go</a>, <a href="/tags/programming/">programming</a> and <a href="/tags/roguelike/">roguelike</a>
+    and tagged <a rel="tag" href="/tags/entity-component/">entity component</a>, <a rel="tag" href="/tags/entity-component-system/">entity component system</a>, <a rel="tag" href="/tags/go/">go</a>, <a rel="tag" href="/tags/programming/">programming</a>, <a rel="tag" href="/tags/rldbar/">RLDBAR</a> and <a rel="tag" href="/tags/roguelike/">roguelike</a>
   
   using <span itemprop="wordCount">3508</span> words.
 </p>
 
       
+
+
+
   
-
-
-
-  <aside>
-    <header>Related Content</header>
-    <ul>
+    <aside>
+      <header>Related Content</header>
       
+        <ul>
+          
+            <li><a href="/post/sidenote-2-vim-keys/">RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</a>
+            <time class="muted" datetime="2M">2 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-3-part-2/">RoguelikeDev Builds a Roguelike, Part 6</a>
+            <time class="muted" datetime="13M">13 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-3-part-1/">RoguelikeDev Builds a Roguelike, Part 5</a>
+            <time class="muted" datetime="12M">12 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-2/">RoguelikeDev Builds a Roguelike, Part 4</a>
+            <time class="muted" datetime="18M">18 minutes</time>
+          
+            <li><a href="/post/sidenote-1-cameras/">RLDBAR Sidenote #1: Cameras</a>
+            <time class="muted" datetime="9M">9 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-1-part-2/">RoguelikeDev Builds A Roguelike, Part 3</a>
+            <time class="muted" datetime="18M">18 minutes</time>
+          
+            <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Part 2</a>
+            <time class="muted" datetime="8M">8 minutes</time>
+          
+        </ul>
       
-        <li><a href="/post/sidenote-2-vim-keys/">RLDBAR Sidenote #2: Vim Keys and Diagonal Movement</a> &ndash; 2 minutes
-      
-        <li><a href="/post/roguelike-dev-week-3-part-2/">RoguelikeDev Builds a Roguelike, Part 6</a> &ndash; 13 minutes
-      
-        <li><a href="/post/roguelike-dev-week-3-part-1/">RoguelikeDev Builds a Roguelike, Part 5</a> &ndash; 12 minutes
-      
-        <li><a href="/post/roguelike-dev-week-2/">RoguelikeDev Builds a Roguelike, Part 4</a> &ndash; 18 minutes
-      
-        <li><a href="/post/sidenote-1-cameras/">RLDBAR Sidenote #1: Cameras</a> &ndash; 9 minutes
-      
-        <li><a href="/post/roguelike-dev-week-1-part-2/">RoguelikeDev Builds A Roguelike, Part 3</a> &ndash; 18 minutes
-      
-        <li><a href="/post/roguelike-dev-week-1-part-1/">RoguelikeDev Builds a Roguelike, Part 2</a> &ndash; 8 minutes
-      
-    </ul>
-  </aside>
+    </aside>
+  
 
 
     </footer>
   </article>
 </main>
     <footer>
+  <small class="muted">
+    
   
-  <p class="muted">
-    This page was generated using
-    <a target="_blank" rel="noopener" href="https://comfusion.github.io/after-dark/">After Dark</a>
-    for
-    <a target="_blank" rel="noopener" href="https://gohugo.io/">Hugo</a>.
-  </p>
+    Copyright &copy; Copyright Jermey Cerise. Licensed under <a target="_blank" rel="external noopener license" href="https://creativecommons.org/licenses/by-nd/4.0/">CC-BY-ND-4.0</a>.
+  
 
 
+  </small>
 </footer>
+    
+    
+    
+      
+    
   </body>
 </html>
